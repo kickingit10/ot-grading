@@ -81,20 +81,20 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
-          <div className="flex items-center gap-3">
-            <div>
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
-              {ts && <p style={{ fontSize: 13, fontWeight: 400, marginTop: 4, color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
+              {ts && (
+                <select value={era} onChange={e => setEra(e.target.value as EraName)}
+                  className="input" style={{ width: 'auto', minWidth: 150, fontSize: 14 }}>
+                  {ERAS.map(e => (<option key={e.id} value={e.id}>{e.label}</option>))}
+                </select>
+              )}
             </div>
-            {ts && (
-              <select value={era} onChange={e => setEra(e.target.value as EraName)}
-                className="input" style={{ width: 'auto', minWidth: 150, fontSize: 14 }}>
-                {ERAS.map(e => (<option key={e.id} value={e.id}>{e.label}</option>))}
-              </select>
-            )}
+            <Link href="/students/new" className="btn-primary" style={{ fontSize: 15 }}>{ts ? 'New Swiftie ✦' : 'Add student'}</Link>
           </div>
-          <Link href="/students/new" className="btn-primary text-sm">{ts ? 'New Swiftie ✦' : 'Add student'}</Link>
+          {ts && <p style={{ fontSize: 13, fontWeight: 400, marginTop: 6, color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
         </div>
 
         {/* Stats */}

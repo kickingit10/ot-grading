@@ -35,9 +35,7 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
       else {
         setAppTheme(theme as 'default' | 'taylor-swift');
         setEra(eraValue as EraName);
-        // Clear sync flag so ThemeProvider re-reads from Supabase on next session
         sessionStorage.removeItem('ot-theme-synced');
-        // Refresh server data so profile page reflects the change
         router.refresh();
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
@@ -47,8 +45,9 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
   };
 
   return (
-    <div className="space-y-8">
-      <div>
+    <div className="space-y-6">
+      {/* Account / Theme card */}
+      <div className="card">
         <div className="section-header">{isTaylorSwift ? 'Welcome to Your Era' : 'Account'}</div>
         <form onSubmit={handleSaveProfile} className="space-y-4">
           {error && <div className="alert alert-error text-sm animate-slide-in">{error}</div>}
@@ -64,16 +63,16 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
               <p className="text-xs mt-2" style={{ color: 'var(--color-primary)' }}>🌙 Midnights mode active — Long live the grading era</p>
             )}
           </div>
-          {(theme === 'taylor-swift' || isTaylorSwift) && (
+          {theme === 'taylor-swift' && (
             <div>
               <label className="label" htmlFor="profile-era">Era</label>
               <select id="profile-era" value={eraValue} onChange={e => setEraValue(e.target.value)} className="input">
+                <option value="lover">Lover</option>
                 <option value="fearless">Fearless</option>
                 <option value="speakNow">Speak Now</option>
                 <option value="red">Red</option>
                 <option value="1989">1989</option>
                 <option value="reputation">reputation</option>
-                <option value="lover">Lover</option>
                 <option value="folklore">folklore</option>
                 <option value="evermore">evermore</option>
                 <option value="midnights">Midnights</option>
@@ -85,7 +84,8 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
         </form>
       </div>
 
-      <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 32 }}>
+      {/* Change Password card */}
+      <div className="card">
         <div className="section-header">Change Password</div>
         <form onSubmit={async (e) => {
           e.preventDefault(); setPasswordError(null);
@@ -107,8 +107,9 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
         </form>
       </div>
 
-      <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 32 }}>
-        <button onClick={async () => { await supabase.auth.signOut(); router.push('/login'); }} className="btn-ghost w-full">Sign out</button>
+      {/* Sign out */}
+      <div className="text-center pt-2">
+        <button onClick={async () => { await supabase.auth.signOut(); router.push('/login'); }} className="btn-ghost">Sign out</button>
       </div>
     </div>
   );

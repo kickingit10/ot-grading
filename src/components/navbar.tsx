@@ -59,7 +59,7 @@ export function Navbar() {
             {isTaylorSwift ? (
               <span className="text-lg font-semibold ts-gradient-text tracking-tight">OT Tracker <span className="text-xs font-normal" style={{ opacity: 0.7 }}>(Taylor&#39;s Version)</span></span>
             ) : (
-              <span className="text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>OT Tracker</span>
+              <span className="text-lg font-bold tracking-tight" style={{ color: 'var(--color-primary-surface, var(--color-primary))' }}>OT Tracker</span>
             )}
           </Link>
 

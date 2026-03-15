@@ -25,9 +25,9 @@ export function ReportCardSummary({ grades, categories }: ReportCardSummaryProps
   const noData = stats.filter(s => s.count === 0);
 
   return (
-    <div className="space-y-2.5">
+    <div className="space-y-3">
       {withData.map(stat => (
-        <div key={stat.category.id} className="p-3 rounded-lg" style={{ background: 'var(--color-bg-accent)', border: '1px solid var(--color-border)' }}>
+        <div key={stat.category.id} className="p-4 rounded-lg" style={{ background: 'var(--color-bg-accent)', border: '1px solid var(--color-border)' }}>
           <div className="flex justify-between items-start mb-1.5">
             <span className="text-xs font-medium" style={{ color: 'var(--color-text)' }}>
               {ts ? <span className="ts-bracelet-tag">{stat.category.name}</span> : stat.category.name}

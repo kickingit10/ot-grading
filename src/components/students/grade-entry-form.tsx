@@ -21,6 +21,7 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSparkle, setShowSparkle] = useState(false);
+  const [showExtra, setShowExtra] = useState(false);
   const supabaseRef = useRef(createClient());
   const supabase = supabaseRef.current;
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -88,15 +89,23 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
           <input id="grade-score" tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" /></div>
         <div><label className="label" htmlFor="grade-notes">Notes</label><textarea id="grade-notes" tabIndex={4} rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical', minHeight: 60 }} /></div>
       </div>
-      <div className="flex gap-3 items-end">
-        <div className="flex-1">
+      {/* Collapsible other skills */}
+      {showExtra && (
+        <div className="mb-3 animate-fade-in">
           <label className="label" htmlFor="grade-other-skills">Other skills observed</label>
           <span className="text-[10px] block -mt-1 mb-1" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
           <textarea id="grade-other-skills" tabIndex={5} rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical', minHeight: 60 }} />
         </div>
-        <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
+      )}
+      <div className="flex gap-3 items-center justify-between">
+        <button type="button" onClick={() => setShowExtra(!showExtra)} className="text-xs transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+          {showExtra ? '− Hide extra fields' : '+ More fields'}
+        </button>
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] hidden sm:inline" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter</span>
+          <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
+        </div>
       </div>
-      <span className="text-[10px] mt-1 block text-center" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter to save</span>
     </form>
   );
 }

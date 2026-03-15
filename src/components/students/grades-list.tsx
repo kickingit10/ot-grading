@@ -6,6 +6,7 @@ import { formatDate, formatScore } from '@/lib/utils';
 import { GradeEditModal } from './grade-edit-modal';
 import { createClient } from '@/lib/supabase/client';
 import { useTheme } from '@/lib/theme';
+import { useToast } from '@/lib/toast';
 
 interface GradesListProps {
   grades: Grade[];
@@ -21,15 +22,16 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
   const [deleting, setDeleting] = useState<string | null>(null);
   const supabase = createClient();
   const { isTaylorSwift: ts } = useTheme();
+  const { toast } = useToast();
 
   const handleDelete = async (gradeId: string) => {
     if (!confirm('Delete this grade?')) return;
     setDeleting(gradeId);
     try {
       const { error } = await supabase.from('grades').delete().eq('id', gradeId);
-      if (error) alert(`Error: ${error.message}`);
-      else onGradeDeleted(gradeId);
-    } catch { alert('An unexpected error occurred'); }
+      if (error) toast(`Error: ${error.message}`, 'error');
+      else { onGradeDeleted(gradeId); toast('Grade deleted'); }
+    } catch { toast('An unexpected error occurred', 'error'); }
     finally { setDeleting(null); }
   };
 

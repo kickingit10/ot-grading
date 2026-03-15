@@ -1,0 +1,16 @@
+{
+  "name": "OT Tracker",
+  "short_name": "OT Tracker",
+  "description": "Student grading for occupational therapists",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#6366f1",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}

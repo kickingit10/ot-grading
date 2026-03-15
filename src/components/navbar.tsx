@@ -58,7 +58,11 @@ export function Navbar() {
             )}
           </Link>
 
-          <div className="relative">
+          <div className="flex items-center gap-2">
+            <Link href="/guide" className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium border transition-all duration-200 ${
+              isTaylorSwift ? 'border-white/[0.1] text-[#9ca3af] hover:bg-white/[0.06]' : 'border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-600'
+            }`}>?</Link>
+            <div className="relative">
             <button
               onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
               className={`flex items-center gap-2.5 px-2 py-1.5 rounded-lg text-sm transition-all duration-200 ${
@@ -109,6 +113,7 @@ export function Navbar() {
                 </button>
               </div>
             )}
+          </div>
           </div>
         </div>
       </div>

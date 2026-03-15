@@ -113,6 +113,21 @@ button, input, select, textarea {
   background-clip: text;
 }
 
+/* Print styles */
+@media print {
+  nav, .no-print, button:not(.print-keep), .md\:hidden { display: none !important; }
+  body { background: white !important; color: black !important; font-size: 12pt; }
+  .print-area { break-inside: avoid; }
+  * { box-shadow: none !important; }
+}
+
+/* Toast TS theme override */
+[data-theme="taylor-swift"] .toast-success {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.3);
+  color: #d4af37;
+}
+
 [data-theme="taylor-swift"] .ts-bracelet-tag {
   background: rgba(212, 175, 55, 0.1);
   border: 1px solid rgba(212, 175, 55, 0.25);

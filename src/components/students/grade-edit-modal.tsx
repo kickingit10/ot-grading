@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Grade, Category } from '@/lib/types';
 import { normalizeScore, formatDateInputValue } from '@/lib/utils';
 import { useTheme } from '@/lib/theme';
+import { useToast } from '@/lib/toast';
 
 interface GradeEditModalProps {
   grade: Grade;
@@ -25,6 +26,14 @@ export function GradeEditModal({ grade, category, categories, studentId, onGrade
   const [error, setError] = useState<string | null>(null);
   const supabase = createClient();
   const { isTaylorSwift: ts } = useTheme();
+  const { toast } = useToast();
+
+  // Escape key to cancel
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onCancel(); };
+    document.addEventListener('keydown', handleKey);
+    return () => document.removeEventListener('keydown', handleKey);
+  }, [onCancel]);
 
   const selectedCategory = categories.find((c) => c.id === categoryId);
 
@@ -53,6 +62,7 @@ export function GradeEditModal({ grade, category, categories, studentId, onGrade
         grade_id: grade.id, previous_score: grade.score, previous_notes: grade.notes,
         previous_other_skills: grade.other_skills, previous_graded_at: grade.graded_at,
       });
+      toast('Grade updated');
       onGradeUpdated(updatedGrade as Grade);
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }

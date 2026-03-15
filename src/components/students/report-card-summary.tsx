@@ -3,6 +3,7 @@
 import { Grade, Category } from '@/lib/types';
 import { formatScore } from '@/lib/utils';
 import { useTheme } from '@/lib/theme';
+import { getTrend } from './progress-charts';
 
 interface ReportCardSummaryProps {
   grades: Grade[];
@@ -24,7 +25,8 @@ export function ReportCardSummary({ grades, categories }: ReportCardSummaryProps
     if (categoryGrades.length === 0) return { category, count: 0, average: null, notes: [] };
     const average = categoryGrades.reduce((sum, g) => sum + g.score, 0) / categoryGrades.length;
     const notes = categoryGrades.filter((g) => g.notes).map((g) => g.notes as string);
-    return { category, count: categoryGrades.length, average, notes };
+    const trend = getTrend(categoryGrades);
+    return { category, count: categoryGrades.length, average, notes, trend };
   });
 
   return (
@@ -50,8 +52,13 @@ export function ReportCardSummary({ grades, categories }: ReportCardSummaryProps
                 <div className={`text-lg font-semibold tabular-nums ${ts ? 'text-amber-400' : 'text-indigo-600'}`}>
                   {stat.average !== null ? formatScore(stat.average, stat.category.score_type) : '—'}
                 </div>
-                <div className={`text-[10px] ${ts ? 'text-[#9ca3af]/60' : 'text-slate-400'}`}>
+                <div className={`text-[10px] flex items-center gap-1 ${ts ? 'text-[#9ca3af]/60' : 'text-slate-400'}`}>
                   {stat.count} grade{stat.count !== 1 ? 's' : ''}
+                  {stat.count >= 3 && (
+                    <span className={`font-medium ${
+                      stat.trend === '↑' ? 'text-emerald-500' : stat.trend === '↓' ? 'text-red-400' : ''
+                    }`}>{stat.trend}</span>
+                  )}
                 </div>
               </div>
             )}

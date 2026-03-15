@@ -1,32 +1,36 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
 import { ThemeProvider } from "@/lib/theme";
+import { ToastProvider } from "@/lib/toast";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "OT Tracker - Student Grading",
+  title: { default: "OT Tracker", template: "%s | OT Tracker" },
   description: "Simple, intuitive occupational therapy student grading app",
+  manifest: "/manifest.json",
+  icons: { icon: "/favicon.svg" },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "OT Tracker" },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#6366f1",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
-          <Navbar />
-          <main className="min-h-screen">
-            {children}
-          </main>
+          <ToastProvider>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>

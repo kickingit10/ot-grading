@@ -28,20 +28,24 @@ export function ReportCardSummary({ grades, categories }: ReportCardSummaryProps
     <div className="space-y-3">
       {withData.map(stat => (
         <div key={stat.category.id} className="p-4 rounded-lg" style={{ background: 'var(--color-bg-accent)', border: '1px solid var(--color-border)' }}>
-          <div className="flex justify-between items-start mb-1.5">
-            <span className="text-xs font-medium" style={{ color: 'var(--color-text)', minWidth: 0, wordBreak: 'break-word' as const }}>
-              {ts ? <span className="ts-bracelet-tag" style={{ fontSize: '0.6rem', padding: '1px 6px', whiteSpace: 'nowrap' }}>{stat.category.name}</span> : stat.category.name}
-            </span>
-            <div className="text-right">
-              <div className="text-lg font-semibold tabular-nums" style={{ color: 'var(--color-primary)' }}>
+          <div style={{ marginBottom: 8 }}>
+            <div style={{ marginBottom: 6 }}>
+              {ts ? (
+                <span className="ts-bracelet-tag" style={{ display: 'inline-block', fontSize: '0.65rem', padding: '3px 10px', lineHeight: 1.4 }}>{stat.category.name}</span>
+              ) : (
+                <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-text)' }}>{stat.category.name}</span>
+              )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+              <span style={{ fontSize: 22, fontWeight: 600, color: 'var(--color-primary)', fontVariantNumeric: 'tabular-nums' }}>
                 {stat.average !== null ? formatScore(stat.average, stat.category.score_type) : '—'}
-              </div>
-              <div className="text-[10px] flex items-center gap-1" style={{ color: 'var(--color-text-muted)' }}>
+              </span>
+              <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
                 {stat.count} grade{stat.count !== 1 ? 's' : ''}
                 {stat.count >= 3 && (
-                  <span style={{ color: stat.trend === '↑' ? 'var(--color-success)' : stat.trend === '↓' ? 'var(--color-error)' : 'var(--color-text-muted)' }} className="font-medium">{stat.trend}</span>
+                  <span style={{ marginLeft: 4, color: stat.trend === '↑' ? 'var(--color-success)' : stat.trend === '↓' ? 'var(--color-error)' : 'var(--color-text-muted)', fontWeight: 500 }}>{stat.trend}</span>
                 )}
-              </div>
+              </span>
             </div>
           </div>
 

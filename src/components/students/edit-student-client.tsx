@@ -89,7 +89,7 @@ export function EditStudentClient({ student, schools, gradingPeriods }: EditStud
 
       <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: 32 }}>
         <div className="section-header" style={{ color: 'var(--color-error)' }}>Danger Zone</div>
-        <button onClick={async () => { if (!confirm('Archive this student?')) return; setLoading(true); const { error } = await supabase.from('students').update({ status: 'archived' }).eq('id', student.id); setLoading(false); if (error) setError(error.message); else router.push('/'); }}
+        <button onClick={async () => { if (!confirm('Archive this student?')) return; setLoading(true); const { error } = await supabase.from('students').update({ status: 'archived' }).eq('id', student.id); setLoading(false); if (error) setError(error.message); else router.push('/dashboard'); }}
           disabled={loading} className="w-full py-2.5 px-4 text-sm font-medium rounded-lg border transition-all duration-200"
           style={{ borderColor: 'rgba(239,68,68,0.3)', color: 'var(--color-error)', background: 'rgba(239,68,68,0.04)' }}>
           Archive student

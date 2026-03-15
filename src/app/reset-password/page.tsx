@@ -29,7 +29,7 @@ export default function ResetPasswordPage() {
     setLoading(true);
     try {
       const { error: err } = await supabase.auth.updateUser({ password });
-      if (err) setError(err.message); else { setSuccess(true); setTimeout(() => router.push('/'), 2000); }
+      if (err) setError(err.message); else { setSuccess(true); setTimeout(() => router.push('/dashboard'), 2000); }
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }
   };

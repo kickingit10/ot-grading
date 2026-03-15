@@ -100,7 +100,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         {/* Header with quick nav */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-3">
-            <Link href="/" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+            <Link href="/dashboard" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
               <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back
             </Link>
             <span style={{ color: 'var(--color-border)' }}>|</span>

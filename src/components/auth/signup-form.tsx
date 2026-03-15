@@ -21,7 +21,7 @@ export function SignupForm() {
     try {
       const { error: authError, data } = await supabase.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
       if (authError) setError(authError.message);
-      else if (data.user) router.push('/');
+      else if (data.user) router.push('/dashboard');
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }
   };

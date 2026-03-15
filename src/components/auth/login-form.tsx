@@ -24,7 +24,7 @@ export function LoginForm() {
         if (msg.includes('database error') || msg.includes('querying schema')) setError('Unable to connect. Please try again.');
         else if (msg.includes('invalid login credentials')) setError('Invalid email or password.');
         else setError(authError.message);
-      } else { router.push('/'); }
+      } else { router.push('/dashboard'); }
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }
   };

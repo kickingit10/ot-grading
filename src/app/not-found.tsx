@@ -9,7 +9,7 @@ export default function NotFoundPage() {
         <p className="text-sm mb-6" style={{ color: 'var(--color-text-muted)' }}>
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <Link href="/" className="btn-primary inline-block">Go to dashboard</Link>
+        <Link href="/dashboard" className="btn-primary inline-block">Go to dashboard</Link>
       </div>
     </div>
   );

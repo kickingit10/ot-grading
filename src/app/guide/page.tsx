@@ -32,7 +32,7 @@ export default function GuidePage() {
     <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
-          <Link href="/" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+          <Link href="/dashboard" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
             <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Back
           </Link>
@@ -76,7 +76,7 @@ export default function GuidePage() {
         </div>
 
         <div className="mt-6 text-center">
-          <Link href="/" className="text-sm font-medium" style={{ color: 'var(--color-primary)' }}>
+          <Link href="/dashboard" className="text-sm font-medium" style={{ color: 'var(--color-primary)' }}>
             {ts ? 'Start the show →' : 'Go to dashboard →'}
           </Link>
         </div>

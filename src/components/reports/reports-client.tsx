@@ -82,7 +82,7 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
         {/* Header */}
         <div className="mb-6">
-          <Link href="/" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+          <Link href="/dashboard" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
             <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Back
           </Link>

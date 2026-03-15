@@ -10,40 +10,45 @@
   --color-error: #ef4444;
   --color-bg: #fafafa;
   --color-bg-card: #ffffff;
-  --color-bg-accent: #f5f3ff;
+  --color-bg-accent: #f1f5f9;
   --color-text: #0f172a;
   --color-text-muted: #64748b;
   --color-border: #e2e8f0;
-  --color-border-accent: #e0e7ff;
+  --color-border-accent: #c7d2fe;
+  --color-primary-btn-text: #ffffff;
 }
 
 /* Standard dark mode */
 [data-mode="dark"] {
   --color-bg: #0f0f0f;
   --color-bg-card: #1a1a1a;
-  --color-bg-accent: #1f1f2f;
+  --color-bg-accent: #222222;
   --color-text: #e5e5e5;
   --color-text-muted: #a3a3a3;
-  --color-border: #262626;
-  --color-border-accent: #312e81;
+  --color-border: #2a2a2a;
+  --color-border-accent: #4338ca;
+  --color-primary-lighter: rgba(99, 102, 241, 0.12);
 }
 
-/* Taylor Swift dark (default TS look) */
+/* Taylor Swift — primary override */
 [data-theme="taylor-swift"] {
-  --color-primary: #d4af37;
-  --color-primary-light: #e6c84d;
+  --color-primary: #b8941e;
+  --color-primary-light: #d4af37;
   --color-primary-lighter: #fef9e7;
-  --color-primary-dark: #b8941e;
+  --color-primary-dark: #997a15;
+  --color-primary-btn-text: #0a0a14;
 }
 
+/* Taylor Swift dark */
 [data-theme="taylor-swift"][data-mode="dark"] {
   --color-bg: #0a0a14;
-  --color-bg-card: rgba(255, 255, 255, 0.04);
-  --color-bg-accent: rgba(212, 175, 55, 0.06);
+  --color-bg-card: #12121e;
+  --color-bg-accent: #1a1a2a;
   --color-text: #f0e6d3;
   --color-text-muted: #9ca3af;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-accent: rgba(212, 175, 55, 0.15);
+  --color-border: #1f1f30;
+  --color-border-accent: rgba(212, 175, 55, 0.25);
+  --color-primary-lighter: rgba(212, 175, 55, 0.1);
 }
 
 /* Taylor Swift light */
@@ -57,15 +62,8 @@
   --color-border-accent: #d4af37;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
@@ -75,83 +73,138 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button, input, select, textarea {
-  font-family: inherit;
+button, input, select, textarea { font-family: inherit; }
+
+/* Consistent card */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px 24px;
 }
+[data-mode="light"] .card { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+/* Input styling */
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-card);
+  color: var(--color-text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input::placeholder { color: var(--color-text-muted); opacity: 0.5; }
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-lighter);
+}
+
+/* Styled select with custom chevron */
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2364748b' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+[data-mode="dark"] select.input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%239ca3af' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+}
+
+/* Label */
+.label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+
+/* Primary button */
+.btn-primary {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--color-primary);
+  color: var(--color-primary-btn-text);
+  transition: all 0.15s;
+}
+.btn-primary:hover { opacity: 0.9; filter: brightness(1.1); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+[data-mode="light"] .btn-primary { box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+/* Ghost button */
+.btn-ghost {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  background: transparent;
+  color: var(--color-text-muted);
+  transition: all 0.15s;
+}
+.btn-ghost:hover { background: var(--color-bg-accent); color: var(--color-text); }
+
+/* Section header */
+.section-header {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+/* Hover row for lists */
+.hover-row {
+  border-radius: 8px;
+  padding: 12px;
+  margin: 0 -12px;
+  transition: background-color 0.15s;
+}
+.hover-row:hover { background: var(--color-bg-accent); }
 
 /* Sparkle animation */
 @keyframes sparkle-float {
   0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
   100% { transform: translateY(-60px) scale(0) rotate(120deg); opacity: 0; }
 }
+@keyframes progress-fill { from { width: 0; } }
+@keyframes slide-in { from { transform: translateY(-8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 
-@keyframes progress-fill {
-  from { width: 0; }
-}
+.sparkle-particle { animation: sparkle-float 0.8s ease-out forwards; pointer-events: none; position: absolute; }
+.animate-progress-fill { animation: progress-fill 0.6s ease-out; }
+.animate-slide-in { animation: slide-in 0.2s ease-out; }
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
 
-@keyframes slide-in {
-  from { transform: translateY(-8px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.sparkle-particle {
-  animation: sparkle-float 0.8s ease-out forwards;
-  pointer-events: none;
-  position: absolute;
-}
-
-.animate-progress-fill {
-  animation: progress-fill 0.6s ease-out;
-}
-
-.animate-slide-in {
-  animation: slide-in 0.2s ease-out;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
-}
-
-/* Glass morphism — dark modes */
-[data-mode="dark"] .ts-glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-[data-mode="dark"] .ts-glass-hover:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-[data-theme="taylor-swift"][data-mode="dark"] .ts-glass-hover:hover {
-  border-color: rgba(212, 175, 55, 0.2);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.05);
-}
-
-/* Light mode glass — TS light just uses white cards */
-[data-mode="light"] .ts-glass {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-}
-
-[data-mode="light"] .ts-glass-hover:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  border-color: var(--color-border-accent);
-}
-
-[data-theme="taylor-swift"] .ts-gradient-text {
+/* TS gradient text */
+[data-theme="taylor-swift"][data-mode="dark"] .ts-gradient-text {
   background: linear-gradient(135deg, #d4af37, #f4c2c2, #d4af37);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* TS bracelet tag */
+[data-theme="taylor-swift"] .ts-bracelet-tag {
+  background: var(--color-primary-lighter);
+  border: 1px solid var(--color-border-accent);
+  border-radius: 9999px;
+  padding: 2px 10px;
+  font-size: 0.7rem;
+  color: var(--color-primary);
+  letter-spacing: 0.05em;
+  font-weight: 500;
 }
 
 /* Print styles */
@@ -160,22 +213,4 @@ button, input, select, textarea {
   body { background: white !important; color: black !important; font-size: 12pt; }
   .print-area { break-inside: avoid; }
   * { box-shadow: none !important; }
-}
-
-/* Toast TS theme override */
-[data-theme="taylor-swift"] .toast-success {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: rgba(212, 175, 55, 0.3);
-  color: #d4af37;
-}
-
-[data-theme="taylor-swift"] .ts-bracelet-tag {
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  border-radius: 9999px;
-  padding: 2px 10px;
-  font-size: 0.7rem;
-  color: #d4af37;
-  letter-spacing: 0.05em;
-  font-weight: 500;
 }

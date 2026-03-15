@@ -22,7 +22,6 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
   const [error, setError] = useState<string | null>(null);
   const [showSparkle, setShowSparkle] = useState(false);
   const supabase = createClient();
-  const scoreRef = useRef<HTMLInputElement>(null);
   const categoryRef = useRef<HTMLSelectElement>(null);
   const { isTaylorSwift: ts } = useTheme();
   const { toast } = useToast();
@@ -34,11 +33,6 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
     if (lastCat && categories.some((c) => c.id === lastCat)) setCategoryId(lastCat);
   }, [categories]);
 
-  const inputClass = `w-full px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${
-    ts ? 'bg-white/[0.04] border-white/[0.08] text-[#f0e6d3] placeholder:text-[#9ca3af]/40 focus:ring-amber-500/30 focus:border-amber-500/30' : 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:ring-indigo-500/40 focus:border-indigo-400'
-  }`;
-  const labelClass = `block text-xs font-light mb-1.5 ${ts ? 'text-[#9ca3af]' : 'text-slate-500'}`;
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); setLoading(true);
@@ -46,22 +40,18 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
       if (!categoryId || !score.trim()) { setError('Select a category and enter a score'); setLoading(false); return; }
       const scoreNum = parseFloat(score);
       if (isNaN(scoreNum)) { setError('Enter a valid score'); setLoading(false); return; }
-
       const normalizedScore = normalizeScore(scoreNum, selectedCategory!.score_type);
       const { data: newGrade, error: gradeError } = await supabase
         .from('grades')
         .insert({ student_id: student.id, category_id: categoryId, score: normalizedScore, notes: notes.trim() || null, other_skills: otherSkills.trim() || null, graded_at: new Date(date).toISOString() })
         .select('*, category:categories(*)').single();
-
       if (gradeError) { setError(`Failed to save: ${gradeError.message}`); setLoading(false); return; }
-
       localStorage.setItem(LAST_CATEGORY_KEY, categoryId);
       setScore(''); setNotes(''); setOtherSkills('');
       setShowSparkle(true);
       setTimeout(() => setShowSparkle(false), 1000);
       toast(ts ? getRandomTSMessage() : 'Grade saved');
       onGradeAdded(newGrade as Grade);
-      // Focus category for rapid entry
       setTimeout(() => categoryRef.current?.focus(), 100);
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }
@@ -71,33 +61,23 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
     <form onSubmit={handleSubmit} className="relative">
       <SparkleBurst active={showSparkle} isTaylorSwift={ts} />
       {error && (
-        <div className={`mb-4 px-3 py-2.5 rounded-lg border text-sm animate-slide-in ${
-          ts ? 'bg-red-500/10 border-red-500/20 text-red-400' : 'bg-red-50 border-red-200 text-red-600'
-        }`}>{error}</div>
+        <div className="mb-4 px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.2)', color: 'var(--color-error)' }}>{error}</div>
       )}
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <div><label className={labelClass}>Date</label>
-          <input tabIndex={1} type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} /></div>
-        <div><label className={labelClass}>Category</label>
-          <select ref={categoryRef} tabIndex={2} value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className={inputClass}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+        <div><label className="label">Date</label><input tabIndex={1} type="date" value={date} onChange={e => setDate(e.target.value)} className="input" /></div>
+        <div><label className="label">Category</label>
+          <select ref={categoryRef} tabIndex={2} value={categoryId} onChange={e => setCategoryId(e.target.value)} className="input">
             <option value="">Select...</option>
-            {categories.map((cat) => (<option key={cat.id} value={cat.id}>{cat.name}</option>))}
-          </select></div>
-        <div><label className={labelClass}>Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
-          <input ref={scoreRef} tabIndex={3} type="number" value={score} onChange={(e) => setScore(e.target.value)}
-            placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'}
-            step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className={inputClass} /></div>
-        <div><label className={labelClass}>Notes</label>
-          <input tabIndex={4} type="text" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Optional" className={inputClass} /></div>
+            {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
+          </select>
+        </div>
+        <div><label className="label">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
+          <input tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" /></div>
+        <div><label className="label">Notes</label><input tabIndex={4} type="text" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" /></div>
       </div>
       <div className="flex gap-3 items-end">
-        <div className="flex-1"><label className={labelClass}>Other skills</label>
-          <input tabIndex={5} type="text" value={otherSkills} onChange={(e) => setOtherSkills(e.target.value)} placeholder="Optional" className={inputClass} /></div>
-        <button tabIndex={6} type="submit" disabled={loading}
-          className={`px-5 py-2 text-sm font-medium rounded-lg transition-all duration-200 disabled:opacity-50 ${
-            ts ? 'bg-amber-500/90 text-[#0a0a14] hover:bg-amber-400' : 'bg-indigo-600 text-white hover:bg-indigo-700'
-          }`}>{loading ? 'Saving...' : 'Save'}</button>
+        <div className="flex-1"><label className="label">Other skills</label><input tabIndex={5} type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" /></div>
+        <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? 'Saving...' : 'Save grade'}</button>
       </div>
     </form>
   );

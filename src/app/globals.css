@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #9b7ed8;
+  --color-primary-light: #c4b5e0;
+  --color-primary-lighter: #f3e8ff;
+  --color-primary-dark: #7c5cbf;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-bg: #f9f8ff;
+  --color-bg-card: #ffffff;
+  --color-bg-accent: #f3e8ff;
+  --color-text: #1f1f1f;
+  --color-text-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-border-accent: #e9d5ff;
+  --gradient-primary: linear-gradient(to right, #9333ea, #a855f7);
+  --gradient-bg: linear-gradient(to bottom right, #faf5ff, #ffffff, #faf5ff);
+}
+
+[data-theme="taylor-swift"] {
+  --color-primary: #d4af37;
+  --color-primary-light: #e6c84d;
+  --color-primary-lighter: #fef9e7;
+  --color-primary-dark: #b8941e;
+  --color-bg: #0d0d1a;
+  --color-bg-card: #1a1a2e;
+  --color-bg-accent: #2a1a3e;
+  --color-text: #f0e6d3;
+  --color-text-muted: #b0a090;
+  --color-border: #2e2e4a;
+  --color-border-accent: #4a0e4e;
+  --gradient-primary: linear-gradient(to right, #d4af37, #f4c2c2);
+  --gradient-bg: linear-gradient(to bottom right, #1a1a2e, #0d0d1a, #2a1a3e);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-150;
+}
+
+/* Sparkle animation for grade saves */
+@keyframes sparkle-float {
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-80px) scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkle-pulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes progress-fill {
+  from { width: 0; }
+}
+
+@keyframes slide-in {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.sparkle-particle {
+  animation: sparkle-float 1s ease-out forwards;
+  pointer-events: none;
+  position: absolute;
+}
+
+.animate-sparkle-pulse {
+  animation: sparkle-pulse 2s ease-in-out infinite;
+}
+
+.animate-progress-fill {
+  animation: progress-fill 0.8s ease-out;
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Taylor Swift theme specific styles */
+[data-theme="taylor-swift"] .ts-gradient-text {
+  background: linear-gradient(135deg, #d4af37, #f4c2c2, #d4af37);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="taylor-swift"] .ts-bracelet-tag {
+  background: linear-gradient(135deg, #4a0e4e, #1a1a2e);
+  border: 2px solid #d4af37;
+  border-radius: 9999px;
+  padding: 2px 12px;
+  font-size: 0.75rem;
+  color: #f4c2c2;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

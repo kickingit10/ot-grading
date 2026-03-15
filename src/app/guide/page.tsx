@@ -5,7 +5,7 @@ import { useTheme } from '@/lib/theme';
 
 const defaultSteps = [
   { title: 'Find your student', desc: 'Use the search bar or school filter chips on the dashboard. Students are grouped by school with collapsible sections.', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' },
-  { title: 'Enter a grade', desc: 'Pick a category (shows score type: 0\u2013100 or WPM), type a score, add optional notes. Press Cmd+Enter or click Save. The category is remembered for next time.', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
+  { title: 'Enter a grade', desc: 'Pick a category (shows score type: 0\u2013100 or WPM), type a score, add optional notes. Press Cmd+Enter or click Save. Use Bulk mode to enter all categories at once with Cmd+Shift+Enter.', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
   { title: 'Navigate between students', desc: 'Use the prev/next arrows or the student picker dropdown (grouped by school). Your date range carries over automatically.', icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4' },
   { title: 'View report card', desc: 'The sidebar shows averages, grade counts, and trend arrows for each category in the selected date range. Save custom date ranges for quick access.', icon: 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
   { title: 'Track progress', desc: 'Switch to the Progress tab to see sparkline charts and trend arrows (needs 2+ grades per category). Trends compare first half vs. second half of your grades.', icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' },
@@ -16,7 +16,7 @@ const defaultSteps = [
 const tsSteps = [
   { title: 'Find your Swiftie', desc: 'Use the search bar or school filter chips on the dashboard. Students are grouped by school with collapsible sections.', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' },
   { title: 'Pick your era', desc: 'Tap an era chip on the dashboard to switch themes \u2014 Fearless, Speak Now, Red, 1989, reputation, Lover, folklore, evermore, Midnights, or TTPD. Each has its own color palette.', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01' },
-  { title: 'Drop a new track', desc: 'Pick a category (shows 0\u2013100 or WPM), type a score, add optional notes. Press Cmd+Enter or tap Save. Your last category is remembered.', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
+  { title: 'Drop a new track', desc: 'Pick a category (shows 0\u2013100 or WPM), type a score, add optional notes. Press Cmd+Enter or tap Save. Switch to Bulk mode to drop all tracks at once with Cmd+Shift+Enter.', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
   { title: 'Navigate the eras', desc: 'Use prev/next arrows or the student picker (grouped by school). Your date range carries over between students \u2014 no resetting.', icon: 'M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4' },
   { title: 'Check the album notes', desc: 'The sidebar shows averages, grade counts, and trend arrows for each category. Save custom date ranges as named periods.', icon: 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z' },
   { title: 'See the eras unfold', desc: 'Switch to The Eras tab to see sparkline charts and trend arrows for each category. Needs 2+ grades per category to show.', icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' },
@@ -69,6 +69,7 @@ export default function GuidePage() {
           </h3>
           <div className="space-y-1.5 text-xs" style={{ color: 'var(--color-text-muted)' }}>
             <div className="flex justify-between"><span>Save grade</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>⌘+Enter</span></div>
+            <div className="flex justify-between"><span>Save bulk grades</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>⌘+Shift+Enter</span></div>
             <div className="flex justify-between"><span>Close edit modal</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>Esc</span></div>
             <div className="flex justify-between"><span>Navigate form fields</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>Tab</span></div>
           </div>

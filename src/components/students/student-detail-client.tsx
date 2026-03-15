@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { StudentWithSchool, Category, Grade, GradingPeriod } from '@/lib/types';
 import { formatDate, formatScore, isDateInRange, formatDateInputValue } from '@/lib/utils';
 import { GradeEntryForm } from './grade-entry-form';
+import { BulkGradeForm } from './bulk-grade-form';
 import { GradesList } from './grades-list';
 import { ReportCardSummary } from './report-card-summary';
 import { ProgressCharts } from './progress-charts';
@@ -38,6 +39,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
   const [view, setView] = useState<'split' | 'entry' | 'summary'>('split');
   const [tab, setTab] = useState<'grades' | 'progress'>('grades');
   const [showStudentPicker, setShowStudentPicker] = useState(false);
+  const [bulkMode, setBulkMode] = useState(false);
   const { isTaylorSwift: ts } = useTheme();
 
   useEffect(() => {
@@ -52,6 +54,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
   const gradesInPeriod = grades.filter(g => isDateInRange(g.graded_at, startDate, endDate));
 
   const handleGradeAdded = useCallback((g: Grade) => setGrades(prev => [g, ...prev]), []);
+  const handleBulkGradesAdded = useCallback((newGrades: Grade[]) => setGrades(prev => [...newGrades, ...prev]), []);
   const handleGradeUpdated = useCallback((g: Grade) => { setGrades(prev => prev.map(x => x.id === g.id ? g : x)); setEditingGradeId(null); }, []);
   const handleGradeDeleted = useCallback((id: string) => setGrades(prev => prev.filter(g => g.id !== id)), []);
 
@@ -213,8 +216,21 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
           <div className={`md:col-span-2 ${view === 'summary' ? 'hidden md:block' : ''}`}>
             <div className="space-y-6">
               <div className="card">
-                <div className="section-header">{ts ? 'New Track ♪' : 'New Grade'}</div>
-                <GradeEntryForm student={student} categories={categories} onGradeAdded={handleGradeAdded} />
+                <div className="flex items-center justify-between mb-4">
+                  <div className="section-header" style={{ marginBottom: 0 }}>{ts ? 'New Track ♪' : 'New Grade'}</div>
+                  <button onClick={() => setBulkMode(!bulkMode)} className="text-xs font-medium px-2.5 py-1 rounded-lg transition-all" style={{
+                    background: bulkMode ? 'var(--color-primary-lighter)' : 'transparent',
+                    color: bulkMode ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                    border: bulkMode ? 'none' : '1px solid var(--color-border)',
+                  }}>
+                    {bulkMode ? (ts ? '♪ Single' : 'Single') : (ts ? '♪♪ Bulk' : 'Bulk')}
+                  </button>
+                </div>
+                {bulkMode ? (
+                  <BulkGradeForm student={student} categories={categories} onGradesAdded={handleBulkGradesAdded} />
+                ) : (
+                  <GradeEntryForm student={student} categories={categories} onGradeAdded={handleGradeAdded} />
+                )}
               </div>
 
               <div className="card">

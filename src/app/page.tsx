@@ -22,7 +22,6 @@ export default async function LandingPage() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <Link href="/login" style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-text-muted)', minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
-            <Link href="/signup" className="btn-primary" style={{ padding: '12px 24px', fontSize: 15, minHeight: 44 }}>Get started</Link>
           </div>
         </div>
       </nav>
@@ -47,7 +46,7 @@ export default async function LandingPage() {
           </p>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 36 }}>
-          <Link href="/signup" className="btn-primary" style={{ padding: '14px 28px', fontSize: 15 }}>Start tracking — it&apos;s free</Link>
+          <Link href="/demo" className="btn-primary" style={{ padding: '14px 28px', fontSize: 15 }}>Try the demo</Link>
           <a href="#how" style={{ padding: '14px 28px', fontSize: 15, minHeight: 44, display: 'inline-flex', alignItems: 'center', fontWeight: 500, color: 'var(--color-text-muted)' }}>See how it works ↓</a>
         </div>
       </section>
@@ -99,7 +98,7 @@ export default async function LandingPage() {
         <h2 style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--color-text)', marginBottom: 20 }}>
           Your spreadsheet isn&apos;t going to fix itself.
         </h2>
-        <Link href="/signup" className="btn-primary" style={{ padding: '14px 32px', fontSize: 15 }}>Get started free</Link>
+        <Link href="/demo" className="btn-primary" style={{ padding: '14px 32px', fontSize: 15 }}>Try the demo</Link>
       </section>
 
       {/* Footer */}
@@ -115,7 +114,7 @@ export default async function LandingPage() {
           </div>
           <div style={{ display: 'flex', gap: 24, fontSize: 13, color: 'var(--color-text-muted)' }}>
             <Link href="/login">Log in</Link>
-            <Link href="/signup">Sign up</Link>
+            <Link href="/demo">Demo</Link>
             <Link href="/guide">Guide</Link>
           </div>
         </div>

@@ -21,7 +21,6 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSparkle, setShowSparkle] = useState(false);
-  const [showExtra, setShowExtra] = useState(false);
   const supabaseRef = useRef(createClient());
   const supabase = supabaseRef.current;
   const categoryRef = useRef<HTMLSelectElement>(null);
@@ -77,34 +76,43 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
       {error && (
         <div className="alert alert-error mb-4 text-sm animate-slide-in">{error}</div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <div><label className="label" htmlFor="grade-date">Date</label><input id="grade-date" tabIndex={1} type="date" value={date} onChange={e => setDate(e.target.value)} className="input" /></div>
-        <div><label className="label" htmlFor="grade-category">Category</label>
+
+      {/* Row 1: Date, Category, Score */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-3">
+        <div style={{ minWidth: 140 }}>
+          <label className="label" htmlFor="grade-date">Date</label>
+          <input id="grade-date" tabIndex={1} type="date" value={date} onChange={e => setDate(e.target.value)} className="input" />
+        </div>
+        <div className="flex-1" style={{ minWidth: 180 }}>
+          <label className="label" htmlFor="grade-category">Category</label>
           <select id="grade-category" ref={categoryRef} tabIndex={2} value={categoryId} onChange={e => setCategoryId(e.target.value)} className="input">
             <option value="">Select...</option>
             {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name} ({cat.score_type === 'percentage' ? '0\u2013100' : 'WPM'})</option>)}
           </select>
         </div>
-        <div><label className="label" htmlFor="grade-score">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
-          <input id="grade-score" tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" /></div>
-        <div><label className="label" htmlFor="grade-notes">Notes</label><textarea id="grade-notes" tabIndex={4} rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical', minHeight: 60 }} /></div>
+        <div style={{ minWidth: 100, maxWidth: 140 }}>
+          <label className="label" htmlFor="grade-score">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
+          <input id="grade-score" tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" />
+        </div>
       </div>
-      {/* Collapsible other skills */}
-      {showExtra && (
-        <div className="mb-3 animate-fade-in">
-          <label className="label" htmlFor="grade-other-skills">Other skills observed</label>
-          <span className="text-[10px] block -mt-1 mb-1" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
-          <textarea id="grade-other-skills" tabIndex={5} rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical', minHeight: 60 }} />
-        </div>
-      )}
-      <div className="flex gap-3 items-center justify-between">
-        <button type="button" onClick={() => setShowExtra(!showExtra)} className="text-xs transition-colors" style={{ color: 'var(--color-text-muted)' }}>
-          {showExtra ? '− Hide extra fields' : '+ More fields'}
-        </button>
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] hidden sm:inline" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter</span>
-          <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
-        </div>
+
+      {/* Row 2: Notes — full width */}
+      <div className="mb-3">
+        <label className="label" htmlFor="grade-notes">Notes</label>
+        <textarea id="grade-notes" tabIndex={4} rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical' }} />
+      </div>
+
+      {/* Row 3: Other skills — full width, always visible */}
+      <div className="mb-4">
+        <label className="label" htmlFor="grade-other-skills">Other skills observed</label>
+        <span className="text-[10px] block -mt-1.5 mb-1.5" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
+        <textarea id="grade-other-skills" tabIndex={5} rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical' }} />
+      </div>
+
+      {/* Save row */}
+      <div className="flex items-center justify-end gap-3">
+        <span className="text-[10px] hidden sm:inline" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter</span>
+        <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
       </div>
     </form>
   );

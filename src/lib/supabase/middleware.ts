@@ -23,8 +23,13 @@ export const updateSession = async (request: NextRequest) => {
     }
   )
 
-  // This refreshes a user's auth token
-  await supabase.auth.getUser()
+  // This refreshes a user's auth token — wrapped in try/catch
+  // so Supabase errors don't break page rendering
+  try {
+    await supabase.auth.getUser()
+  } catch {
+    // Silently ignore auth errors (e.g. no session on login page)
+  }
 
   return supabaseResponse
 }

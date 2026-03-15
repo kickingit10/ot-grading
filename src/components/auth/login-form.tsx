@@ -24,7 +24,15 @@ export function LoginForm() {
       });
 
       if (authError) {
-        setError(authError.message);
+        // Map technical Supabase errors to user-friendly messages
+        const message = authError.message.toLowerCase();
+        if (message.includes('database error') || message.includes('querying schema')) {
+          setError('Unable to connect. Please try again.');
+        } else if (message.includes('invalid login credentials')) {
+          setError('Invalid email or password. Please try again.');
+        } else {
+          setError(authError.message);
+        }
       } else {
         router.push('/');
       }

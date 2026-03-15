@@ -44,16 +44,20 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const loadTheme = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('theme')
-          .eq('id', user.id)
-          .single();
-        if (profile?.theme === 'taylor-swift') {
-          setThemeState('taylor-swift');
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('theme')
+            .eq('id', user.id)
+            .single();
+          if (profile?.theme === 'taylor-swift') {
+            setThemeState('taylor-swift');
+          }
         }
+      } catch {
+        // Silently ignore — no session on login/signup pages
       }
     };
     loadTheme();

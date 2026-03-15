@@ -2,32 +2,26 @@
 
 import { useEffect, useState } from 'react';
 
-interface Particle {
-  id: number;
-  x: number;
-  y: number;
-  emoji: string;
-  delay: number;
-}
+interface Particle { id: number; x: number; y: number; char: string; delay: number; }
 
-const EMOJIS = ['✨', '⭐', '🌟', '💜', '🎉'];
-const TS_EMOJIS = ['✨', '⭐', '🌟', '💜', '🦋', '💛'];
+const CHARS = ['·', '✦', '·', '✧', '·'];
+const TS_CHARS = ['✦', '⭐', '✧', '·', '✦'];
 
 export function SparkleBurst({ active, isTaylorSwift = false }: { active: boolean; isTaylorSwift?: boolean }) {
   const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
     if (active) {
-      const emojis = isTaylorSwift ? TS_EMOJIS : EMOJIS;
-      const newParticles: Particle[] = Array.from({ length: 8 }, (_, i) => ({
+      const chars = isTaylorSwift ? TS_CHARS : CHARS;
+      const newParticles: Particle[] = Array.from({ length: 6 }, (_, i) => ({
         id: Date.now() + i,
-        x: Math.random() * 100,
-        y: Math.random() * 40 + 30,
-        emoji: emojis[Math.floor(Math.random() * emojis.length)],
-        delay: Math.random() * 0.3,
+        x: 20 + Math.random() * 60,
+        y: 20 + Math.random() * 40,
+        char: chars[Math.floor(Math.random() * chars.length)],
+        delay: Math.random() * 0.2,
       }));
       setParticles(newParticles);
-      const timer = setTimeout(() => setParticles([]), 1200);
+      const timer = setTimeout(() => setParticles([]), 1000);
       return () => clearTimeout(timer);
     }
   }, [active, isTaylorSwift]);
@@ -37,16 +31,9 @@ export function SparkleBurst({ active, isTaylorSwift = false }: { active: boolea
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((p) => (
-        <span
-          key={p.id}
-          className="sparkle-particle text-lg"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            animationDelay: `${p.delay}s`,
-          }}
-        >
-          {p.emoji}
+        <span key={p.id} className="sparkle-particle text-xs opacity-60"
+          style={{ left: `${p.x}%`, top: `${p.y}%`, animationDelay: `${p.delay}s`, color: isTaylorSwift ? '#d4af37' : '#6366f1' }}>
+          {p.char}
         </span>
       ))}
     </div>

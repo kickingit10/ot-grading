@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
+const inputClass = 'w-full px-3 py-2 text-sm border border-slate-200 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-400 transition-all duration-200';
+
 export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,13 +20,9 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
       if (authError) {
-        // Map technical Supabase errors to user-friendly messages
         const message = authError.message.toLowerCase();
         if (message.includes('database error') || message.includes('querying schema')) {
           setError('Unable to connect. Please try again.');
@@ -36,7 +34,7 @@ export function LoginForm() {
       } else {
         router.push('/');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
@@ -46,51 +44,31 @@ export function LoginForm() {
   return (
     <form onSubmit={handleLogin} className="space-y-4">
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-sm text-red-700">❌ {error}</p>
+        <div className="px-3 py-2.5 bg-red-50 border border-red-200 rounded-lg animate-slide-in">
+          <p className="text-sm text-red-600">{error}</p>
         </div>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-        />
+        <label htmlFor="email" className="block text-sm font-light text-slate-600 mb-1.5">Email</label>
+        <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" required className={inputClass} />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
-          required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-        />
+        <label htmlFor="password" className="block text-sm font-light text-slate-600 mb-1.5">Password</label>
+        <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required className={inputClass} />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2 px-4 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        className="w-full py-2 px-4 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
       >
-        {loading ? 'Logging in...' : 'Login'}
+        {loading ? 'Signing in...' : 'Sign in'}
       </button>
 
       <div className="text-center">
-        <a href="/forgot-password" className="text-sm text-purple-600 hover:text-purple-700 font-medium">
+        <a href="/forgot-password" className="text-sm text-slate-500 hover:text-indigo-600 transition-colors">
           Forgot password?
         </a>
       </div>

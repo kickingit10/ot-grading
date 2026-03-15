@@ -16,174 +16,133 @@ interface DashboardClientProps {
   studentStats: Record<string, StudentStats>;
 }
 
-export function DashboardClient({
-  initialStudents,
-  studentStats,
-}: DashboardClientProps) {
+export function DashboardClient({ initialStudents, studentStats }: DashboardClientProps) {
   const [showArchived, setShowArchived] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { isTaylorSwift } = useTheme();
 
-  // Group students by school
-  const groupedBySchool = initialStudents.reduce(
-    (acc, student) => {
-      const schoolName = student.school?.name || 'Unknown School';
-      if (!acc[schoolName]) {
-        acc[schoolName] = [];
-      }
-      acc[schoolName].push(student);
-      return acc;
-    },
-    {} as Record<string, StudentWithSchool[]>
-  );
+  const totalGrades = Object.values(studentStats).reduce((sum, s) => sum + s.gradeCount, 0);
 
-  // Filter by search term
-  const filteredGroups = Object.entries(groupedBySchool).reduce(
-    (acc, [schoolName, students]) => {
-      const filtered = students.filter(
-        (s) =>
-          `${s.first_name} ${s.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          schoolName.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      if (filtered.length > 0) {
-        acc[schoolName] = filtered;
-      }
-      return acc;
-    },
-    {} as Record<string, StudentWithSchool[]>
-  );
+  const groupedBySchool = initialStudents.reduce((acc, student) => {
+    const schoolName = student.school?.name || 'Unknown School';
+    if (!acc[schoolName]) acc[schoolName] = [];
+    acc[schoolName].push(student);
+    return acc;
+  }, {} as Record<string, StudentWithSchool[]>);
+
+  const filteredGroups = Object.entries(groupedBySchool).reduce((acc, [schoolName, students]) => {
+    const filtered = students.filter((s) =>
+      `${s.first_name} ${s.last_name}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      schoolName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    if (filtered.length > 0) acc[schoolName] = filtered;
+    return acc;
+  }, {} as Record<string, StudentWithSchool[]>);
+
+  const ts = isTaylorSwift;
 
   return (
-    <div className={`min-h-screen ${
-      isTaylorSwift
-        ? 'bg-gradient-to-br from-[#1a1a2e] via-[#0d0d1a] to-[#2a1a3e]'
-        : 'bg-gradient-to-br from-purple-50 via-white to-purple-50'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className={`min-h-screen ${ts ? 'bg-[#0a0a14]' : 'bg-[#fafafa]'}`}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex justify-between items-start mb-8">
           <div>
-            <h1 className={`text-4xl font-bold mb-2 ${
-              isTaylorSwift ? 'text-[#f0e6d3]' : 'text-gray-900'
-            }`}>
-              {isTaylorSwift ? 'Your Students ⭐' : 'Your Students'}
+            <h1 className={`text-3xl font-semibold tracking-tight ${ts ? 'text-[#f0e6d3]' : 'text-slate-900'}`}>
+              Students
             </h1>
-            <p className={isTaylorSwift ? 'text-[#b0a090]' : 'text-gray-600'}>
-              {initialStudents.length} active student{initialStudents.length !== 1 ? 's' : ''}
+            <p className={`text-sm mt-1 ${ts ? 'text-[#9ca3af]' : 'text-slate-500'}`}>
+              {initialStudents.length} active · {totalGrades} total grades
             </p>
           </div>
           <Link
             href="/students/new"
-            className={`px-6 py-3 font-semibold rounded-lg transition-all shadow-md hover:shadow-lg ${
-              isTaylorSwift
-                ? 'bg-gradient-to-r from-[#d4af37] to-[#f4c2c2] text-[#1a1a2e] hover:from-[#e6c84d] hover:to-[#f8d4d4]'
-                : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
+            className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+              ts
+                ? 'bg-amber-500/90 text-[#0a0a14] hover:bg-amber-400'
+                : 'bg-indigo-600 text-white hover:bg-indigo-700'
             }`}
           >
-            ➕ Add Student
+            Add student
           </Link>
         </div>
 
-        {/* Search and filter */}
-        <div className="mb-6 space-y-4">
-          <input
-            type="text"
-            placeholder="Search students or schools..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent ${
-              isTaylorSwift
-                ? 'bg-[#1a1a2e] border-[#2e2e4a] text-[#f0e6d3] placeholder-[#b0a090]/50 focus:ring-[#d4af37]'
-                : 'border-gray-300 focus:ring-purple-500'
-            }`}
-          />
-          <div className="flex gap-4">
-            <button
-              onClick={() => setShowArchived(!showArchived)}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                showArchived
-                  ? isTaylorSwift
-                    ? 'bg-[#2a1a3e] text-[#f0e6d3]'
-                    : 'bg-gray-200 text-gray-900'
-                  : isTaylorSwift
-                    ? 'bg-[#1a1a2e] border border-[#2e2e4a] text-[#b0a090] hover:bg-[#2a1a3e]'
-                    : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+        {/* Search */}
+        <div className="mb-6 flex gap-3">
+          <div className="relative flex-1">
+            <svg className={`absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 ${ts ? 'text-[#9ca3af]' : 'text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search students..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`w-full pl-9 pr-4 py-2 text-sm border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 ${
+                ts
+                  ? 'bg-white/[0.04] border-white/[0.08] text-[#f0e6d3] placeholder:text-[#9ca3af]/50 focus:ring-amber-500/30 focus:border-amber-500/30'
+                  : 'bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:ring-indigo-500/40 focus:border-indigo-400'
               }`}
-            >
-              {showArchived ? '📦 Hide Archived' : '📦 Show Archived'}
-            </button>
+            />
           </div>
+          <button
+            onClick={() => setShowArchived(!showArchived)}
+            className={`px-3 py-2 text-sm rounded-lg border transition-all duration-200 ${
+              showArchived
+                ? ts ? 'bg-white/[0.08] border-white/[0.12] text-[#f0e6d3]' : 'bg-slate-100 border-slate-200 text-slate-900'
+                : ts ? 'bg-transparent border-white/[0.08] text-[#9ca3af] hover:bg-white/[0.04]' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            {showArchived ? 'Hide archived' : 'Show archived'}
+          </button>
         </div>
 
-        {/* Students by school */}
+        {/* Student list */}
         <div className="space-y-8">
           {Object.entries(filteredGroups).length === 0 ? (
-            <div className="text-center py-12">
-              <p className={`text-lg mb-4 ${isTaylorSwift ? 'text-[#b0a090]' : 'text-gray-600'}`}>
-                {searchTerm
-                  ? 'No students match your search'
-                  : isTaylorSwift
-                    ? "No students yet — let's begin this era! ✨"
-                    : "No students yet — let's get started! ✨"
-                }
+            <div className="text-center py-16">
+              <svg className={`w-10 h-10 mx-auto mb-3 ${ts ? 'text-[#9ca3af]/30' : 'text-slate-300'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <p className={`text-sm ${ts ? 'text-[#9ca3af]' : 'text-slate-500'}`}>
+                {searchTerm ? 'No students match your search' : 'No students yet'}
               </p>
               {!searchTerm && (
-                <Link
-                  href="/students/new"
-                  className={`font-semibold ${
-                    isTaylorSwift ? 'text-[#d4af37] hover:text-[#e6c84d]' : 'text-purple-600 hover:text-purple-700'
-                  }`}
-                >
-                  Add your first student →
+                <Link href="/students/new" className={`text-sm font-medium mt-2 inline-block ${ts ? 'text-amber-400' : 'text-indigo-600'}`}>
+                  Add your first student
                 </Link>
               )}
             </div>
           ) : (
             Object.entries(filteredGroups).map(([schoolName, students]) => (
               <div key={schoolName}>
-                <h2 className={`text-xl font-bold mb-4 ${
-                  isTaylorSwift ? 'text-[#f0e6d3]' : 'text-gray-900'
-                }`}>🏫 {schoolName}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <h2 className={`text-xs font-medium uppercase tracking-wider mb-3 ${
+                  ts ? 'text-[#9ca3af]/70' : 'text-slate-400'
+                }`}>{schoolName}</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {students.map((student) => {
                     const stats = studentStats[student.id];
                     return (
                       <Link
                         key={student.id}
                         href={`/students/${student.id}`}
-                        className={`block p-6 rounded-xl border transition-all hover:scale-105 ${
-                          isTaylorSwift
-                            ? 'bg-[#1a1a2e] border-[#2e2e4a] hover:border-[#d4af37]/50 hover:shadow-lg hover:shadow-[#d4af37]/10'
-                            : 'bg-white border-gray-200 hover:border-purple-300 hover:shadow-lg'
+                        className={`block p-5 rounded-xl border transition-all duration-200 ${
+                          ts
+                            ? 'ts-glass ts-glass-hover'
+                            : 'bg-white border-slate-200 hover:shadow-md hover:border-slate-300'
                         }`}
                       >
-                        <h3 className={`text-lg font-bold mb-2 ${
-                          isTaylorSwift ? 'text-[#f0e6d3]' : 'text-gray-900'
-                        }`}>
+                        <h3 className={`font-medium mb-3 ${ts ? 'text-[#f0e6d3]' : 'text-slate-900'}`}>
                           {student.first_name} {student.last_name}
                         </h3>
-                        <div className={`space-y-2 text-sm ${
-                          isTaylorSwift ? 'text-[#b0a090]' : 'text-gray-600'
-                        }`}>
+                        <div className={`space-y-1.5 text-sm ${ts ? 'text-[#9ca3af]' : 'text-slate-500'}`}>
                           <div className="flex justify-between">
-                            <span>{isTaylorSwift ? '⭐' : '📝'} Grades entered:</span>
-                            <span className="font-semibold">{stats?.gradeCount || 0}</span>
+                            <span>Grades</span>
+                            <span className="font-medium">{stats?.gradeCount || 0}</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>📅 Last graded:</span>
-                            <span className="font-semibold">
-                              {stats?.lastGradedDate ? formatDate(stats.lastGradedDate) : 'Never'}
-                            </span>
+                            <span>Last graded</span>
+                            <span className="font-medium">{stats?.lastGradedDate ? formatDate(stats.lastGradedDate) : 'Never'}</span>
                           </div>
-                        </div>
-                        <div className={`mt-4 pt-4 border-t ${
-                          isTaylorSwift ? 'border-[#2e2e4a]' : 'border-gray-200'
-                        }`}>
-                          <span className={`text-sm font-semibold ${
-                            isTaylorSwift ? 'text-[#d4af37]' : 'text-purple-600'
-                          }`}>
-                            Click to enter grades →
-                          </span>
                         </div>
                       </Link>
                     );

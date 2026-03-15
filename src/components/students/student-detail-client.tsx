@@ -78,7 +78,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
     <button onClick={() => setTab(t)} className="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200"
       style={{
         background: tab === t ? 'var(--color-primary-lighter)' : 'transparent',
-        color: tab === t ? 'var(--color-primary)' : 'var(--color-text-muted)',
+        color: tab === t ? 'var(--color-primary-surface, var(--color-primary))' : 'var(--color-text-muted)',
       }}>{label}</button>
   );
 

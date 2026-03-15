@@ -1,11 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
-  /* Timing */
   --duration-fast: 150ms;
   --duration-normal: 200ms;
   --duration-slow: 300ms;
@@ -32,7 +30,6 @@
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
   --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
   --shadow-lg: 0 8px 30px rgba(0,0,0,0.4);
-
   --color-primary: #818cf8;
   --color-primary-light: #a5b4fc;
   --color-bg: #0f0f0f;
@@ -47,6 +44,7 @@
   --color-nav-bg: rgba(15,15,15,0.85);
 }
 
+/* Taylor Swift — base (both modes) */
 [data-theme="taylor-swift"] {
   --color-primary: #CBA863;
   --color-primary-light: #ECD59F;
@@ -55,6 +53,7 @@
   --color-primary-btn-text: #121D27;
 }
 
+/* Taylor Swift dark — Midnights */
 [data-theme="taylor-swift"][data-mode="dark"] {
   --color-bg: #0d1117;
   --color-bg-card: #151b28;
@@ -67,32 +66,32 @@
   --color-nav-bg: rgba(13,17,23,0.85);
 }
 
+/* Taylor Swift light — Lover Reimagined */
 [data-theme="taylor-swift"][data-mode="light"] {
-  --color-primary: #7a6518;           /* Dark gold for text on white (5.7:1 WCAG AA) */
-  --color-primary-surface: #CBA863;   /* Pretty gold for button/chip/border backgrounds */
-  --color-primary-light: #CBA863;
-  --color-bg: #faf5ff;
-  --color-bg-card: #ffffff;
-  --color-bg-accent: #f3ecff;
-  --color-text: #2d1b4e;
-  --color-text-muted: #6b5a8a;
-  --color-border: #e0d0ec;
-  --color-border-accent: #CBA863;
-  --color-primary-lighter: rgba(203, 168, 99, 0.12);
-  --color-nav-bg: rgba(250,245,255,0.85);
+  --color-primary: #8B6D2F;
+  --color-primary-surface: #C9A84C;
+  --color-primary-light: #D4B86A;
+  --color-primary-dark: #7A5A24;
+  --color-primary-lighter: rgba(201, 168, 76, 0.10);
+  --color-bg: #fdfbff;
+  --color-bg-card: rgba(255, 255, 255, 0.75);
+  --color-bg-accent: rgba(240, 232, 255, 0.45);
+  --color-text: #1e1332;
+  --color-text-muted: #7b6896;
+  --color-border: rgba(180, 160, 200, 0.18);
+  --color-border-accent: rgba(201, 168, 76, 0.4);
+  --color-primary-btn-text: #2a1f0a;
+  --color-nav-bg: rgba(253, 251, 255, 0.88);
+  --shadow-sm: 0 1px 3px rgba(120, 90, 160, 0.06);
+  --shadow-md: 0 4px 12px rgba(120, 90, 160, 0.08);
+  --shadow-lg: 0 8px 24px rgba(120, 90, 160, 0.12);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
-/* Focus-visible for keyboard accessibility (WCAG 2.1 AA) */
-*:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-.input:focus-visible { outline: none; /* box-shadow handles it */ }
-/* TS Light: focus ring uses pretty gold */
+*:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; border-radius: 4px; }
+.input:focus-visible { outline: none; }
 [data-theme="taylor-swift"][data-mode="light"] *:focus-visible { outline-color: var(--color-primary-surface, var(--color-primary)); }
 
 body {
@@ -125,6 +124,12 @@ button, input, select, textarea { font-family: inherit; }
   pointer-events: none;
 }
 
+/* Lover gradient background */
+[data-theme="taylor-swift"][data-mode="light"] body {
+  background: linear-gradient(180deg, #fdfbff 0%, #f8f4ff 50%, #f4eeff 100%);
+  background-attachment: fixed;
+}
+
 main { animation: page-enter 0.2s ease-out; }
 @keyframes page-enter { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -137,6 +142,15 @@ main { animation: page-enter 0.2s ease-out; }
   padding: 20px 24px;
 }
 [data-mode="light"] .card { box-shadow: var(--shadow-sm); }
+
+/* TS Light frosted glass cards */
+[data-theme="taylor-swift"][data-mode="light"] .card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(180, 160, 200, 0.18);
+  box-shadow: 0 1px 4px rgba(120, 90, 160, 0.06);
+}
 
 /* Input */
 .input {
@@ -157,6 +171,16 @@ main { animation: page-enter 0.2s ease-out; }
   box-shadow: 0 0 0 3px var(--color-primary-lighter);
 }
 
+[data-theme="taylor-swift"][data-mode="light"] .input {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(180, 160, 200, 0.18);
+}
+[data-theme="taylor-swift"][data-mode="light"] .input:focus {
+  border-color: var(--color-primary-surface);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+}
+[data-theme="taylor-swift"][data-mode="light"] .input::placeholder { color: #9b8ab6; }
+
 /* Styled select */
 select.input {
   appearance: none;
@@ -169,7 +193,7 @@ select.input {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23a3a3a3' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
 }
 [data-theme="taylor-swift"][data-mode="light"] select.input {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b5a8a' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%237b6896' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
 }
 [data-theme="taylor-swift"][data-mode="dark"] select.input {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238b8fa8' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
@@ -186,10 +210,15 @@ select.input {
 .btn-primary:active:not(:disabled) { transform: scale(0.98); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 [data-mode="light"] .btn-primary { box-shadow: var(--shadow-sm); }
-/* TS Light: use pretty gold for button background, not the darkened text gold */
+
 [data-theme="taylor-swift"][data-mode="light"] .btn-primary {
-  background: var(--color-primary-surface, var(--color-primary));
-  color: #1a1207;
+  background: linear-gradient(135deg, #C9A84C, #D4B86A);
+  color: #2a1f0a;
+  box-shadow: 0 2px 8px rgba(201, 168, 76, 0.25);
+}
+[data-theme="taylor-swift"][data-mode="light"] .btn-primary:hover {
+  opacity: 1; filter: brightness(1.05);
+  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);
 }
 
 .btn-ghost {
@@ -200,8 +229,18 @@ select.input {
 .btn-ghost:hover { background: var(--color-bg-accent); color: var(--color-text); border-color: var(--color-border-accent); }
 .btn-ghost:active { transform: scale(0.98); }
 
+[data-theme="taylor-swift"][data-mode="light"] .btn-ghost {
+  border-color: rgba(180, 160, 200, 0.2);
+  color: #7b6896;
+}
+[data-theme="taylor-swift"][data-mode="light"] .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(201, 168, 76, 0.3);
+  color: #1e1332;
+}
+
 .section-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 16px; }
-[data-theme="taylor-swift"][data-mode="light"] .section-header { color: var(--color-primary-surface, var(--color-primary)); }
+[data-theme="taylor-swift"][data-mode="light"] .section-header { color: var(--color-primary-surface); }
 
 /* Card-sm */
 .card-sm {
@@ -216,18 +255,37 @@ select.input {
 [data-theme="taylor-swift"][data-mode="dark"] .card-sm:hover {
   border-color: rgba(203, 168, 99, 0.4); box-shadow: 0 0 20px rgba(203, 168, 99, 0.08), 0 2px 12px rgba(0,0,0,0.3);
 }
+
+[data-theme="taylor-swift"][data-mode="light"] .card-sm {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: rgba(180, 160, 200, 0.15);
+  box-shadow: 0 1px 4px rgba(120, 90, 160, 0.05);
+}
 [data-theme="taylor-swift"][data-mode="light"] .card-sm:hover {
-  border-color: rgba(203, 168, 99, 0.5); box-shadow: 0 0 15px rgba(203, 168, 99, 0.06), 0 2px 8px rgba(0,0,0,0.05);
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(201, 168, 76, 0.35);
+  box-shadow: 0 4px 16px rgba(201, 168, 76, 0.10), 0 2px 8px rgba(120, 90, 160, 0.06);
 }
 
+/* Stat card */
 .stat-card {
   background: var(--color-bg-card); border: 1px solid var(--color-border); border-style: solid;
   border-top: 3px solid var(--color-primary); border-radius: 12px; padding: 14px 16px;
 }
 [data-mode="light"] .stat-card { box-shadow: var(--shadow-sm); }
-/* TS Light: pretty gold accent border on stat cards */
-[data-theme="taylor-swift"][data-mode="light"] .stat-card { border-top-color: var(--color-primary-surface, var(--color-primary)); }
 
+[data-theme="taylor-swift"][data-mode="light"] .stat-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-color: rgba(180, 160, 200, 0.15);
+  border-top-color: var(--color-primary-surface);
+  box-shadow: 0 1px 4px rgba(120, 90, 160, 0.05);
+}
+
+/* Chip */
 .chip {
   display: inline-flex; align-items: center; padding: 4px 14px; font-size: 12px; font-weight: 500;
   border-radius: 9999px; border: 1px solid var(--color-border); border-style: solid;
@@ -236,17 +294,30 @@ select.input {
 .chip:hover { background: var(--color-bg-accent); color: var(--color-text); }
 .chip-active { background: var(--color-primary); color: var(--color-primary-btn-text); border-color: var(--color-primary); }
 .chip-active:hover { opacity: 0.9; }
-/* TS Light: pretty gold chips */
+
+[data-theme="taylor-swift"][data-mode="light"] .chip {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(180, 160, 200, 0.18);
+}
+[data-theme="taylor-swift"][data-mode="light"] .chip:hover {
+  background: rgba(255, 255, 255, 0.7);
+}
 [data-theme="taylor-swift"][data-mode="light"] .chip-active {
-  background: var(--color-primary-surface, var(--color-primary));
-  border-color: var(--color-primary-surface, var(--color-primary));
-  color: #1a1207;
+  background: linear-gradient(135deg, #C9A84C, #D4B86A);
+  border-color: transparent;
+  color: #2a1f0a;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(201, 168, 76, 0.2);
+}
+[data-theme="taylor-swift"][data-mode="light"] .chip-active:hover {
+  opacity: 1; filter: brightness(1.05);
 }
 
 .hover-row { border-radius: 8px; padding: 12px; margin: 0 -12px; transition: background-color var(--duration-fast); }
 .hover-row:hover { background: var(--color-bg-accent); }
+[data-theme="taylor-swift"][data-mode="light"] .hover-row:hover { background: rgba(240, 232, 255, 0.4); }
 
-/* Menu item (dropdown) */
+/* Menu item */
 .menu-item {
   display: block; width: 100%; text-align: left; padding: 8px 12px; font-size: 14px;
   color: var(--color-text); background: transparent; border: none; cursor: pointer; transition: background var(--duration-fast);
@@ -254,11 +325,16 @@ select.input {
 }
 .menu-item:hover { background: var(--color-bg-accent); }
 .menu-item-muted { color: var(--color-text-muted); }
+[data-theme="taylor-swift"][data-mode="light"] .menu-item:hover { background: rgba(240, 232, 255, 0.5); }
 
 /* Alerts */
 .alert { padding: 8px 12px; border-radius: 8px; border: 1px solid; border-style: solid; font-size: 14px; }
 .alert-error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.2); color: var(--color-error); }
 .alert-success { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.2); color: var(--color-success); }
+[data-theme="taylor-swift"][data-mode="light"] .alert-error { backdrop-filter: blur(8px); }
+
+/* TS Light navbar border */
+[data-theme="taylor-swift"][data-mode="light"] nav.sticky { border-bottom-color: rgba(180, 160, 200, 0.12) !important; }
 
 /* Animations */
 @keyframes sparkle-float { 0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; } 100% { transform: translateY(-60px) scale(0) rotate(120deg); opacity: 0; } }
@@ -272,16 +348,23 @@ select.input {
 .animate-slide-in { animation: slide-in 0.2s ease-out; }
 .animate-fade-in { animation: fade-in 0.3s ease-out; }
 
+/* TS gradient text */
 [data-theme="taylor-swift"] .ts-gradient-text {
-  background: linear-gradient(135deg, #CBA863, #b8acd1, #ECD59F, #e2d5f1);
+  background: linear-gradient(135deg, #B8974A, #9B7DB8, #C9A84C, #b8acd1);
   background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; animation: gradient-shimmer 6s ease-in-out infinite;
 }
 
+/* TS bracelet tag */
 [data-theme="taylor-swift"] .ts-bracelet-tag {
   background: linear-gradient(135deg, var(--color-primary-lighter), rgba(184,172,209,0.1));
   border: 1px solid var(--color-border-accent); border-radius: 9999px; padding: 2px 10px;
   font-size: 0.7rem; color: var(--color-primary); letter-spacing: 0.12em; font-weight: 600; text-transform: uppercase;
+}
+[data-theme="taylor-swift"][data-mode="light"] .ts-bracelet-tag {
+  background: rgba(201, 168, 76, 0.12);
+  border-color: rgba(201, 168, 76, 0.3);
+  color: #8B6D2F;
 }
 
 @media print {

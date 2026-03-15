@@ -32,7 +32,16 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
       if (!profile?.id) { setError('Profile not found'); setLoading(false); return; }
       const { error: err } = await supabase.from('profiles').update({ full_name: fullName.trim(), theme, era: eraValue }).eq('id', profile.id);
       if (err) setError(err.message);
-      else { setAppTheme(theme as 'default' | 'taylor-swift'); setEra(eraValue as EraName); setSuccess(true); setTimeout(() => setSuccess(false), 2000); }
+      else {
+        setAppTheme(theme as 'default' | 'taylor-swift');
+        setEra(eraValue as EraName);
+        // Clear sync flag so ThemeProvider re-reads from Supabase on next session
+        sessionStorage.removeItem('ot-theme-synced');
+        // Refresh server data so profile page reflects the change
+        router.refresh();
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 2000);
+      }
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }
   };

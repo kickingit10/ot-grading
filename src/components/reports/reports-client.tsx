@@ -117,7 +117,7 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
                   <th style={{ textAlign: 'left', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, paddingRight: 12, color: 'var(--color-text-muted)' }}>Student</th>
                   <th style={{ textAlign: 'left', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, paddingRight: 12, color: 'var(--color-text-muted)' }}>School</th>
                   {categories.map(c => (
-                    <th key={c.id} style={{ textAlign: 'right', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, padding: '0 8px 12px', whiteSpace: 'nowrap', color: 'var(--color-text-muted)' }}>
+                    <th key={c.id} style={{ textAlign: 'center', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, padding: '0 8px 12px', whiteSpace: 'nowrap', color: 'var(--color-text-muted)' }}>
                       {c.name.replace('Writing - ', '').replace('Cutting - ', 'Cut ')}
                     </th>
                   ))}
@@ -135,7 +135,7 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
                     {categories.map(c => {
                       const data = categoryAvgs[c.id];
                       return (
-                        <td key={c.id} className="text-right text-sm tabular-nums" style={{ padding: '10px 12px', color: data ? 'var(--color-text)' : 'var(--color-border)' }}>
+                        <td key={c.id} style={{ padding: '10px 12px', fontSize: 15, fontVariantNumeric: 'tabular-nums', textAlign: 'center' as const, color: data ? 'var(--color-text)' : 'var(--color-border)' }}>
                           {data ? formatScore(data.avg, c.score_type) : '—'}
                         </td>
                       );
@@ -163,11 +163,11 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
                 </div>
                 <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{totalGrades} grades</span>
               </div>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>
                 {categories.map(c => {
                   const data = categoryAvgs[c.id];
                   return (
-                    <div key={c.id} className="flex justify-between text-xs">
+                    <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
                       <span style={{ color: 'var(--color-text-muted)' }}>{c.name.replace('Writing - ', '').replace('Cutting - ', 'Cut ')}</span>
                       <span className="tabular-nums font-medium" style={{ color: data ? 'var(--color-text)' : 'var(--color-border)' }}>
                         {data ? formatScore(data.avg, c.score_type) : '—'}

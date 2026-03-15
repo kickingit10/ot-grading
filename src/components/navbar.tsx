@@ -47,12 +47,12 @@ export function Navbar() {
 
   const modeBtn = (mode: 'light' | 'dark' | 'system', svgPath: string) => (
     <button onClick={() => setColorMode(mode)} title={mode} aria-label={`${mode} mode`}
-      className="p-1.5 rounded-md transition-all duration-200"
       style={{
+        padding: 8, borderRadius: 8, transition: 'all 0.2s', cursor: 'pointer', border: 'none',
         background: colorMode === mode ? 'var(--color-primary-lighter)' : 'transparent',
         color: colorMode === mode ? 'var(--color-primary)' : 'var(--color-text-muted)',
       }}>
-      <svg aria-hidden="true" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <svg aria-hidden="true" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
         <path d={svgPath} />
       </svg>
     </button>
@@ -97,15 +97,15 @@ export function Navbar() {
 
               {showMenu && (
                 <div className="absolute right-0 mt-1.5 w-52 rounded-xl py-1 animate-fade-in z-[60]"
-                  style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)' }}
+                  style={{ background: 'var(--color-bg, #ffffff)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
                   onClick={(e) => e.stopPropagation()}>
 
                   <Link href="/profile" className="menu-item" onClick={() => setShowMenu(false)}>Profile</Link>
                   <Link href="/reports" className="menu-item sm:hidden" onClick={() => setShowMenu(false)}>Reports</Link>
 
-                  <div className="px-3 py-2.5 border-t border-b" style={{ borderColor: 'var(--color-border)' }}>
-                    <div className="text-[10px] font-semibold uppercase tracking-[0.08em] mb-2" style={{ color: 'var(--color-text-muted)' }}>Appearance</div>
-                    <div className="flex gap-1">
+                  <div style={{ padding: '10px 16px', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
+                    <div style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.06em', marginBottom: 8, color: 'var(--color-text-muted)' }}>Appearance</div>
+                    <div style={{ display: 'flex', gap: 4 }}>
                       {modeBtn('light', 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z')}
                       {modeBtn('dark', 'M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z')}
                       {modeBtn('system', 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z')}

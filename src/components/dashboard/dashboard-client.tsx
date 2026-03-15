@@ -85,7 +85,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
           <div className="flex items-center gap-3">
             <div>
               <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
-              {ts && <p style={{ fontSize: 13, marginTop: 2, color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
+              {/* Removed — Apple HIG: no decorative subtitles under page titles */}
             </div>
             {ts && (
               <select value={era} onChange={e => setEra(e.target.value as EraName)}

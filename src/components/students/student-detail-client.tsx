@@ -118,7 +118,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                 </button>
                 {showStudentPicker && (
                   <div className="absolute left-0 top-full mt-1 w-56 max-h-64 overflow-y-auto rounded-xl py-1 z-50 animate-fade-in"
-                    style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)' }}>
+                    style={{ background: 'var(--color-bg, #ffffff)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
                     {(() => {
                       const grouped: Record<string, typeof allStudents> = {};
                       allStudents.forEach(s => { if (!grouped[s.school]) grouped[s.school] = []; grouped[s.school].push(s); });
@@ -164,7 +164,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                   <button onClick={() => setShowSavedRanges(!showSavedRanges)} className="btn-ghost text-sm" style={{ padding: '6px 14px', minHeight: 36 }}>Saved</button>
                   {showSavedRanges && (
                     <div className="absolute right-0 top-full mt-1 w-56 rounded-xl py-1 z-50 animate-fade-in"
-                      style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)' }}>
+                      style={{ background: 'var(--color-bg, #ffffff)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
                       {gradingPeriods.map(p => (
                         <button key={p.id} onClick={() => { setStartDate(p.start_date); setEndDate(p.end_date); setShowSavedRanges(false); }}
                           className="w-full text-left px-3 py-1.5 text-sm transition-colors" style={{ color: 'var(--color-text)' }}>

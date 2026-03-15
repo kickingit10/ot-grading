@@ -57,8 +57,8 @@ function DemoNavbar() {
               {modeBtn('dark', '🌙')}
               {modeBtn('system', '💻')}
             </div>
-            <Link href="/signup" className="btn-primary" style={{ fontSize: 13, padding: '8px 16px', minHeight: 36 }}>
-              Sign up free →
+            <Link href="/" style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-text-muted)', textDecoration: 'none' }}>
+              ← Home
             </Link>
           </div>
         </div>

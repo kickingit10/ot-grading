@@ -58,9 +58,9 @@ export default function ResetPasswordPage() {
             <>
               <h2 className="text-lg font-semibold mb-5" style={{ color: 'var(--color-text)' }}>New password</h2>
               <form onSubmit={handleSubmit} className="space-y-4">
-                {error && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.2)', color: 'var(--color-error)' }}>{error}</div>}
-                <div><label className="label">Password</label><input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
-                <div><label className="label">Confirm</label><input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
+                {error && <div className="alert alert-error text-sm animate-slide-in">{error}</div>}
+                <div><label className="label" htmlFor="reset-password">Password</label><input id="reset-password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
+                <div><label className="label" htmlFor="reset-confirm">Confirm</label><input id="reset-confirm" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
                 <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Updating...' : 'Update password'}</button>
               </form>
             </>

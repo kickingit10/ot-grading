@@ -70,19 +70,19 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
 
         <div className="flex justify-between items-start mb-6">
           <div>
-            <h1 className="text-3xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
+            <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
             {ts && <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
           </div>
           <Link href="/students/new" className="btn-primary text-sm">{ts ? 'New Era ✦' : 'Add student'}</Link>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {statCards.map(s => (
             <div key={s.label} className="stat-card">
               <div className="text-xl font-semibold tabular-nums" style={{ color: 'var(--color-text)' }}>{s.value}</div>
               <div className="text-xs flex items-center gap-1.5" style={{ color: 'var(--color-text-muted)' }}>
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} /></svg>
+                <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} /></svg>
                 {s.label}
               </div>
             </div>
@@ -110,7 +110,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         {/* Search */}
         <div className="mb-6 flex gap-3">
           <div className="relative flex-1">
-            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--color-text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" aria-hidden="true" style={{ color: 'var(--color-text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input type="text" placeholder={ts ? 'Find your Swiftie...' : 'Search students...'} value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
@@ -127,7 +127,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         <div className="space-y-8">
           {Object.entries(filteredGroups).length === 0 ? (
             <div className="text-center py-16">
-              <svg className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--color-border)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10 mx-auto mb-3" aria-hidden="true" style={{ color: 'var(--color-border)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
               <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>{searchTerm ? 'No students match your search' : 'No students yet'}</p>
@@ -138,7 +138,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
               <div key={schoolName}>
                 <button onClick={() => toggleCollapse(schoolName)}
                   className="section-header flex items-center gap-2 cursor-pointer mb-4">
-                  <svg className={`w-3 h-3 transition-transform duration-200 ${collapsed[schoolName] ? '' : 'rotate-90'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className={`w-3 h-3 transition-transform duration-200 ${collapsed[schoolName] ? '' : 'rotate-90'}`} aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                   {schoolName} ({students.length})

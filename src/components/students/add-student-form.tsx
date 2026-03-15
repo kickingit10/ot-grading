@@ -41,21 +41,21 @@ export function AddStudentForm({ schools, userId }: AddStudentFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      {error && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.2)', color: 'var(--color-error)' }}>{error}</div>}
+      {error && <div className="alert alert-error mb-4 text-sm animate-slide-in">{error}</div>}
       <div className="grid grid-cols-2 gap-4">
-        <div><label className="label">First name</label><input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Emma" required className="input" /></div>
-        <div><label className="label">Last name</label><input type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Smith" required className="input" /></div>
+        <div><label className="label" htmlFor="student-first-name">First name</label><input id="student-first-name" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Emma" required className="input" /></div>
+        <div><label className="label" htmlFor="student-last-name">Last name</label><input id="student-last-name" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Smith" required className="input" /></div>
       </div>
-      <div><label className="label">School</label>
-        <select value={schoolId} onChange={e => { setSchoolId(e.target.value); setNewSchoolName(''); }} className="input">
+      <div><label className="label" htmlFor="student-school">School</label>
+        <select id="student-school" value={schoolId} onChange={e => { setSchoolId(e.target.value); setNewSchoolName(''); }} className="input">
           <option value="">Select a school...</option>
           {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
         </select>
         <input type="text" value={newSchoolName} onChange={e => { setNewSchoolName(e.target.value); if (e.target.value.trim()) setSchoolId(''); }} placeholder="or create new school..." className="input mt-2" />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div><label className="label">Period start</label><input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required className="input" /></div>
-        <div><label className="label">Period end</label><input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} required className="input" /></div>
+        <div><label className="label" htmlFor="student-period-start">Period start</label><input id="student-period-start" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} required className="input" /></div>
+        <div><label className="label" htmlFor="student-period-end">Period end</label><input id="student-period-end" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} required className="input" /></div>
       </div>
       <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Creating...' : 'Create student'}</button>
     </form>

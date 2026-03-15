@@ -12,7 +12,7 @@ export function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const router = useRouter();
   const supabase = createClient();
-  const { isTaylorSwift, isDark, colorMode, setColorMode } = useTheme();
+  const { isTaylorSwift, colorMode, setColorMode } = useTheme();
 
   useEffect(() => {
     const getUser = async () => { const { data: { user } } = await supabase.auth.getUser(); if (user) setUser(user); };
@@ -31,13 +31,13 @@ export function Navbar() {
   if (!user) return null;
 
   const modeBtn = (mode: 'light' | 'dark' | 'system', svgPath: string) => (
-    <button onClick={() => setColorMode(mode)} title={mode}
+    <button onClick={() => setColorMode(mode)} title={mode} aria-label={`${mode} mode`}
       className="p-1.5 rounded-md transition-all duration-200"
       style={{
         background: colorMode === mode ? 'var(--color-primary-lighter)' : 'transparent',
         color: colorMode === mode ? 'var(--color-primary)' : 'var(--color-text-muted)',
       }}>
-      <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+      <svg aria-hidden="true" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
         <path d={svgPath} />
       </svg>
     </button>
@@ -45,7 +45,7 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b backdrop-blur-xl"
-      style={{ background: isDark ? 'rgba(15,15,15,0.85)' : 'rgba(255,255,255,0.85)', borderColor: 'var(--color-border)' }}>
+      style={{ background: 'var(--color-nav-bg)', borderColor: 'var(--color-border)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <Link href="/" className="flex items-center gap-1.5">
@@ -57,7 +57,7 @@ export function Navbar() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <Link href="/guide" className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium border transition-all duration-200"
+            <Link href="/guide" aria-label="Help" className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium border transition-all duration-200"
               style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>?</Link>
 
             <div className="relative">
@@ -69,7 +69,7 @@ export function Navbar() {
                   {user.email?.[0]?.toUpperCase() || 'U'}
                 </span>
                 <span className="hidden sm:inline text-sm truncate max-w-[140px]">{user.email}</span>
-                <svg className="w-3.5 h-3.5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" className="w-3.5 h-3.5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -79,18 +79,11 @@ export function Navbar() {
                   style={{
                     background: 'var(--color-bg-card)',
                     border: '1px solid var(--color-border)',
-                    boxShadow: isDark ? '0 8px 30px rgba(0,0,0,0.4)' : '0 8px 30px rgba(0,0,0,0.12)',
+                    boxShadow: 'var(--shadow-lg)',
                   }}
                   onClick={(e) => e.stopPropagation()}>
 
-                  <Link href="/profile"
-                    className="block px-3 py-2 text-sm transition-colors duration-150"
-                    style={{ color: 'var(--color-text)' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-accent)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-                    onClick={() => setShowMenu(false)}>
-                    Profile
-                  </Link>
+                  <Link href="/profile" className="menu-item" onClick={() => setShowMenu(false)}>Profile</Link>
 
                   {/* Appearance toggle */}
                   <div className="px-3 py-2.5 border-t border-b" style={{ borderColor: 'var(--color-border)' }}>
@@ -102,14 +95,7 @@ export function Navbar() {
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => { setShowMenu(false); supabase.auth.signOut().then(() => router.push('/login')); }}
-                    className="w-full text-left px-3 py-2 text-sm transition-colors duration-150"
-                    style={{ color: 'var(--color-text-muted)' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--color-bg-accent)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
-                    Sign out
-                  </button>
+                  <button onClick={() => { setShowMenu(false); supabase.auth.signOut().then(() => router.push('/login')); }} className="menu-item menu-item-muted">Sign out</button>
                 </div>
               )}
             </div>

@@ -35,19 +35,13 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
     finally { setLoading(false); }
   };
 
-  const msgStyle = (type: 'success' | 'error') => ({
-    background: type === 'error' ? 'rgba(239,68,68,0.06)' : 'rgba(16,185,129,0.06)',
-    borderColor: type === 'error' ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.2)',
-    color: type === 'error' ? 'var(--color-error)' : 'var(--color-success)',
-  });
-
   return (
     <div className="space-y-8">
       <div>
         <div className="section-header">{isTaylorSwift ? 'Welcome to Your Era' : 'Account'}</div>
         <form onSubmit={handleSaveProfile} className="space-y-4">
-          {error && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={msgStyle('error')}>{error}</div>}
-          {success && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={msgStyle('success')}>{isTaylorSwift ? 'Updated — you belong with us!' : 'Profile updated'}</div>}
+          {error && <div className="alert alert-error text-sm animate-slide-in">{error}</div>}
+          {success && <div className="alert alert-success text-sm animate-slide-in">{isTaylorSwift ? 'Updated — you belong with us!' : 'Profile updated'}</div>}
           <div><label className="label">Email</label><div className="input" style={{ opacity: 0.6 }}>{userEmail}</div></div>
           <div><label className="label">Full name</label><input type="text" value={fullName} onChange={e => setFullName(e.target.value)} className="input" /></div>
           <div><label className="label">Theme</label>
@@ -77,8 +71,8 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
           } catch { setPasswordError('An unexpected error occurred'); }
           finally { setPasswordLoading(false); }
         }} className="space-y-4">
-          {passwordError && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={msgStyle('error')}>{passwordError}</div>}
-          {passwordSuccess && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={msgStyle('success')}>Password updated</div>}
+          {passwordError && <div className="alert alert-error text-sm animate-slide-in">{passwordError}</div>}
+          {passwordSuccess && <div className="alert alert-success text-sm animate-slide-in">Password updated</div>}
           <div><label className="label">New password</label><input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
           <div><label className="label">Confirm password</label><input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
           <button type="submit" disabled={passwordLoading} className="btn-primary w-full">{passwordLoading ? 'Updating...' : 'Update password'}</button>

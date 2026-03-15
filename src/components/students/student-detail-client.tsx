@@ -36,7 +36,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
   const [view, setView] = useState<'split' | 'entry' | 'summary'>('split');
   const [tab, setTab] = useState<'grades' | 'progress'>('grades');
   const [showStudentPicker, setShowStudentPicker] = useState(false);
-  const { isTaylorSwift: ts, isDark } = useTheme();
+  const { isTaylorSwift: ts } = useTheme();
   const { toast } = useToast();
   const router = useRouter();
   const supabase = createClient();
@@ -84,19 +84,19 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div style={{ maxWidth: 1024, margin: '0 auto', padding: '32px 24px' }}>
 
         {/* Header with quick nav */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-3">
             <Link href="/" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back
+              <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back
             </Link>
             <span style={{ color: 'var(--color-border)' }}>|</span>
             <div className="flex items-center gap-1">
               {prevStudent ? (
-                <button onClick={() => router.push(`/students/${prevStudent.id}`)} className="p-1 rounded transition-colors" style={{ color: 'var(--color-text-muted)' }}>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                <button onClick={() => router.push(`/students/${prevStudent.id}`)} aria-label="Previous student" className="p-1 rounded transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+                  <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
               ) : <div className="w-6" />}
               <div className="relative">
@@ -107,7 +107,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                 </button>
                 {showStudentPicker && (
                   <div className="absolute left-0 top-full mt-1 w-56 max-h-64 overflow-y-auto rounded-xl py-1 z-50 animate-fade-in"
-                    style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: isDark ? '0 8px 30px rgba(0,0,0,0.4)' : '0 8px 30px rgba(0,0,0,0.12)' }}>
+                    style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)' }}>
                     {allStudents.map(s => (
                       <button key={s.id} onClick={() => { setShowStudentPicker(false); router.push(`/students/${s.id}`); }}
                         className="w-full text-left px-3 py-1.5 text-sm transition-colors"
@@ -117,15 +117,15 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                 )}
               </div>
               {nextStudent ? (
-                <button onClick={() => router.push(`/students/${nextStudent.id}`)} className="p-1 rounded transition-colors" style={{ color: 'var(--color-text-muted)' }}>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                <button onClick={() => router.push(`/students/${nextStudent.id}`)} aria-label="Next student" className="p-1 rounded transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+                  <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </button>
               ) : <div className="w-6" />}
             </div>
           </div>
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{student.first_name} {student.last_name}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{student.first_name} {student.last_name}</h1>
               <p className="text-sm mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{student.school?.name || 'Unknown School'}</p>
             </div>
             <Link href={`/students/${student.id}/edit`} className="btn-ghost text-sm">Settings</Link>
@@ -136,11 +136,11 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         <div className="card mb-6" style={{ borderLeft: '3px solid var(--color-primary)' }}>
           <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1">
-              <label className="label">{ts ? 'Tour Dates' : 'Date Range'}</label>
-              <div className="flex items-center gap-2">
-                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="input" style={{ width: 150 }} />
+              <label className="label" htmlFor="date-range-start">{ts ? 'Tour Dates' : 'Date Range'}</label>
+              <div className="flex items-center gap-2 flex-wrap">
+                <input type="date" id="date-range-start" value={startDate} onChange={e => setStartDate(e.target.value)} className="input w-full sm:w-[150px]" />
                 <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>to</span>
-                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="input" style={{ width: 150 }} />
+                <input type="date" id="date-range-end" value={endDate} onChange={e => setEndDate(e.target.value)} className="input w-full sm:w-[150px]" />
               </div>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -149,7 +149,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                   <button onClick={() => setShowSavedRanges(!showSavedRanges)} className="btn-ghost text-sm">Saved</button>
                   {showSavedRanges && (
                     <div className="absolute right-0 top-full mt-1 w-56 rounded-xl py-1 z-50 animate-fade-in"
-                      style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: isDark ? '0 8px 30px rgba(0,0,0,0.4)' : '0 8px 30px rgba(0,0,0,0.12)' }}>
+                      style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)' }}>
                       {gradingPeriods.map(p => (
                         <button key={p.id} onClick={() => { setStartDate(p.start_date); setEndDate(p.end_date); setShowSavedRanges(false); }}
                           className="w-full text-left px-3 py-1.5 text-sm transition-colors" style={{ color: 'var(--color-text)' }}>
@@ -163,7 +163,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
               )}
               <button onClick={handleSaveRange} disabled={savingRange} className="btn-ghost text-sm">{savingRange ? '...' : 'Save range'}</button>
               <button onClick={handlePrint} className="no-print btn-ghost text-sm flex items-center gap-1.5">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Print
+                <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Print
               </button>
             </div>
           </div>

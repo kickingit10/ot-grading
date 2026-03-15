@@ -61,22 +61,22 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
     <form onSubmit={handleSubmit} className="relative">
       <SparkleBurst active={showSparkle} isTaylorSwift={ts} />
       {error && (
-        <div className="mb-4 px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={{ background: 'rgba(239,68,68,0.06)', borderColor: 'rgba(239,68,68,0.2)', color: 'var(--color-error)' }}>{error}</div>
+        <div className="alert alert-error mb-4 text-sm animate-slide-in">{error}</div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-        <div><label className="label">Date</label><input tabIndex={1} type="date" value={date} onChange={e => setDate(e.target.value)} className="input" /></div>
-        <div><label className="label">Category</label>
-          <select ref={categoryRef} tabIndex={2} value={categoryId} onChange={e => setCategoryId(e.target.value)} className="input">
+        <div><label className="label" htmlFor="grade-date">Date</label><input id="grade-date" tabIndex={1} type="date" value={date} onChange={e => setDate(e.target.value)} className="input" /></div>
+        <div><label className="label" htmlFor="grade-category">Category</label>
+          <select id="grade-category" ref={categoryRef} tabIndex={2} value={categoryId} onChange={e => setCategoryId(e.target.value)} className="input">
             <option value="">Select...</option>
             {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
           </select>
         </div>
-        <div><label className="label">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
-          <input tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" /></div>
-        <div><label className="label">Notes</label><input tabIndex={4} type="text" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" /></div>
+        <div><label className="label" htmlFor="grade-score">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
+          <input id="grade-score" tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" /></div>
+        <div><label className="label" htmlFor="grade-notes">Notes</label><input id="grade-notes" tabIndex={4} type="text" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" /></div>
       </div>
       <div className="flex gap-3 items-end">
-        <div className="flex-1"><label className="label">Other skills</label><input tabIndex={5} type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" /></div>
+        <div className="flex-1"><label className="label" htmlFor="grade-other-skills">Other skills</label><input id="grade-other-skills" tabIndex={5} type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" /></div>
         <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
       </div>
     </form>

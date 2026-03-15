@@ -17,11 +17,26 @@
   --color-border-accent: #e0e7ff;
 }
 
+/* Standard dark mode */
+[data-mode="dark"] {
+  --color-bg: #0f0f0f;
+  --color-bg-card: #1a1a1a;
+  --color-bg-accent: #1f1f2f;
+  --color-text: #e5e5e5;
+  --color-text-muted: #a3a3a3;
+  --color-border: #262626;
+  --color-border-accent: #312e81;
+}
+
+/* Taylor Swift dark (default TS look) */
 [data-theme="taylor-swift"] {
   --color-primary: #d4af37;
   --color-primary-light: #e6c84d;
   --color-primary-lighter: #fef9e7;
   --color-primary-dark: #b8941e;
+}
+
+[data-theme="taylor-swift"][data-mode="dark"] {
   --color-bg: #0a0a14;
   --color-bg-card: rgba(255, 255, 255, 0.04);
   --color-bg-accent: rgba(212, 175, 55, 0.06);
@@ -29,6 +44,17 @@
   --color-text-muted: #9ca3af;
   --color-border: rgba(255, 255, 255, 0.08);
   --color-border-accent: rgba(212, 175, 55, 0.15);
+}
+
+/* Taylor Swift light */
+[data-theme="taylor-swift"][data-mode="light"] {
+  --color-bg: #fdf8f0;
+  --color-bg-card: #ffffff;
+  --color-bg-accent: #fef3e2;
+  --color-text: #2d1b4e;
+  --color-text-muted: #8b7355;
+  --color-border: #e8dcc8;
+  --color-border-accent: #d4af37;
 }
 
 * {
@@ -91,18 +117,33 @@ button, input, select, textarea {
   animation: fade-in 0.3s ease-out;
 }
 
-/* TS theme glass morphism */
-[data-theme="taylor-swift"] .ts-glass {
+/* Glass morphism — dark modes */
+[data-mode="dark"] .ts-glass {
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-[data-theme="taylor-swift"] .ts-glass-hover:hover {
+[data-mode="dark"] .ts-glass-hover:hover {
   background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="taylor-swift"][data-mode="dark"] .ts-glass-hover:hover {
   border-color: rgba(212, 175, 55, 0.2);
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.05);
+}
+
+/* Light mode glass — TS light just uses white cards */
+[data-mode="light"] .ts-glass {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+}
+
+[data-mode="light"] .ts-glass-hover:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-color: var(--color-border-accent);
 }
 
 [data-theme="taylor-swift"] .ts-gradient-text {

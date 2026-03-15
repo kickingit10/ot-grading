@@ -4,12 +4,14 @@ import { useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { StudentWithSchool, Category, Grade, GradingPeriod } from '@/lib/types';
-import { formatDate, formatScore, isDateInRange } from '@/lib/utils';
+import { formatDate, formatScore, isDateInRange, formatDateInputValue } from '@/lib/utils';
 import { GradeEntryForm } from './grade-entry-form';
 import { GradesList } from './grades-list';
 import { ReportCardSummary } from './report-card-summary';
 import { ProgressCharts } from './progress-charts';
 import { useTheme } from '@/lib/theme';
+import { useToast } from '@/lib/toast';
+import { createClient } from '@/lib/supabase/client';
 
 interface SimpleStudent { id: string; name: string; school: string; }
 
@@ -21,35 +23,66 @@ interface StudentDetailClientProps {
   allStudents: SimpleStudent[];
 }
 
+// Default school year: Aug 1 of current school year
+function getSchoolYearStart(): string {
+  const now = new Date();
+  const year = now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+  return `${year}-08-01`;
+}
+
 export function StudentDetailClient({ student, categories, initialGrades, gradingPeriods, allStudents }: StudentDetailClientProps) {
   const [grades, setGrades] = useState<Grade[]>(initialGrades);
-  const [selectedPeriod, setSelectedPeriod] = useState<GradingPeriod | null>(
-    gradingPeriods.find((p) => p.is_current) || gradingPeriods[0] || null
-  );
+
+  // Flexible date range — default to current period or school year
+  const currentPeriodObj = gradingPeriods.find(p => p.is_current) || gradingPeriods[0] || null;
+  const [startDate, setStartDate] = useState(currentPeriodObj?.start_date || getSchoolYearStart());
+  const [endDate, setEndDate] = useState(currentPeriodObj?.end_date || formatDateInputValue(new Date().toISOString()));
+  const [showSavedRanges, setShowSavedRanges] = useState(false);
+  const [savingRange, setSavingRange] = useState(false);
+
   const [editingGradeId, setEditingGradeId] = useState<string | null>(null);
   const [view, setView] = useState<'split' | 'entry' | 'summary'>('split');
   const [tab, setTab] = useState<'grades' | 'progress'>('grades');
   const [showStudentPicker, setShowStudentPicker] = useState(false);
-  const { isTaylorSwift: ts } = useTheme();
+  const { isTaylorSwift: ts, isDark } = useTheme();
+  const { toast } = useToast();
   const router = useRouter();
-  const printRef = useRef<HTMLDivElement>(null);
+  const supabase = createClient();
 
-  const currentPeriod = selectedPeriod;
-  const gradesInPeriod = currentPeriod
-    ? grades.filter((g) => isDateInRange(g.graded_at, currentPeriod.start_date, currentPeriod.end_date))
-    : grades;
+  // Filter grades by selected date range
+  const gradesInPeriod = grades.filter(g => isDateInRange(g.graded_at, startDate, endDate));
 
-  const handleGradeAdded = useCallback((newGrade: Grade) => { setGrades((prev) => [newGrade, ...prev]); }, []);
+  const handleGradeAdded = useCallback((newGrade: Grade) => { setGrades(prev => [newGrade, ...prev]); }, []);
   const handleGradeUpdated = useCallback((updatedGrade: Grade) => {
-    setGrades((prev) => prev.map((g) => (g.id === updatedGrade.id ? updatedGrade : g)));
+    setGrades(prev => prev.map(g => g.id === updatedGrade.id ? updatedGrade : g));
     setEditingGradeId(null);
   }, []);
-  const handleGradeDeleted = useCallback((gradeId: string) => { setGrades((prev) => prev.filter((g) => g.id !== gradeId)); }, []);
+  const handleGradeDeleted = useCallback((gradeId: string) => { setGrades(prev => prev.filter(g => g.id !== gradeId)); }, []);
 
   // Quick student nav
   const currentIdx = allStudents.findIndex(s => s.id === student.id);
   const prevStudent = currentIdx > 0 ? allStudents[currentIdx - 1] : null;
   const nextStudent = currentIdx < allStudents.length - 1 ? allStudents[currentIdx + 1] : null;
+
+  // Save current range as named period
+  const handleSaveRange = async () => {
+    const name = prompt('Name this range (e.g., "Q3 2026"):');
+    if (!name?.trim()) return;
+    setSavingRange(true);
+    const { error } = await supabase.from('grading_periods').insert({
+      student_id: student.id, name: name.trim(), start_date: startDate, end_date: endDate, is_current: false,
+    });
+    setSavingRange(false);
+    if (error) toast(error.message, 'error');
+    else { toast('Range saved'); router.refresh(); }
+  };
+
+  // Load a saved range
+  const loadRange = (p: GradingPeriod) => {
+    setStartDate(p.start_date);
+    setEndDate(p.end_date);
+    setShowSavedRanges(false);
+  };
 
   // Print
   const handlePrint = () => {
@@ -72,7 +105,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
     .footer{margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:12px;color:#94a3b8}</style></head>
     <body><h1>${student.first_name} ${student.last_name}</h1>
     <p>${student.school?.name || ''}</p>
-    <p>Period: ${currentPeriod ? `${formatDate(currentPeriod.start_date)} – ${formatDate(currentPeriod.end_date)}` : 'All grades'}</p>
+    <p>${formatDate(startDate)} – ${formatDate(endDate)}</p>
     <table><thead><tr><th>Category</th><th>Average</th><th>Count</th><th>Notes</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="footer">Printed ${new Date().toLocaleDateString()}</div></body></html>`;
 
@@ -80,57 +113,59 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
     if (win) { win.document.write(html); win.document.close(); win.print(); }
   };
 
+  const inputClass = `px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200`;
+  const inputColors = isDark
+    ? 'bg-[var(--color-bg-card)] border-[var(--color-border)] text-[var(--color-text)] focus:ring-[var(--color-primary)]/30'
+    : 'bg-white border-slate-200 text-slate-900 focus:ring-indigo-500/40';
+  const labelCls = `block text-xs font-medium uppercase tracking-wider mb-2`;
+
   const tabBtn = (t: 'grades' | 'progress', label: string) => (
     <button onClick={() => setTab(t)} className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 ${
       tab === t
-        ? ts ? 'bg-amber-500/20 text-amber-400' : 'bg-indigo-50 text-indigo-700'
-        : ts ? 'text-[#9ca3af] hover:bg-white/[0.04]' : 'text-slate-500 hover:bg-slate-50'
+        ? ts ? 'bg-amber-500/20 text-amber-400' : isDark ? 'bg-indigo-500/20 text-indigo-400' : 'bg-indigo-50 text-indigo-700'
+        : `text-[var(--color-text-muted)] hover:bg-[var(--color-bg-accent)]`
     }`}>{label}</button>
   );
 
+  const ghostBtn = `px-3 py-2 text-sm rounded-lg border transition-all duration-200 border-[var(--color-border)] text-[var(--color-text-muted)] hover:bg-[var(--color-bg-accent)]`;
+
   return (
-    <div className={`min-h-screen ${ts ? 'bg-[#0a0a14]' : 'bg-[#fafafa]'}`}>
+    <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header with quick nav */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-3">
-            <Link href="/" className={`text-sm inline-flex items-center gap-1 transition-colors ${ts ? 'text-amber-400/80 hover:text-amber-400' : 'text-slate-500 hover:text-slate-700'}`}>
+            <Link href="/" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
               Back
             </Link>
-            <span className={`text-xs ${ts ? 'text-white/[0.1]' : 'text-slate-300'}`}>|</span>
-            {/* Prev/Next */}
+            <span className="text-xs" style={{ color: 'var(--color-border)' }}>|</span>
             <div className="flex items-center gap-1">
               {prevStudent ? (
-                <button onClick={() => router.push(`/students/${prevStudent.id}`)} className={`p-1 rounded transition-colors ${ts ? 'hover:bg-white/[0.06] text-[#9ca3af]' : 'hover:bg-slate-100 text-slate-400'}`} title={prevStudent.name}>
+                <button onClick={() => router.push(`/students/${prevStudent.id}`)} className="p-1 rounded transition-colors" style={{ color: 'var(--color-text-muted)' }} title={prevStudent.name}>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
                 </button>
               ) : <div className="w-6" />}
-              {/* Student picker */}
               <div className="relative">
                 <button onClick={() => setShowStudentPicker(!showStudentPicker)}
-                  className={`px-2 py-1 text-xs rounded-lg border transition-all duration-200 ${
-                    ts ? 'border-white/[0.08] text-[#9ca3af] hover:bg-white/[0.06]' : 'border-slate-200 text-slate-500 hover:bg-slate-50'
-                  }`}>
+                  className={`px-2 py-1 text-xs rounded-lg border transition-all duration-200`}
+                  style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>
                   {currentIdx + 1} of {allStudents.length}
                 </button>
                 {showStudentPicker && (
-                  <div className={`absolute left-0 top-full mt-1 w-56 max-h-64 overflow-y-auto rounded-lg shadow-lg border py-1 z-50 animate-fade-in ${
-                    ts ? 'bg-[#141420] border-white/[0.08]' : 'bg-white border-slate-200'
-                  }`}>
+                  <div className="absolute left-0 top-full mt-1 w-56 max-h-64 overflow-y-auto rounded-lg shadow-lg border py-1 z-50 animate-fade-in"
+                    style={{ background: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}>
                     {allStudents.map(s => (
                       <button key={s.id} onClick={() => { setShowStudentPicker(false); router.push(`/students/${s.id}`); }}
                         className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
-                          s.id === student.id
-                            ? ts ? 'bg-amber-500/10 text-amber-400' : 'bg-indigo-50 text-indigo-700'
-                            : ts ? 'text-[#f0e6d3] hover:bg-white/[0.06]' : 'text-slate-700 hover:bg-slate-50'
-                        }`}>{s.name}</button>
+                          s.id === student.id ? ts ? 'bg-amber-500/10 text-amber-400' : 'bg-indigo-50 text-indigo-700' : ''
+                        }`} style={s.id !== student.id ? { color: 'var(--color-text)' } : {}}>{s.name}</button>
                     ))}
                   </div>
                 )}
               </div>
               {nextStudent ? (
-                <button onClick={() => router.push(`/students/${nextStudent.id}`)} className={`p-1 rounded transition-colors ${ts ? 'hover:bg-white/[0.06] text-[#9ca3af]' : 'hover:bg-slate-100 text-slate-400'}`} title={nextStudent.name}>
+                <button onClick={() => router.push(`/students/${nextStudent.id}`)} className="p-1 rounded transition-colors" style={{ color: 'var(--color-text-muted)' }} title={nextStudent.name}>
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                 </button>
               ) : <div className="w-6" />}
@@ -138,58 +173,81 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
           </div>
           <div className="flex justify-between items-start">
             <div>
-              <h1 className={`text-3xl font-semibold tracking-tight ${ts ? 'text-[#f0e6d3]' : 'text-slate-900'}`}>
+              <h1 className="text-3xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>
                 {student.first_name} {student.last_name}
               </h1>
-              <p className={`text-sm mt-0.5 ${ts ? 'text-[#9ca3af]' : 'text-slate-500'}`}>{student.school?.name || 'Unknown School'}</p>
+              <p className="text-sm mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{student.school?.name || 'Unknown School'}</p>
             </div>
-            <Link href={`/students/${student.id}/edit`}
-              className={`px-3 py-1.5 text-sm rounded-lg border transition-all duration-200 ${
-                ts ? 'border-white/[0.08] text-[#9ca3af] hover:bg-white/[0.06]' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}>Settings</Link>
+            <Link href={`/students/${student.id}/edit`} className={ghostBtn}>Settings</Link>
           </div>
         </div>
 
-        {/* Period selector + Print */}
-        {gradingPeriods.length > 0 && (
-          <div className={`mb-6 rounded-xl p-4 border flex flex-col sm:flex-row sm:items-end gap-3 ${ts ? 'ts-glass' : 'bg-white border-slate-200'}`}>
+        {/* Flexible date range + Print */}
+        <div className="mb-6 rounded-xl p-4 border ts-glass" style={{ borderColor: 'var(--color-border)' }}>
+          <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1">
-              <label className={`block text-xs font-medium uppercase tracking-wider mb-2 ${ts ? 'text-[#9ca3af]/70' : 'text-slate-400'}`}>Grading Period</label>
-              <select value={selectedPeriod?.id || ''} onChange={(e) => setSelectedPeriod(gradingPeriods.find((p) => p.id === e.target.value) || null)}
-                className={`w-full max-w-md px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${
-                  ts ? 'bg-white/[0.04] border-white/[0.08] text-[#f0e6d3] focus:ring-amber-500/30' : 'bg-white border-slate-200 text-slate-900 focus:ring-indigo-500/40'
-                }`}>
-                {gradingPeriods.map((p) => (<option key={p.id} value={p.id}>{p.name} ({formatDate(p.start_date)} – {formatDate(p.end_date)})</option>))}
-              </select>
+              <label className={labelCls} style={{ color: 'var(--color-text-muted)' }}>Date Range</label>
+              <div className="flex items-center gap-2">
+                <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className={`${inputClass} ${inputColors} w-36`} />
+                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>to</span>
+                <input type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className={`${inputClass} ${inputColors} w-36`} />
+              </div>
             </div>
-            <button onClick={handlePrint} className={`no-print px-3 py-2 text-sm rounded-lg border transition-all duration-200 flex items-center gap-1.5 ${
-              ts ? 'border-white/[0.08] text-[#9ca3af] hover:bg-white/[0.06]' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-            }`}>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-              Print
-            </button>
+            <div className="flex gap-2">
+              {/* Saved ranges */}
+              {gradingPeriods.length > 0 && (
+                <div className="relative">
+                  <button onClick={() => setShowSavedRanges(!showSavedRanges)} className={ghostBtn}>Saved</button>
+                  {showSavedRanges && (
+                    <div className="absolute right-0 top-full mt-1 w-56 rounded-lg shadow-lg border py-1 z-50 animate-fade-in"
+                      style={{ background: 'var(--color-bg-card)', borderColor: 'var(--color-border)' }}>
+                      {gradingPeriods.map(p => (
+                        <button key={p.id} onClick={() => loadRange(p)}
+                          className="w-full text-left px-3 py-1.5 text-sm transition-colors hover:bg-[var(--color-bg-accent)]"
+                          style={{ color: 'var(--color-text)' }}>
+                          <span className="font-medium">{p.name}</span>
+                          <span className="text-[10px] ml-2" style={{ color: 'var(--color-text-muted)' }}>{formatDate(p.start_date)} – {formatDate(p.end_date)}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+              <button onClick={handleSaveRange} disabled={savingRange} className={ghostBtn}>
+                {savingRange ? '...' : 'Save range'}
+              </button>
+              <button onClick={handlePrint} className={`no-print ${ghostBtn} flex items-center gap-1.5`}>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                Print
+              </button>
+            </div>
           </div>
-        )}
+          <p className="text-xs mt-2" style={{ color: 'var(--color-text-muted)' }}>
+            Showing {gradesInPeriod.length} grade{gradesInPeriod.length !== 1 ? 's' : ''} from {formatDate(startDate)} to {formatDate(endDate)}
+          </p>
+        </div>
 
         {/* Mobile toggle */}
         <div className="md:hidden mb-4 flex gap-1.5">
-          {(['entry', 'summary'] as const).map((v) => (
+          {(['entry', 'summary'] as const).map(v => (
             <button key={v} onClick={() => setView(v)} className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-              view === v ? ts ? 'bg-amber-500/90 text-[#0a0a14]' : 'bg-indigo-600 text-white' : ts ? 'border border-white/[0.08] text-[#9ca3af]' : 'border border-slate-200 text-slate-600'
-            }`}>{v === 'entry' ? 'Entry' : 'Summary'}</button>
+              view === v
+                ? ts ? 'bg-amber-500/90 text-[#0a0a14]' : 'bg-indigo-600 text-white'
+                : `border text-[var(--color-text-muted)]`
+            }`} style={view !== v ? { borderColor: 'var(--color-border)' } : {}}>{v === 'entry' ? 'Entry' : 'Summary'}</button>
           ))}
         </div>
 
         {/* Main content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5" ref={printRef}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <div className={`md:col-span-2 ${view === 'summary' ? 'hidden md:block' : ''}`}>
             <div className="space-y-5">
-              <div className={`rounded-xl p-5 border ${ts ? 'ts-glass' : 'bg-white border-slate-200'}`}>
-                <h2 className={`text-sm font-medium uppercase tracking-wider mb-4 ${ts ? 'text-amber-400/80' : 'text-slate-400'}`}>New Grade</h2>
+              <div className="rounded-xl p-5 border ts-glass" style={{ borderColor: 'var(--color-border)' }}>
+                <h2 className={`text-sm font-medium uppercase tracking-wider mb-4`} style={{ color: ts ? '#d4af37' : 'var(--color-text-muted)' }}>New Grade</h2>
                 <GradeEntryForm student={student} categories={categories} onGradeAdded={handleGradeAdded} />
               </div>
 
-              <div className={`rounded-xl p-5 border ${ts ? 'ts-glass' : 'bg-white border-slate-200'}`}>
+              <div className="rounded-xl p-5 border ts-glass" style={{ borderColor: 'var(--color-border)' }}>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex gap-1">{tabBtn('grades', `Grades (${gradesInPeriod.length})`)}{tabBtn('progress', 'Progress')}</div>
                 </div>
@@ -205,13 +263,9 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
           </div>
 
           <div className={`md:col-span-1 ${view === 'entry' ? 'hidden md:block' : ''}`}>
-            <div className={`rounded-xl p-5 border sticky top-20 print-area ${ts ? 'ts-glass' : 'bg-white border-slate-200'}`}>
-              <h2 className={`text-sm font-medium uppercase tracking-wider mb-4 ${ts ? 'text-amber-400/80' : 'text-slate-400'}`}>Report Card</h2>
-              {currentPeriod ? (
-                <ReportCardSummary grades={gradesInPeriod} categories={categories} periodName={currentPeriod.name} />
-              ) : (
-                <p className={`text-sm ${ts ? 'text-[#9ca3af]' : 'text-slate-500'}`}>No grading period selected</p>
-              )}
+            <div className="rounded-xl p-5 border sticky top-20 print-area ts-glass" style={{ borderColor: 'var(--color-border)' }}>
+              <h2 className="text-sm font-medium uppercase tracking-wider mb-4" style={{ color: ts ? '#d4af37' : 'var(--color-text-muted)' }}>Report Card</h2>
+              <ReportCardSummary grades={gradesInPeriod} categories={categories} periodName={`${formatDate(startDate)} – ${formatDate(endDate)}`} />
             </div>
           </div>
         </div>

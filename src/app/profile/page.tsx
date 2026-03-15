@@ -20,7 +20,7 @@ export default async function ProfilePage() {
           <h1 className="text-2xl font-semibold tracking-tight mt-2" style={{ color: 'var(--color-text)' }}>Profile</h1>
           <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>Manage your account</p>
         </div>
-        <div className="card"><ProfileClient userEmail={user.email || ''} profile={profile as Profile} /></div>
+        <ProfileClient userEmail={user.email || ''} profile={profile as Profile} />
       </div>
     </div>
   );

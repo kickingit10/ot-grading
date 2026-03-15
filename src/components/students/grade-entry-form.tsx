@@ -78,7 +78,7 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
       )}
 
       {/* Row 1: Date, Category, Score */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row" style={{ gap: 16, marginBottom: 16 }}>
         <div style={{ minWidth: 140 }}>
           <label className="label" htmlFor="grade-date">Date</label>
           <input id="grade-date" tabIndex={1} type="date" value={date} onChange={e => setDate(e.target.value)} className="input" />
@@ -97,13 +97,13 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
       </div>
 
       {/* Row 2: Notes — full width */}
-      <div className="mb-4">
+      <div style={{ marginBottom: 16 }}>
         <label className="label" htmlFor="grade-notes">Notes</label>
         <textarea id="grade-notes" tabIndex={4} rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical' }} />
       </div>
 
       {/* Row 3: Other skills — full width, always visible */}
-      <div className="mb-5">
+      <div style={{ marginBottom: 20 }}>
         <label className="label" htmlFor="grade-other-skills">Other skills observed</label>
         <span className="text-[10px] block -mt-1.5 mb-1.5" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
         <textarea id="grade-other-skills" tabIndex={5} rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical' }} />

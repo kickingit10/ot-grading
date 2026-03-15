@@ -16,9 +16,14 @@ export function Navbar() {
   const { isTaylorSwift, colorMode, setColorMode } = useTheme();
 
   useEffect(() => {
-    const getUser = async () => { const { data: { user } } = await supabase.auth.getUser(); if (user) setUser(user); };
-    getUser();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => { setUser(session?.user ?? null); });
+    // Use onAuthStateChange as sole source of truth (no redundant getUser call)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setUser(session.user);
+    });
     return () => { subscription?.unsubscribe(); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

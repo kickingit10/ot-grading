@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { School } from '@/lib/types';
@@ -18,7 +18,8 @@ export function AddStudentForm({ schools, userId }: AddStudentFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setError(null); setLoading(true);

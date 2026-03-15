@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Profile } from '@/lib/types';
@@ -21,7 +21,8 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const [eraValue, setEraValue] = useState(profile?.era || 'lover');
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
   const { setTheme: setAppTheme, isTaylorSwift, era, setEra } = useTheme();
 
   const handleSaveProfile = async (e: React.FormEvent) => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { StudentWithSchool, School, GradingPeriod } from '@/lib/types';
@@ -19,7 +19,8 @@ export function EditStudentClient({ student, schools, gradingPeriods }: EditStud
   const [newPeriodStart, setNewPeriodStart] = useState('');
   const [newPeriodEnd, setNewPeriodEnd] = useState('');
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
 
   const msgStyle = (type: 'success' | 'error') => ({
     background: type === 'error' ? 'rgba(239,68,68,0.06)' : 'rgba(16,185,129,0.06)',

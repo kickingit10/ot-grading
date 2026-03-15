@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { StudentWithSchool, Category, Grade, GradingPeriod } from '@/lib/types';
@@ -46,7 +46,8 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
   }, [startDate, endDate]);
   const { toast } = useToast();
   const router = useRouter();
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
 
   const gradesInPeriod = grades.filter(g => isDateInRange(g.graded_at, startDate, endDate));
 

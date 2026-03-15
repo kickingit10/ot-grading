@@ -11,10 +11,16 @@ export default async function EditStudentPage({ params }: EditStudentPageProps) 
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
+
+  // Student must resolve first (guards with notFound)
   const { data: student, error } = await supabase.from('students').select('*, school:schools(*)').eq('id', id).eq('therapist_id', user.id).single();
   if (error || !student) notFound();
-  const { data: schools } = await supabase.from('schools').select('*').order('name', { ascending: true });
-  const { data: gradingPeriods } = await supabase.from('grading_periods').select('*').eq('student_id', id).order('start_date', { ascending: false });
+
+  // Parallelize remaining queries
+  const [{ data: schools }, { data: gradingPeriods }] = await Promise.all([
+    supabase.from('schools').select('*').order('name', { ascending: true }),
+    supabase.from('grading_periods').select('*').eq('student_id', id).order('start_date', { ascending: false }),
+  ]);
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>

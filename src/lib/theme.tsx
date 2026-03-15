@@ -77,24 +77,27 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const savedEra = localStorage.getItem(ERA_KEY) as EraName | null;
     if (savedEra && VALID_ERAS.includes(savedEra)) setEraState(savedEra);
 
-    // Then confirm from Supabase (handles if user changed on another device)
-    const loadTheme = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const { data: profile } = await supabase.from('profiles').select('theme, era').eq('id', user.id).single();
-          if (profile?.theme) {
-            setThemeState(profile.theme as ThemeName);
-            localStorage.setItem(THEME_KEY, profile.theme);
+    // Confirm from Supabase only once per session
+    if (!sessionStorage.getItem('ot-theme-synced')) {
+      const loadTheme = async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const { data: profile } = await supabase.from('profiles').select('theme, era').eq('id', user.id).single();
+            if (profile?.theme) {
+              setThemeState(profile.theme as ThemeName);
+              localStorage.setItem(THEME_KEY, profile.theme);
+            }
+            if (profile?.era && VALID_ERAS.includes(profile.era as EraName)) {
+              setEraState(profile.era as EraName);
+              localStorage.setItem(ERA_KEY, profile.era);
+            }
+            sessionStorage.setItem('ot-theme-synced', '1');
           }
-          if (profile?.era && VALID_ERAS.includes(profile.era as EraName)) {
-            setEraState(profile.era as EraName);
-            localStorage.setItem(ERA_KEY, profile.era);
-          }
-        }
-      } catch { /* no session */ }
-    };
-    loadTheme();
+        } catch { /* no session */ }
+      };
+      loadTheme();
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

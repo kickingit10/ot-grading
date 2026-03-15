@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Grade, Category } from '@/lib/types';
 import { formatDate, formatScore } from '@/lib/utils';
 import { GradeEditModal } from './grade-edit-modal';
@@ -17,7 +17,8 @@ interface GradesListProps {
 export function GradesList({ grades, categories, editingGradeId, onEditStart, onGradeUpdated, onGradeDeleted, studentId }: GradesListProps) {
   const [deleting, setDeleting] = useState<string | null>(null);
   const [confirmingDelete, setConfirmingDelete] = useState<string | null>(null);
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
   const { toast } = useToast();
   const { isTaylorSwift: ts } = useTheme();
 

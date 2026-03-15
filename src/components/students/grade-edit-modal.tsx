@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Grade, Category } from '@/lib/types';
 import { normalizeScore, formatDateInputValue } from '@/lib/utils';
@@ -19,7 +19,8 @@ export function GradeEditModal({ grade, category, categories, studentId, onGrade
   const [otherSkills, setOtherSkills] = useState(grade.other_skills || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
   const { toast } = useToast();
 
   useEffect(() => {

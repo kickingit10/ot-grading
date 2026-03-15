@@ -11,18 +11,19 @@ export default async function StudentDetailPage({ params }: StudentDetailPagePro
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
+  // Student must resolve first (guards with notFound)
   const { data: student, error: studentError } = await supabase
     .from('students').select('*, school:schools(*)').eq('id', id).eq('therapist_id', user.id).single();
   if (studentError || !student) notFound();
 
-  const { data: categories } = await supabase.from('categories').select('*').order('display_order', { ascending: true });
-  const { data: grades } = await supabase.from('grades').select('*, category:categories(*)').eq('student_id', id).order('graded_at', { ascending: false });
-  const { data: gradingPeriods } = await supabase.from('grading_periods').select('*').eq('student_id', id).order('start_date', { ascending: false });
-
-  // Fetch all active students for quick switching
-  const { data: allStudents } = await supabase
-    .from('students').select('id, first_name, last_name, school_id, school:schools(name)')
-    .eq('therapist_id', user.id).eq('status', 'active').order('last_name', { ascending: true });
+  // Parallelize remaining queries
+  const [{ data: categories }, { data: grades }, { data: gradingPeriods }, { data: allStudents }] = await Promise.all([
+    supabase.from('categories').select('*').order('display_order', { ascending: true }),
+    supabase.from('grades').select('*, category:categories(*)').eq('student_id', id).order('graded_at', { ascending: false }),
+    supabase.from('grading_periods').select('*').eq('student_id', id).order('start_date', { ascending: false }),
+    supabase.from('students').select('id, first_name, last_name, school_id, school:schools(name)')
+      .eq('therapist_id', user.id).eq('status', 'active').order('last_name', { ascending: true }),
+  ]);
 
   return (
     <StudentDetailClient

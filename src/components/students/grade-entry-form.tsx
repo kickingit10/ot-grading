@@ -21,7 +21,8 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showSparkle, setShowSparkle] = useState(false);
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
   const categoryRef = useRef<HTMLSelectElement>(null);
   const { isTaylorSwift: ts } = useTheme();
   const { toast } = useToast();

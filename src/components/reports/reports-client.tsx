@@ -86,10 +86,10 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
             <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Back
           </Link>
-          <h1 className="text-2xl font-semibold tracking-tight mt-2" style={{ color: 'var(--color-text)' }}>
+          <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', marginTop: 8, color: 'var(--color-text)' }}>
             {ts ? 'Report Cards (The Collection)' : 'Report Cards'}
           </h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
+          <p style={{ fontSize: 15, marginTop: 4, color: 'var(--color-text-muted)' }}>
             {students.length} students · {filteredGrades.length} grades in range
           </p>
         </div>
@@ -114,10 +114,10 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr>
-                  <th className="text-left text-[10px] font-semibold uppercase tracking-wider pb-3 pr-3" style={{ color: 'var(--color-text-muted)' }}>Student</th>
-                  <th className="text-left text-[10px] font-semibold uppercase tracking-wider pb-3 pr-3" style={{ color: 'var(--color-text-muted)' }}>School</th>
+                  <th style={{ textAlign: 'left', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, paddingRight: 12, color: 'var(--color-text-muted)' }}>Student</th>
+                  <th style={{ textAlign: 'left', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, paddingRight: 12, color: 'var(--color-text-muted)' }}>School</th>
                   {categories.map(c => (
-                    <th key={c.id} className="text-right text-[10px] font-semibold uppercase tracking-wider pb-3 px-2 whitespace-nowrap" style={{ color: 'var(--color-text-muted)' }}>
+                    <th key={c.id} style={{ textAlign: 'right', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', paddingBottom: 12, padding: '0 8px 12px', whiteSpace: 'nowrap', color: 'var(--color-text-muted)' }}>
                       {c.name.replace('Writing - ', '').replace('Cutting - ', 'Cut ')}
                     </th>
                   ))}
@@ -159,9 +159,9 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
                   <Link href={`/students/${student.id}`} className="text-sm font-medium" style={{ color: 'var(--color-primary)' }}>
                     {student.first_name} {student.last_name}
                   </Link>
-                  <p className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>{student.school?.name}</p>
+                  <p style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{student.school?.name}</p>
                 </div>
-                <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>{totalGrades} grades</span>
+                <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{totalGrades} grades</span>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
                 {categories.map(c => {

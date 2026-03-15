@@ -18,11 +18,11 @@ export default async function LandingPage() {
               <path d="M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
               <path d="M9 14l2 2 4-4" />
             </svg>
-            <span style={{ fontSize: 20, fontWeight: 700, color: 'var(--color-text)', letterSpacing: '-0.01em' }}>OT Tracker</span>
+            <span style={{ fontSize: 17, fontWeight: 700, color: 'var(--color-text)', letterSpacing: '-0.01em' }}>OT Tracker</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Link href="/login" style={{ fontSize: 14, fontWeight: 500, color: 'var(--color-text-muted)' }}>Log in</Link>
-            <Link href="/signup" className="btn-primary" style={{ padding: '8px 18px', fontSize: 14 }}>Get started</Link>
+            <Link href="/login" style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-text-muted)', minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
+            <Link href="/signup" className="btn-primary" style={{ padding: '12px 24px', fontSize: 15, minHeight: 44 }}>Get started</Link>
           </div>
         </div>
       </nav>
@@ -32,7 +32,7 @@ export default async function LandingPage() {
         <h1 style={{ fontSize: 'clamp(32px, 5vw, 40px)', fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.15, color: 'var(--color-text)' }}>
           You didn&apos;t go to school for 6 years to fight spreadsheets.
         </h1>
-        <div style={{ fontSize: 18, lineHeight: 1.6, color: 'var(--color-text-muted)', marginTop: 28 }}>
+        <div style={{ fontSize: 17, lineHeight: 1.6, color: 'var(--color-text-muted)', marginTop: 28 }}>
           <p>
             You&apos;re an OT therapist. You should be helping kids write their name,
             hold scissors, and build the fine motor skills they need.
@@ -47,14 +47,14 @@ export default async function LandingPage() {
           </p>
         </div>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 36 }}>
-          <Link href="/signup" className="btn-primary" style={{ padding: '14px 28px', fontSize: 16 }}>Start tracking — it&apos;s free</Link>
-          <a href="#how" style={{ padding: '14px 28px', fontSize: 16, fontWeight: 500, color: 'var(--color-text-muted)' }}>See how it works ↓</a>
+          <Link href="/signup" className="btn-primary" style={{ padding: '14px 28px', fontSize: 15 }}>Start tracking — it&apos;s free</Link>
+          <a href="#how" style={{ padding: '14px 28px', fontSize: 15, minHeight: 44, display: 'inline-flex', alignItems: 'center', fontWeight: 500, color: 'var(--color-text-muted)' }}>See how it works ↓</a>
         </div>
       </section>
 
       {/* How it works */}
       <section id="how" style={{ maxWidth: 1100, margin: '0 auto', padding: '48px 24px 64px' }}>
-        <h2 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--color-text)', marginBottom: 32 }}>How it works</h2>
+        <h2 style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--color-text)', marginBottom: 32 }}>How it works</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20 }}>
           <div className="card">
             <div style={{ width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 700, background: 'var(--color-primary-lighter)', color: 'var(--color-primary)', marginBottom: 16 }}>1</div>
@@ -83,7 +83,7 @@ export default async function LandingPage() {
       {/* Social proof */}
       <section style={{ maxWidth: 720, margin: '0 auto', padding: '32px 24px 64px' }}>
         <div className="card" style={{ textAlign: 'center', padding: '48px 32px' }}>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--color-text-muted)' }}>
+          <p style={{ fontSize: 15, lineHeight: 1.6, color: 'var(--color-text-muted)' }}>
             Built for school-based OTs who track fine motor skills, cutting,
             writing, and words per minute for elementary students.
           </p>
@@ -96,10 +96,10 @@ export default async function LandingPage() {
 
       {/* Final CTA */}
       <section style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px 80px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--color-text)', marginBottom: 20 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 700, letterSpacing: '-0.01em', color: 'var(--color-text)', marginBottom: 20 }}>
           Your spreadsheet isn&apos;t going to fix itself.
         </h2>
-        <Link href="/signup" className="btn-primary" style={{ padding: '14px 32px', fontSize: 16 }}>Get started free</Link>
+        <Link href="/signup" className="btn-primary" style={{ padding: '14px 32px', fontSize: 15 }}>Get started free</Link>
       </section>
 
       {/* Footer */}
@@ -111,9 +111,9 @@ export default async function LandingPage() {
               <path d="M9 5a2 2 0 012-2h2a2 2 0 012 2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
               <path d="M9 14l2 2 4-4" />
             </svg>
-            <span style={{ fontSize: 14, color: 'var(--color-text-muted)' }}>OT Tracker</span>
+            <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>OT Tracker</span>
           </div>
-          <div style={{ display: 'flex', gap: 24, fontSize: 14, color: 'var(--color-text-muted)' }}>
+          <div style={{ display: 'flex', gap: 24, fontSize: 13, color: 'var(--color-text-muted)' }}>
             <Link href="/login">Log in</Link>
             <Link href="/signup">Sign up</Link>
             <Link href="/guide">Guide</Link>

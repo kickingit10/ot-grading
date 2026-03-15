@@ -29,8 +29,8 @@ export default async function EditStudentPage({ params }: EditStudentPageProps) 
           <Link href={`/students/${id}`} className="back-link">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back
           </Link>
-          <h1 className="text-2xl font-semibold tracking-tight mt-2" style={{ color: 'var(--color-text)' }}>Edit student</h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>Update {student.first_name}&apos;s information</p>
+          <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', marginTop: 8, color: 'var(--color-text)' }}>Edit student</h1>
+          <p style={{ fontSize: 15, marginTop: 4, color: 'var(--color-text-muted)' }}>Update {student.first_name}&apos;s information</p>
         </div>
         <div className="card"><EditStudentClient student={student as StudentWithSchool} schools={schools as School[] || []} gradingPeriods={gradingPeriods as GradingPeriod[] || []} /></div>
       </div>

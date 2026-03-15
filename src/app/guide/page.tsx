@@ -36,10 +36,10 @@ export default function GuidePage() {
             <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Back
           </Link>
-          <h1 className="text-2xl font-semibold tracking-tight mt-2" style={{ color: 'var(--color-text)' }}>
+          <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', marginTop: 8, color: 'var(--color-text)' }}>
             {ts ? 'Welcome to the Grading Era' : 'Quick Start'}
           </h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>
+          <p style={{ fontSize: 15, marginTop: 4, color: 'var(--color-text-muted)' }}>
             {ts ? 'Your all-too-well guide to grading' : 'Get grading in 30 seconds'}
           </p>
         </div>
@@ -54,8 +54,8 @@ export default function GuidePage() {
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0 pt-0.5">
-                  <h3 className="text-sm font-semibold mb-0.5" style={{ color: 'var(--color-text)' }}>{step.title}</h3>
-                  <p className="text-xs leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>{step.desc}</p>
+                  <h3 style={{ fontSize: 15, fontWeight: 600, marginBottom: 2, color: 'var(--color-text)' }}>{step.title}</h3>
+                  <p style={{ fontSize: 13, lineHeight: 1.5, color: 'var(--color-text-muted)' }}>{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -63,10 +63,10 @@ export default function GuidePage() {
 
           {/* Keyboard shortcuts — divider inside same card */}
           <div className="mt-6 pt-5" style={{ borderTop: '1px solid var(--color-border)' }}>
-            <h3 className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--color-text-muted)' }}>
+            <h3 style={{ fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 12, color: 'var(--color-text-muted)' }}>
               {ts ? 'Secret tracks' : 'Keyboard shortcuts'}
             </h3>
-            <div className="space-y-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, color: 'var(--color-text-muted)' }}>
               <div className="flex justify-between"><span>Save grade</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>⌘+Enter</span></div>
               <div className="flex justify-between"><span>Save bulk grades</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>⌘+Shift+Enter</span></div>
               <div className="flex justify-between"><span>Close edit modal</span><span className="font-mono" style={{ color: 'var(--color-primary)' }}>Esc</span></div>

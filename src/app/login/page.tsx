@@ -12,15 +12,15 @@ export default async function LoginPage() {
     <div className="min-h-screen flex px-4" style={{ background: 'var(--color-bg)', padding: '80px 24px 32px 24px', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: 420 }}>
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold tracking-tight mb-1" style={{ color: 'var(--color-text)' }}>OT Tracker</h1>
-          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Student grading for occupational therapists</p>
+          <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', marginBottom: 4, color: 'var(--color-text)' }}>OT Tracker</h1>
+          <p style={{ fontSize: 15, color: 'var(--color-text-muted)' }}>Student grading for occupational therapists</p>
         </div>
         <div className="card p-7">
-          <h2 className="text-lg font-semibold mb-5" style={{ color: 'var(--color-text)' }}>Welcome back</h2>
+          <h2 style={{ fontSize: 17, fontWeight: 600, marginBottom: 20, color: 'var(--color-text)' }}>Welcome back</h2>
           <LoginForm />
         </div>
         <div className="mt-5 text-center">
-          <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+          <p style={{ fontSize: 15, color: 'var(--color-text-muted)' }}>
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="font-medium transition-colors" style={{ color: 'var(--color-primary)' }}>Sign up</Link>
           </p>

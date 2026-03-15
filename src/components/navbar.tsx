@@ -64,6 +64,7 @@ export function Navbar() {
           </Link>
 
           <div className="flex items-center gap-2">
+            <Link href="/reports" className="text-sm font-medium transition-colors hidden sm:inline-block" style={{ color: 'var(--color-text-muted)' }}>Reports</Link>
             <Link href="/guide" aria-label="Help" className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium border transition-all duration-200"
               style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>?</Link>
 
@@ -91,6 +92,7 @@ export function Navbar() {
                   onClick={(e) => e.stopPropagation()}>
 
                   <Link href="/profile" className="menu-item" onClick={() => setShowMenu(false)}>Profile</Link>
+                  <Link href="/reports" className="menu-item sm:hidden" onClick={() => setShowMenu(false)}>Reports</Link>
 
                   {/* Appearance toggle */}
                   <div className="px-3 py-2.5 border-t border-b" style={{ borderColor: 'var(--color-border)' }}>

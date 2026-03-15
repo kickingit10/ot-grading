@@ -45,9 +45,9 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
           {error && <div className="alert alert-error text-sm animate-slide-in">{error}</div>}
           {success && <div className="alert alert-success text-sm animate-slide-in">{isTaylorSwift ? 'Updated — you belong with us!' : 'Profile updated'}</div>}
           <div><label className="label">Email</label><div className="input" style={{ opacity: 0.6 }}>{userEmail}</div></div>
-          <div><label className="label">Full name</label><input type="text" value={fullName} onChange={e => setFullName(e.target.value)} className="input" /></div>
-          <div><label className="label">Theme</label>
-            <select value={theme} onChange={e => setThemeValue(e.target.value)} className="input">
+          <div><label className="label" htmlFor="profile-name">Full name</label><input id="profile-name" type="text" value={fullName} onChange={e => setFullName(e.target.value)} className="input" /></div>
+          <div><label className="label" htmlFor="profile-theme">Theme</label>
+            <select id="profile-theme" value={theme} onChange={e => setThemeValue(e.target.value)} className="input">
               <option value="default">Default</option>
               <option value="taylor-swift">Eras Tour</option>
             </select>
@@ -92,8 +92,8 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
         }} className="space-y-4">
           {passwordError && <div className="alert alert-error text-sm animate-slide-in">{passwordError}</div>}
           {passwordSuccess && <div className="alert alert-success text-sm animate-slide-in">Password updated</div>}
-          <div><label className="label">New password</label><input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
-          <div><label className="label">Confirm password</label><input type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
+          <div><label className="label" htmlFor="profile-new-password">New password</label><input id="profile-new-password" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
+          <div><label className="label" htmlFor="profile-confirm-password">Confirm password</label><input id="profile-confirm-password" type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="input" /></div>
           <button type="submit" disabled={passwordLoading} className="btn-primary w-full">{passwordLoading ? 'Updating...' : 'Update password'}</button>
         </form>
       </div>

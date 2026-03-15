@@ -22,12 +22,6 @@ export function EditStudentClient({ student, schools, gradingPeriods }: EditStud
   const supabaseRef = useRef(createClient());
   const supabase = supabaseRef.current;
 
-  const msgStyle = (type: 'success' | 'error') => ({
-    background: type === 'error' ? 'rgba(239,68,68,0.06)' : 'rgba(16,185,129,0.06)',
-    borderColor: type === 'error' ? 'rgba(239,68,68,0.2)' : 'rgba(16,185,129,0.2)',
-    color: type === 'error' ? 'var(--color-error)' : 'var(--color-success)',
-  });
-
   const handleUpdateStudent = async (e: React.FormEvent) => {
     e.preventDefault(); setError(null); setLoading(true);
     try {
@@ -53,14 +47,14 @@ export function EditStudentClient({ student, schools, gradingPeriods }: EditStud
       <div>
         <div className="section-header">Student Information</div>
         <form onSubmit={handleUpdateStudent} className="space-y-4">
-          {error && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={msgStyle('error')}>{error}</div>}
-          {success && <div className="px-3 py-2.5 rounded-lg border text-sm animate-slide-in" style={msgStyle('success')}>Changes saved</div>}
+          {error && <div className="alert alert-error text-sm animate-slide-in">{error}</div>}
+          {success && <div className="alert alert-success text-sm animate-slide-in">Changes saved</div>}
           <div className="grid grid-cols-2 gap-4">
-            <div><label className="label">First name</label><input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} className="input" /></div>
-            <div><label className="label">Last name</label><input type="text" value={lastName} onChange={e => setLastName(e.target.value)} className="input" /></div>
+            <div><label className="label" htmlFor="edit-first-name">First name</label><input id="edit-first-name" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} className="input" /></div>
+            <div><label className="label" htmlFor="edit-last-name">Last name</label><input id="edit-last-name" type="text" value={lastName} onChange={e => setLastName(e.target.value)} className="input" /></div>
           </div>
-          <div><label className="label">School</label>
-            <select value={schoolId} onChange={e => setSchoolId(e.target.value)} className="input">
+          <div><label className="label" htmlFor="edit-school">School</label>
+            <select id="edit-school" value={schoolId} onChange={e => setSchoolId(e.target.value)} className="input">
               {schools.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
             </select>
           </div>
@@ -83,10 +77,10 @@ export function EditStudentClient({ student, schools, gradingPeriods }: EditStud
         <button onClick={() => setShowPeriodForm(!showPeriodForm)} className="btn-ghost w-full">{showPeriodForm ? 'Cancel' : 'Add period'}</button>
         {showPeriodForm && (
           <form onSubmit={handleAddPeriod} className="mt-3 p-4 rounded-lg space-y-3" style={{ background: 'var(--color-bg-accent)' }}>
-            <div><label className="label">Period name</label><input type="text" value={newPeriodName} onChange={e => setNewPeriodName(e.target.value)} placeholder="e.g., Spring 2026" className="input" /></div>
+            <div><label className="label" htmlFor="edit-period-name">Period name</label><input id="edit-period-name" type="text" value={newPeriodName} onChange={e => setNewPeriodName(e.target.value)} placeholder="e.g., Spring 2026" className="input" /></div>
             <div className="grid grid-cols-2 gap-3">
-              <div><label className="label">Start</label><input type="date" value={newPeriodStart} onChange={e => setNewPeriodStart(e.target.value)} className="input" /></div>
-              <div><label className="label">End</label><input type="date" value={newPeriodEnd} onChange={e => setNewPeriodEnd(e.target.value)} className="input" /></div>
+              <div><label className="label" htmlFor="edit-period-start">Start</label><input id="edit-period-start" type="date" value={newPeriodStart} onChange={e => setNewPeriodStart(e.target.value)} className="input" /></div>
+              <div><label className="label" htmlFor="edit-period-end">End</label><input id="edit-period-end" type="date" value={newPeriodEnd} onChange={e => setNewPeriodEnd(e.target.value)} className="input" /></div>
             </div>
             <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Adding...' : 'Add period'}</button>
           </form>

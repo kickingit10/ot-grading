@@ -32,7 +32,7 @@ export function SparkleBurst({ active, isTaylorSwift = false }: { active: boolea
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((p) => (
         <span key={p.id} className="sparkle-particle text-xs opacity-60"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, animationDelay: `${p.delay}s`, color: isTaylorSwift ? '#CBA863' : 'var(--color-primary)' }}>
+          style={{ left: `${p.x}%`, top: `${p.y}%`, animationDelay: `${p.delay}s`, color: 'var(--color-primary-surface, var(--color-primary))' }}>
           {p.char}
         </span>
       ))}

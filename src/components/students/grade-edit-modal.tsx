@@ -51,7 +51,7 @@ export function GradeEditModal({ grade, category, categories, studentId, onGrade
 
   return (
     <div className="card border-2 space-y-3" style={{ borderColor: 'var(--color-primary)' }}>
-      {error && <div className="px-3 py-2 rounded-lg text-sm" style={{ background: 'rgba(239,68,68,0.06)', color: 'var(--color-error)' }}>{error}</div>}
+      {error && <div className="alert alert-error text-sm animate-slide-in">{error}</div>}
       <div className="grid grid-cols-2 gap-3">
         <div><label className="label">Date</label><input type="date" value={date} onChange={e => setDate(e.target.value)} className="input" /></div>
         <div><label className="label">Category</label>

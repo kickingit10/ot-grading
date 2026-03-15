@@ -201,6 +201,7 @@ select.input {
 .btn-ghost:active { transform: scale(0.98); }
 
 .section-header { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-primary); margin-bottom: 16px; }
+[data-theme="taylor-swift"][data-mode="light"] .section-header { color: var(--color-primary-surface, var(--color-primary)); }
 
 /* Card-sm */
 .card-sm {

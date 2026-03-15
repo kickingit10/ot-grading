@@ -78,16 +78,16 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
         <div className="flex-1 min-w-0">
           <div className="flex items-baseline gap-2 flex-wrap">
             <span className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>{category?.name}</span>
-            <span className="text-base font-bold" style={{ color: 'var(--color-primary)' }}>{formatScore(grade.score, category?.score_type || 'raw')}</span>
+            <span style={{ fontSize: 17, fontWeight: 700, color: 'var(--color-primary)' }}>{formatScore(grade.score, category?.score_type || 'raw')}</span>
           </div>
-          {grade.notes && <p className="text-xs mt-1 italic" style={{ color: 'var(--color-text-muted)' }}>{grade.notes}</p>}
+          {grade.notes && <p style={{ fontSize: 13, marginTop: 4, fontStyle: 'italic', color: 'var(--color-text-muted)' }}>{grade.notes}</p>}
         </div>
         {confirmingDelete === grade.id ? (
           <div className="flex gap-1 items-center shrink-0">
             <button onClick={() => { handleDelete(grade.id); setConfirmingDelete(null); }}
-              className="text-xs font-medium px-2 py-1 rounded" style={{ background: 'rgba(239,68,68,0.1)', color: 'var(--color-error)' }}>Delete</button>
+              className="rounded" style={{ fontSize: 13, fontWeight: 500, padding: '8px 12px', minHeight: 44, cursor: 'pointer', background: 'rgba(239,68,68,0.1)', color: 'var(--color-error)', border: 'none' }}>Delete</button>
             <button onClick={() => setConfirmingDelete(null)}
-              className="text-xs px-2 py-1 rounded" style={{ color: 'var(--color-text-muted)' }}>Cancel</button>
+              className="rounded" style={{ fontSize: 13, padding: '8px 12px', minHeight: 44, cursor: 'pointer', color: 'var(--color-text-muted)', background: 'transparent', border: 'none' }}>Cancel</button>
           </div>
         ) : (
           <div className="flex gap-1 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-150 shrink-0">
@@ -107,9 +107,9 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
     <div>
       {Object.entries(grouped).map(([dateStr, dateGrades]) => (
         <div key={dateStr}>
-          <div className="text-[10px] font-semibold uppercase tracking-wider pt-3 pb-1.5" style={{ color: 'var(--color-text-muted)' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.05em', paddingTop: 12, paddingBottom: 6, color: 'var(--color-text-muted)' }}>
             {formatDate(dateGrades[0].graded_at)}
-            {dateStr === todayStr && <span className="ml-2 text-[9px] font-bold" style={{ color: 'var(--color-success)' }}>TODAY</span>}
+            {dateStr === todayStr && <span style={{ marginLeft: 8, fontSize: 12, fontWeight: 700, color: 'var(--color-success)' }}>TODAY</span>}
           </div>
           {dateGrades.map(renderGrade)}
         </div>

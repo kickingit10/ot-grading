@@ -86,8 +86,8 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
   };
 
   const tabBtn = (t: 'grades' | 'progress', label: string) => (
-    <button onClick={() => setTab(t)} className="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200"
-      style={{
+    <button onClick={() => setTab(t)} style={{
+        padding: '8px 14px', fontSize: 15, fontWeight: 500, borderRadius: 8, transition: 'all 0.2s', minHeight: 44, cursor: 'pointer', border: 'none',
         background: tab === t ? 'var(--color-primary-lighter)' : 'transparent',
         color: tab === t ? 'var(--color-primary-surface, var(--color-primary))' : 'var(--color-text-muted)',
       }}>{label}</button>
@@ -112,8 +112,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
               ) : <div className="w-6" />}
               <div className="relative">
                 <button onClick={() => setShowStudentPicker(!showStudentPicker)}
-                  className="px-2.5 py-1 text-xs font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1"
-                  style={{ background: 'var(--color-bg-accent)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}>
+                  style={{ padding: '8px 12px', fontSize: 13, fontWeight: 500, borderRadius: 8, transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: 4, background: 'var(--color-bg-accent)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)', minHeight: 44, cursor: 'pointer' }}>
                   {currentIdx + 1} of {allStudents.length}
                   <svg className="w-3 h-3 opacity-50" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </button>
@@ -125,11 +124,10 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                       allStudents.forEach(s => { if (!grouped[s.school]) grouped[s.school] = []; grouped[s.school].push(s); });
                       return Object.entries(grouped).map(([school, students]) => (
                         <div key={school}>
-                          <div className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>{school}</div>
+                          <div style={{ padding: '8px 12px', fontSize: 12, fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.05em', color: 'var(--color-text-muted)' }}>{school}</div>
                           {students.map(s => (
                             <button key={s.id} onClick={() => { setShowStudentPicker(false); router.push(`/students/${s.id}`); }}
-                              className="w-full text-left px-3 py-1.5 text-sm transition-colors"
-                              style={{ color: s.id === student.id ? 'var(--color-primary)' : 'var(--color-text)', background: s.id === student.id ? 'var(--color-primary-lighter)' : 'transparent' }}>{s.name}</button>
+                              style={{ width: '100%', textAlign: 'left' as const, padding: '10px 12px', fontSize: 15, transition: 'color 0.15s', minHeight: 44, cursor: 'pointer', border: 'none', color: s.id === student.id ? 'var(--color-primary)' : 'var(--color-text)', background: s.id === student.id ? 'var(--color-primary-lighter)' : 'transparent' }}>{s.name}</button>
                           ))}
                         </div>
                       ));
@@ -146,15 +144,15 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
           </div>
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{student.first_name} {student.last_name}</h1>
-              <p className="text-sm mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{student.school?.name || 'Unknown School'}</p>
+              <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--color-text)' }}>{student.first_name} {student.last_name}</h1>
+              <p style={{ fontSize: 15, marginTop: 2, color: 'var(--color-text-muted)' }}>{student.school?.name || 'Unknown School'}</p>
             </div>
             <Link href={`/students/${student.id}/edit`} className="btn-ghost text-sm">Settings</Link>
           </div>
         </div>
 
         {/* Date range bar */}
-        <div className="rounded-lg p-4 mb-6" style={{ background: 'var(--color-bg-accent)', borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))' }}>
+        <div style={{ borderRadius: 10, padding: 16, marginBottom: 24, background: 'var(--color-bg-accent)', borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))' }}>
           <label className="label" htmlFor="date-range-start">{ts ? 'Tour Dates' : 'Date Range'}</label>
           <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
             <input type="date" id="date-range-start" value={startDate} onChange={e => setStartDate(e.target.value)} className="input" style={{ maxWidth: 200, flex: 'none' }} />
@@ -184,7 +182,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
               </button>
             </div>
           </div>
-          <p className="text-xs mt-2" style={{ color: 'var(--color-text-muted)' }}>
+          <p style={{ fontSize: 13, marginTop: 8, color: 'var(--color-text-muted)' }}>
             Showing {gradesInPeriod.length} grade{gradesInPeriod.length !== 1 ? 's' : ''} from {formatDate(startDate)} to {formatDate(endDate)}
           </p>
         </div>
@@ -192,8 +190,8 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         {/* Mobile toggle */}
         <div className="md:hidden mb-4 flex gap-1.5">
           {(['entry', 'summary'] as const).map(v => (
-            <button key={v} onClick={() => setView(v)} className="flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200"
-              style={{
+            <button key={v} onClick={() => setView(v)} style={{
+                flex: 1, padding: '10px 0', fontSize: 15, fontWeight: 500, borderRadius: 8, transition: 'all 0.2s', minHeight: 44, cursor: 'pointer',
                 background: view === v ? 'var(--color-primary)' : 'transparent',
                 color: view === v ? 'var(--color-primary-btn-text)' : 'var(--color-text-muted)',
                 border: view !== v ? '1px solid var(--color-border)' : 'none',

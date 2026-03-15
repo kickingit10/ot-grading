@@ -105,13 +105,13 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
       {/* Row 3: Other skills — full width, always visible */}
       <div style={{ marginBottom: 20 }}>
         <label className="label" htmlFor="grade-other-skills">Other skills observed</label>
-        <span className="text-[10px] block -mt-1.5 mb-1.5" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
+        <span style={{ fontSize: 13, display: 'block', marginTop: -4, marginBottom: 6, color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
         <textarea id="grade-other-skills" tabIndex={5} rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical' }} />
       </div>
 
       {/* Save row */}
       <div className="flex items-center justify-end gap-3">
-        <span className="text-[10px] hidden sm:inline" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter</span>
+        <span style={{ fontSize: 13, color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter</span>
         <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
       </div>
     </form>

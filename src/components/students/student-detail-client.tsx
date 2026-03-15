@@ -112,9 +112,10 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
               ) : <div className="w-6" />}
               <div className="relative">
                 <button onClick={() => setShowStudentPicker(!showStudentPicker)}
-                  className="px-2.5 py-1 text-xs font-medium rounded-lg transition-all duration-200"
-                  style={{ background: 'var(--color-bg-accent)', color: 'var(--color-text-muted)' }}>
+                  className="px-2.5 py-1 text-xs font-medium rounded-lg transition-all duration-200 inline-flex items-center gap-1"
+                  style={{ background: 'var(--color-bg-accent)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}>
                   {currentIdx + 1} of {allStudents.length}
+                  <svg className="w-3 h-3 opacity-50" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </button>
                 {showStudentPicker && (
                   <div className="absolute left-0 top-full mt-1 w-56 max-h-64 overflow-y-auto rounded-xl py-1 z-50 animate-fade-in"
@@ -153,7 +154,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         </div>
 
         {/* Date range bar */}
-        <div className="card mb-6" style={{ borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))' }}>
+        <div className="rounded-lg p-4 mb-6" style={{ background: 'var(--color-bg-accent)', borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))' }}>
           <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1">
               <label className="label" htmlFor="date-range-start">{ts ? 'Tour Dates' : 'Date Range'}</label>
@@ -182,7 +183,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                 </div>
               )}
               <button onClick={handleSaveRange} disabled={savingRange} className="btn-ghost text-sm">{savingRange ? '...' : 'Save range'}</button>
-              <button onClick={handlePrint} className="no-print btn-ghost text-sm flex items-center gap-1.5">
+              <button onClick={handlePrint} className="no-print btn-primary text-sm py-1.5 px-3 flex items-center gap-1.5">
                 <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Print
               </button>
             </div>
@@ -200,7 +201,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                 background: view === v ? 'var(--color-primary)' : 'transparent',
                 color: view === v ? 'var(--color-primary-btn-text)' : 'var(--color-text-muted)',
                 border: view !== v ? '1px solid var(--color-border)' : 'none',
-              }}>{v === 'entry' ? 'Entry' : 'Summary'}</button>
+              }}>{v === 'entry' ? 'Grades' : 'Summary'}</button>
           ))}
         </div>
 

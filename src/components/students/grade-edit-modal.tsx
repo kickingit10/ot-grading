@@ -61,8 +61,8 @@ export function GradeEditModal({ grade, category, categories, studentId, onGrade
       </div>
       <div><label className="label">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
         <input type="number" value={score} onChange={e => setScore(e.target.value)} min="0" className="input" /></div>
-      <div><label className="label">Notes</label><input type="text" value={notes} onChange={e => setNotes(e.target.value)} className="input" /></div>
-      <div><label className="label">Other skills</label><input type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} className="input" /></div>
+      <div><label className="label">Notes</label><textarea rows={2} value={notes} onChange={e => setNotes(e.target.value)} className="input" style={{ resize: 'vertical', minHeight: 60 }} /></div>
+      <div><label className="label">Other skills</label><textarea rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} className="input" style={{ resize: 'vertical', minHeight: 60 }} /></div>
       <div className="flex gap-2">
         <button onClick={handleSave} disabled={loading} className="btn-primary flex-1">{loading ? 'Saving...' : 'Save'}</button>
         <button onClick={onCancel} disabled={loading} className="btn-ghost flex-1">Cancel</button>

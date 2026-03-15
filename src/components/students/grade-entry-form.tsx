@@ -86,10 +86,14 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
         </div>
         <div><label className="label" htmlFor="grade-score">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
           <input id="grade-score" tabIndex={3} type="number" value={score} onChange={e => setScore(e.target.value)} placeholder={selectedCategory?.score_type === 'percentage' ? '0–100' : 'e.g., 12'} step={selectedCategory?.score_type === 'percentage' ? '0.1' : '1'} min="0" className="input" /></div>
-        <div><label className="label" htmlFor="grade-notes">Notes</label><input id="grade-notes" tabIndex={4} type="text" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" /></div>
+        <div><label className="label" htmlFor="grade-notes">Notes</label><textarea id="grade-notes" tabIndex={4} rows={2} value={notes} onChange={e => setNotes(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical', minHeight: 60 }} /></div>
       </div>
       <div className="flex gap-3 items-end">
-        <div className="flex-1"><label className="label" htmlFor="grade-other-skills">Other skills</label><input id="grade-other-skills" tabIndex={5} type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" /></div>
+        <div className="flex-1">
+          <label className="label" htmlFor="grade-other-skills">Other skills observed</label>
+          <span className="text-[10px] block -mt-1 mb-1" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>Additional skills noticed during grading</span>
+          <textarea id="grade-other-skills" tabIndex={5} rows={2} value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" style={{ resize: 'vertical', minHeight: 60 }} />
+        </div>
         <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
       </div>
       <span className="text-[10px] mt-1 block text-center" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter to save</span>

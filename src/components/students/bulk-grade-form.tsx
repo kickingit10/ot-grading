@@ -136,13 +136,13 @@ export function BulkGradeForm({ student, categories, onGradesAdded }: BulkGradeF
                   />
                 </td>
                 <td className="py-2">
-                  <input
-                    type="text"
+                  <textarea
+                    rows={1}
                     value={row.notes}
                     onChange={e => updateRow(idx, 'notes', e.target.value)}
                     placeholder="Optional"
                     className="input"
-                    style={{ padding: '6px 10px', fontSize: 13 }}
+                    style={{ padding: '6px 10px', fontSize: 13, resize: 'vertical' }}
                   />
                 </td>
               </tr>

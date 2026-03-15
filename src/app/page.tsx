@@ -21,7 +21,7 @@ export default async function LandingPage() {
             <span style={{ fontSize: 17, fontWeight: 700, color: 'var(--color-text)', letterSpacing: '-0.01em' }}>OT Tracker</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Link href="/login" style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-text-muted)', minHeight: 44, display: 'inline-flex', alignItems: 'center' }}>Log in</Link>
+            <Link href="/demo" className="btn-primary" style={{ padding: '10px 20px', fontSize: 15 }}>Try the demo</Link>
           </div>
         </div>
       </nav>
@@ -113,7 +113,6 @@ export default async function LandingPage() {
             <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>OT Tracker</span>
           </div>
           <div style={{ display: 'flex', gap: 24, fontSize: 13, color: 'var(--color-text-muted)' }}>
-            <Link href="/login">Log in</Link>
             <Link href="/demo">Demo</Link>
             <Link href="/guide">Guide</Link>
           </div>

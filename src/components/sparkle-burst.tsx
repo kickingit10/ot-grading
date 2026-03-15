@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 interface Particle { id: number; x: number; y: number; char: string; delay: number; }
 
 const CHARS = ['·', '✦', '·', '✧', '·'];
-const TS_CHARS = ['✦', '⭐', '✧', '·', '✦'];
+const TS_CHARS = ['★', '✦', '★', '✧', '★'];
 
 export function SparkleBurst({ active, isTaylorSwift = false }: { active: boolean; isTaylorSwift?: boolean }) {
   const [particles, setParticles] = useState<Particle[]>([]);
@@ -32,7 +32,7 @@ export function SparkleBurst({ active, isTaylorSwift = false }: { active: boolea
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {particles.map((p) => (
         <span key={p.id} className="sparkle-particle text-xs opacity-60"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, animationDelay: `${p.delay}s`, color: isTaylorSwift ? '#d4af37' : '#6366f1' }}>
+          style={{ left: `${p.x}%`, top: `${p.y}%`, animationDelay: `${p.delay}s`, color: isTaylorSwift ? '#CBA863' : 'var(--color-primary)' }}>
           {p.char}
         </span>
       ))}

@@ -49,7 +49,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <Link href="/" className="flex items-center gap-1.5">
-            {isTaylorSwift && isDark ? (
+            {isTaylorSwift ? (
               <span className="text-lg font-semibold ts-gradient-text tracking-tight">OT Tracker</span>
             ) : (
               <span className="text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>OT Tracker</span>

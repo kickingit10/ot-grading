@@ -23,16 +23,20 @@ const ThemeContext = createContext<ThemeContextType>({
 export function useTheme() { return useContext(ThemeContext); }
 
 const TS_SUCCESS_MESSAGES = [
-  "You're doing amazing, sweetie! ✨",
   "Shake it off — grade saved! 💃",
   "This is our song... of progress! 🎵",
-  "Another one in the books 📖",
   "Long story short, it saved! ⭐",
   "We are never ever getting behind on grades! 📝",
   "Welcome to the grading era! 🌟",
-  "Grade saved — it's a love story, baby! 💜",
   "Look what you made me save! ✨",
   "Enchanted by this progress! 🦋",
+  "All too well... graded! 📖",
+  "Begin again... another grade! 🎶",
+  "Fearless grading energy! 💛",
+  "This is a Midnights masterpiece! 🌙",
+  "Anti-hero? More like pro-grader! ⭐",
+  "Blank space? Not anymore! 📝",
+  "Love story: you + grades = 💜",
 ];
 
 export function getRandomTSMessage(): string {

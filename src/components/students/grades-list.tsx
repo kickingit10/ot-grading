@@ -6,6 +6,7 @@ import { formatDate, formatScore } from '@/lib/utils';
 import { GradeEditModal } from './grade-edit-modal';
 import { createClient } from '@/lib/supabase/client';
 import { useToast } from '@/lib/toast';
+import { useTheme } from '@/lib/theme';
 
 interface GradesListProps {
   grades: Grade[]; categories: Category[]; editingGradeId: string | null;
@@ -17,6 +18,7 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
   const [deleting, setDeleting] = useState<string | null>(null);
   const supabase = createClient();
   const { toast } = useToast();
+  const { isTaylorSwift: ts } = useTheme();
 
   const handleDelete = async (gradeId: string) => {
     if (!confirm('Delete this grade?')) return;
@@ -32,10 +34,18 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
   if (grades.length === 0) {
     return (
       <div className="text-center py-10">
-        <svg className="w-8 h-8 mx-auto mb-2" style={{ color: 'var(--color-border)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>No grades in this period</p>
+        {ts ? (
+          <svg className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--color-primary)', opacity: 0.3 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+          </svg>
+        ) : (
+          <svg className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--color-primary)', opacity: 0.2 }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        )}
+        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
+          {ts ? "No grades yet for this era... time to shake it off and start grading! ✨" : "No grades recorded for this date range. Enter one above to get started."}
+        </p>
       </div>
     );
   }

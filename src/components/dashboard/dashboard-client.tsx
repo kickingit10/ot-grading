@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { StudentWithSchool } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
+import { useTheme } from '@/lib/theme';
 
 interface StudentStats { gradeCount: number; lastGradedDate: string | null; }
 interface DashboardClientProps { initialStudents: StudentWithSchool[]; studentStats: Record<string, StudentStats>; }
@@ -16,6 +17,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
   const [schoolFilter, setSchoolFilter] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [showWelcome, setShowWelcome] = useState(false);
+  const { isTaylorSwift: ts } = useTheme();
 
   useEffect(() => { if (!localStorage.getItem(DISMISS_KEY)) setShowWelcome(true); }, []);
 
@@ -46,10 +48,10 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
   const dismissWelcome = () => { setShowWelcome(false); localStorage.setItem(DISMISS_KEY, '1'); };
 
   const statCards = [
-    { label: 'Students', value: initialStudents.length },
-    { label: 'Total grades', value: totalGrades },
-    { label: 'Graded this week', value: gradesThisWeek },
-    { label: 'Last active', value: lastActive ? formatDate(lastActive) : '—' },
+    { label: 'Students', value: initialStudents.length, icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z' },
+    { label: 'Total grades', value: totalGrades, icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+    { label: 'Graded this week', value: gradesThisWeek, icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { label: 'Last active', value: lastActive ? formatDate(lastActive) : '—', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
   ];
 
   return (
@@ -76,7 +78,10 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
           {statCards.map(s => (
             <div key={s.label} className="stat-card">
               <div className="text-xl font-semibold tabular-nums" style={{ color: 'var(--color-text)' }}>{s.value}</div>
-              <div className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{s.label}</div>
+              <div className="text-xs flex items-center gap-1.5" style={{ color: 'var(--color-text-muted)' }}>
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} /></svg>
+                {s.label}
+              </div>
             </div>
           ))}
         </div>
@@ -155,6 +160,11 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
               </div>
             ))
           )}
+        </div>
+
+        {/* Footer */}
+        <div className="text-center pt-8 pb-4" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          Made with {ts ? '🌙' : '💜'} for Kyleigh
         </div>
       </div>
     </div>

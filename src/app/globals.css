@@ -30,36 +30,40 @@
   --color-primary-lighter: rgba(99, 102, 241, 0.12);
 }
 
-/* Taylor Swift — primary override */
+/* Taylor Swift — base overrides (applies to both light and dark) */
 [data-theme="taylor-swift"] {
-  --color-primary: #b8941e;
-  --color-primary-light: #d4af37;
-  --color-primary-lighter: #fef9e7;
-  --color-primary-dark: #997a15;
-  --color-primary-btn-text: #0a0a14;
+  --color-primary: #CBA863;
+  --color-primary-light: #ECD59F;
+  --color-primary-lighter: rgba(203, 168, 99, 0.1);
+  --color-primary-dark: #976F34;
+  --color-primary-btn-text: #121D27;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
 }
 
-/* Taylor Swift dark */
+/* Taylor Swift dark — Midnights era palette */
 [data-theme="taylor-swift"][data-mode="dark"] {
-  --color-bg: #0a0a14;
-  --color-bg-card: #12121e;
-  --color-bg-accent: #1a1a2a;
-  --color-text: #f0e6d3;
-  --color-text-muted: #9ca3af;
-  --color-border: #1f1f30;
-  --color-border-accent: rgba(212, 175, 55, 0.25);
-  --color-primary-lighter: rgba(212, 175, 55, 0.1);
+  --color-bg: #0d1117;
+  --color-bg-card: #151b28;
+  --color-bg-accent: #1c2333;
+  --color-text: #e8e0f0;
+  --color-text-muted: #8b8fa8;
+  --color-border: #232b3d;
+  --color-border-accent: rgba(203, 168, 99, 0.3);
+  --color-primary-lighter: rgba(203, 168, 99, 0.08);
 }
 
-/* Taylor Swift light */
+/* Taylor Swift light — Lover era palette */
 [data-theme="taylor-swift"][data-mode="light"] {
-  --color-bg: #fdf8f0;
+  --color-bg: #faf5ff;
   --color-bg-card: #ffffff;
-  --color-bg-accent: #fef3e2;
+  --color-bg-accent: #f3ecff;
   --color-text: #2d1b4e;
-  --color-text-muted: #8b7355;
-  --color-border: #e8dcc8;
-  --color-border-accent: #d4af37;
+  --color-text-muted: #7c6a9a;
+  --color-border: #e8daf0;
+  --color-border-accent: #CBA863;
+  --color-primary-lighter: rgba(203, 168, 99, 0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -74,6 +78,35 @@ body {
 }
 
 button, input, select, textarea { font-family: inherit; }
+
+/* Midnights star field */
+[data-theme="taylor-swift"][data-mode="dark"] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(203,168,99,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 60%, rgba(203,168,99,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 15%, rgba(232,224,240,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 75%, rgba(203,168,99,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 35%, rgba(232,224,240,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 55%, rgba(203,168,99,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 85%, rgba(232,224,240,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 10%, rgba(203,168,99,0.2) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 45%, rgba(232,224,240,0.15) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 90%, rgba(203,168,99,0.2) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Page enter transition */
+main {
+  animation: page-enter 0.2s ease-out;
+}
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* Consistent card */
 .card {
@@ -163,20 +196,31 @@ select.input {
   margin-bottom: 16px;
 }
 
-/* Small card variant (for stats, student cards) */
+/* Small card variant (student cards, etc.) */
 .card-sm {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 16px 20px;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 [data-mode="light"] .card-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 .card-sm:hover {
   border-color: var(--color-primary-light);
+  transform: translateY(-1px);
 }
-[data-mode="light"] .card-sm:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-[data-mode="dark"] .card-sm:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+[data-mode="light"] .card-sm:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+[data-mode="dark"] .card-sm:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+
+/* TS card hover glow */
+[data-theme="taylor-swift"][data-mode="dark"] .card-sm:hover {
+  border-color: rgba(203, 168, 99, 0.4);
+  box-shadow: 0 0 20px rgba(203, 168, 99, 0.08), 0 2px 12px rgba(0,0,0,0.3);
+}
+[data-theme="taylor-swift"][data-mode="light"] .card-sm:hover {
+  border-color: rgba(203, 168, 99, 0.5);
+  box-shadow: 0 0 15px rgba(203, 168, 99, 0.06), 0 2px 8px rgba(0,0,0,0.05);
+}
 
 /* Stat card with top accent */
 .stat-card {
@@ -219,7 +263,7 @@ select.input {
 }
 .hover-row:hover { background: var(--color-bg-accent); }
 
-/* Sparkle animation */
+/* Animations */
 @keyframes sparkle-float {
   0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
   100% { transform: translateY(-60px) scale(0) rotate(120deg); opacity: 0; }
@@ -227,37 +271,44 @@ select.input {
 @keyframes progress-fill { from { width: 0; } }
 @keyframes slide-in { from { transform: translateY(-8px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gradient-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 
 .sparkle-particle { animation: sparkle-float 0.8s ease-out forwards; pointer-events: none; position: absolute; }
 .animate-progress-fill { animation: progress-fill 0.6s ease-out; }
 .animate-slide-in { animation: slide-in 0.2s ease-out; }
 .animate-fade-in { animation: fade-in 0.3s ease-out; }
 
-/* TS gradient text */
-[data-theme="taylor-swift"][data-mode="dark"] .ts-gradient-text {
-  background: linear-gradient(135deg, #d4af37, #f4c2c2, #d4af37);
-  background-size: 200% 200%;
+/* TS gradient text — gold-to-lavender shimmer */
+[data-theme="taylor-swift"] .ts-gradient-text {
+  background: linear-gradient(135deg, #CBA863, #b8acd1, #ECD59F, #e2d5f1);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradient-shimmer 6s ease-in-out infinite;
 }
 
-/* TS bracelet tag */
+/* TS bracelet tag — authentic friendship bracelet feel */
 [data-theme="taylor-swift"] .ts-bracelet-tag {
-  background: var(--color-primary-lighter);
+  background: linear-gradient(135deg, var(--color-primary-lighter), rgba(184,172,209,0.1));
   border: 1px solid var(--color-border-accent);
   border-radius: 9999px;
   padding: 2px 10px;
   font-size: 0.7rem;
   color: var(--color-primary);
-  letter-spacing: 0.05em;
-  font-weight: 500;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 /* Print styles */
 @media print {
   nav, .no-print, button:not(.print-keep), .md\:hidden { display: none !important; }
   body { background: white !important; color: black !important; font-size: 12pt; }
+  body::before { display: none !important; }
   .print-area { break-inside: avoid; }
-  * { box-shadow: none !important; }
+  * { box-shadow: none !important; animation: none !important; }
 }

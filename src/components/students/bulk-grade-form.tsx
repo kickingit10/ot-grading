@@ -108,17 +108,17 @@ export function BulkGradeForm({ student, categories, onGradesAdded }: BulkGradeF
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              <th className="text-left text-xs font-medium pb-2" style={{ color: 'var(--color-text-muted)', width: '40%' }}>Category</th>
-              <th className="text-left text-xs font-medium pb-2" style={{ color: 'var(--color-text-muted)', width: '25%' }}>Score</th>
-              <th className="text-left text-xs font-medium pb-2" style={{ color: 'var(--color-text-muted)', width: '35%' }}>Notes</th>
+              <th style={{ textAlign: 'left' as const, fontSize: 13, fontWeight: 500, paddingBottom: 8, color: 'var(--color-text-muted)', width: '40%' }}>Category</th>
+              <th style={{ textAlign: 'left' as const, fontSize: 13, fontWeight: 500, paddingBottom: 8, color: 'var(--color-text-muted)', width: '25%' }}>Score</th>
+              <th style={{ textAlign: 'left' as const, fontSize: 13, fontWeight: 500, paddingBottom: 8, color: 'var(--color-text-muted)', width: '35%' }}>Notes</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((row, idx) => (
               <tr key={row.categoryId} style={{ borderBottom: '1px solid var(--color-border)' }}>
                 <td className="py-2 pr-3">
-                  <span className="text-sm" style={{ color: 'var(--color-text)' }}>{row.categoryName}</span>
-                  <span className="text-[10px] ml-1.5" style={{ color: 'var(--color-text-muted)' }}>
+                  <span style={{ fontSize: 15, color: 'var(--color-text)' }}>{row.categoryName}</span>
+                  <span style={{ fontSize: 12, marginLeft: 6, color: 'var(--color-text-muted)' }}>
                     ({row.scoreType === 'percentage' ? '0–100' : 'WPM'})
                   </span>
                 </td>
@@ -132,7 +132,7 @@ export function BulkGradeForm({ student, categories, onGradesAdded }: BulkGradeF
                     step={row.scoreType === 'percentage' ? '0.1' : '1'}
                     min="0"
                     className="input"
-                    style={{ padding: '6px 10px', fontSize: 13 }}
+                    style={{ padding: '10px 14px', fontSize: 15, minHeight: 44 }}
                   />
                 </td>
                 <td className="py-2">
@@ -142,7 +142,7 @@ export function BulkGradeForm({ student, categories, onGradesAdded }: BulkGradeF
                     onChange={e => updateRow(idx, 'notes', e.target.value)}
                     placeholder="Optional"
                     className="input"
-                    style={{ padding: '6px 10px', fontSize: 13, resize: 'vertical' }}
+                    style={{ padding: '10px 14px', fontSize: 15, minHeight: 44, resize: 'vertical' }}
                   />
                 </td>
               </tr>
@@ -153,11 +153,11 @@ export function BulkGradeForm({ student, categories, onGradesAdded }: BulkGradeF
 
       {/* Footer */}
       <div className="flex items-center justify-between mt-4">
-        <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+        <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
           {filledCount} of {rows.length} categories filled
         </span>
         <div className="flex items-center gap-3">
-          <span className="text-[10px]" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Shift+Enter</span>
+          <span style={{ fontSize: 13, color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Shift+Enter</span>
           <button id="bulk-save-btn" type="submit" disabled={loading || filledCount === 0} className="btn-primary whitespace-nowrap">
             {loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? `Drop ${filledCount} tracks 🎤` : `Save ${filledCount} grades`)}
           </button>

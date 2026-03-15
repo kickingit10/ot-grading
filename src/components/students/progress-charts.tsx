@@ -49,24 +49,24 @@ export function ProgressCharts({ grades, categories }: ProgressChartsProps) {
     });
 
   if (charted.length === 0) {
-    return <div className="text-center py-8"><p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Need at least 2 grades in a category to show progress</p></div>;
+    return <div className="text-center py-8"><p style={{ fontSize: 15, color: 'var(--color-text-muted)' }}>Need at least 2 grades in a category to show progress</p></div>;
   }
 
   return (
     <div className="space-y-5">
       {charted.map(({ cat, cg, points, trend }) => (
-        <div key={cat.id} className="p-4 rounded-lg" style={{ border: '1px solid var(--color-border)' }}>
+        <div key={cat.id} style={{ padding: 16, borderRadius: 10, border: '1px solid var(--color-border)' }}>
           <div className="flex justify-between items-center mb-2">
-            <span className="text-xs font-medium" style={{ color: 'var(--color-text)' }}>{cat.name}</span>
+            <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--color-text)' }}>{cat.name}</span>
             <div className="flex items-center gap-2">
-              <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>{formatScore(cg[cg.length - 1].score, cat.score_type)}</span>
-              <span className="text-xs font-medium" style={{ color: trend === '↑' ? 'var(--color-success)' : trend === '↓' ? 'var(--color-error)' : 'var(--color-text-muted)' }}>{trend}</span>
+              <span style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{formatScore(cg[cg.length - 1].score, cat.score_type)}</span>
+              <span style={{ fontSize: 13, fontWeight: 500, color: trend === '↑' ? 'var(--color-success)' : trend === '↓' ? 'var(--color-error)' : 'var(--color-text-muted)' }}>{trend}</span>
             </div>
           </div>
           <SparklineSVG points={points} />
           <div className="flex justify-between mt-1">
-            <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>{formatDate(cg[0].graded_at)}</span>
-            <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>{formatDate(cg[cg.length - 1].graded_at)}</span>
+            <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{formatDate(cg[0].graded_at)}</span>
+            <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{formatDate(cg[cg.length - 1].graded_at)}</span>
           </div>
         </div>
       ))}

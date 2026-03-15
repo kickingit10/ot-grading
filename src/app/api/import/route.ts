@@ -20,6 +20,11 @@ interface ImportStudent {
 }
 
 export async function POST(request: NextRequest) {
+  // Only allow in development
+  if (process.env.NODE_ENV !== 'development') {
+    return NextResponse.json({ error: 'This endpoint is disabled in production' }, { status: 403 });
+  }
+
   const supabase = await createClient();
 
   // Check auth

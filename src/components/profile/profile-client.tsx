@@ -17,6 +17,11 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordLoading, setPasswordLoading] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
   const router = useRouter();
   const supabase = createClient();
   const { setTheme: setAppTheme, isTaylorSwift } = useTheme();
@@ -166,6 +171,125 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
             }`}
           >
             {loading ? 'Saving...' : isTaylorSwift ? '⭐ Save Profile' : '💾 Save Profile'}
+          </button>
+        </form>
+      </div>
+
+      {/* Change Password */}
+      <div className={`border-t pt-8 ${isTaylorSwift ? 'border-[#2e2e4a]' : ''}`}>
+        <h2 className={`text-2xl font-bold mb-6 ${
+          isTaylorSwift ? 'text-[#f0e6d3]' : 'text-gray-900'
+        }`}>Change Password</h2>
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          setPasswordError(null);
+
+          if (newPassword.length < 6) {
+            setPasswordError('Password must be at least 6 characters');
+            return;
+          }
+          if (newPassword !== confirmPassword) {
+            setPasswordError('Passwords do not match');
+            return;
+          }
+
+          setPasswordLoading(true);
+          try {
+            const { error: updateError } = await supabase.auth.updateUser({
+              password: newPassword,
+            });
+            if (updateError) {
+              setPasswordError(updateError.message);
+            } else {
+              setPasswordSuccess(true);
+              setNewPassword('');
+              setConfirmPassword('');
+              setTimeout(() => setPasswordSuccess(false), 3000);
+            }
+          } catch {
+            setPasswordError('An unexpected error occurred');
+          } finally {
+            setPasswordLoading(false);
+          }
+        }} className="space-y-4">
+          {passwordError && (
+            <div className={`p-4 rounded-lg border ${
+              isTaylorSwift
+                ? 'bg-red-900/30 border-red-800'
+                : 'bg-red-50 border-red-200'
+            }`}>
+              <p className={`text-sm ${isTaylorSwift ? 'text-red-300' : 'text-red-700'}`}>{passwordError}</p>
+            </div>
+          )}
+
+          {passwordSuccess && (
+            <div className={`p-4 rounded-lg border animate-slide-in ${
+              isTaylorSwift
+                ? 'bg-[#d4af37]/20 border-[#d4af37]/40'
+                : 'bg-green-50 border-green-200'
+            }`}>
+              <p className={`text-sm ${
+                isTaylorSwift ? 'text-[#d4af37]' : 'text-green-700'
+              }`}>
+                {isTaylorSwift ? '⭐ Password updated!' : '✨ Password updated!'}
+              </p>
+            </div>
+          )}
+
+          <div>
+            <label htmlFor="newPassword" className={`block text-sm font-medium mb-1 ${
+              isTaylorSwift ? 'text-[#b0a090]' : 'text-gray-700'
+            }`}>
+              New Password
+            </label>
+            <input
+              id="newPassword"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              minLength={6}
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                isTaylorSwift
+                  ? 'bg-[#2a1a3e] border-[#4a0e4e] text-[#f0e6d3] focus:ring-[#d4af37]'
+                  : 'border-gray-300 focus:ring-purple-500'
+              }`}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className={`block text-sm font-medium mb-1 ${
+              isTaylorSwift ? 'text-[#b0a090]' : 'text-gray-700'
+            }`}>
+              Confirm New Password
+            </label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="••••••••"
+              required
+              minLength={6}
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                isTaylorSwift
+                  ? 'bg-[#2a1a3e] border-[#4a0e4e] text-[#f0e6d3] focus:ring-[#d4af37]'
+                  : 'border-gray-300 focus:ring-purple-500'
+              }`}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={passwordLoading}
+            className={`w-full py-2 px-4 font-semibold rounded-lg disabled:opacity-50 transition-all ${
+              isTaylorSwift
+                ? 'bg-gradient-to-r from-[#d4af37] to-[#f4c2c2] text-[#1a1a2e] hover:from-[#e6c84d] hover:to-[#f8d4d4]'
+                : 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600'
+            }`}
+          >
+            {passwordLoading ? 'Updating...' : '🔒 Update Password'}
           </button>
         </form>
       </div>

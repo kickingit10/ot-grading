@@ -36,7 +36,7 @@ function DemoNavbar() {
                 <path d="M9 14l2 2 4-4" />
               </svg>
               {isTaylorSwift ? (
-                <span className="ts-gradient-text" style={{ fontSize: 18, fontWeight: 700 }}>OT Tracker</span>
+                <span className="ts-gradient-text" style={{ fontSize: 18, fontWeight: 700 }}>OT Tracker <span style={{ fontSize: 11, fontWeight: 400, opacity: 0.7 }}>(Taylor&#39;s Version)</span></span>
               ) : (
                 <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--color-primary-surface, var(--color-primary))' }}>OT Tracker</span>
               )}
@@ -45,6 +45,7 @@ function DemoNavbar() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <Link href="/demo/reports" style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-text-muted)', textDecoration: 'none' }}>Reports</Link>
             {isTaylorSwift && (
               <select value={era} onChange={e => setEra(e.target.value as EraName)}
                 className="input" style={{ width: 'auto', minWidth: 120, fontSize: 13, padding: '4px 32px 4px 10px', minHeight: 32 }}>

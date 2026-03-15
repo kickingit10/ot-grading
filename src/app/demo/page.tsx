@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { formatDate } from '@/lib/utils';
 import { useTheme } from '@/lib/theme';
+import { useToast } from '@/lib/toast';
 import { DEMO_STUDENTS, DEMO_CATEGORIES, generateDemoGrades } from './mock-data';
 
 export default function DemoDashboard() {
@@ -11,6 +12,7 @@ export default function DemoDashboard() {
   const [schoolFilter, setSchoolFilter] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const { isTaylorSwift: ts } = useTheme();
+  const { toast } = useToast();
 
   const allGrades = useMemo(() => generateDemoGrades(), []);
 
@@ -91,7 +93,8 @@ export default function DemoDashboard() {
         {/* Search */}
         <div className="flex" style={{ gap: 16, marginBottom: 32 }}>
           <input type="text" placeholder={ts ? 'Find your Swiftie...' : 'Search students...'} value={searchTerm} onChange={e => setSearchTerm(e.target.value)}
-            className="input" style={{ paddingLeft: 16 }} />
+            className="input" style={{ paddingLeft: 16, flex: 1 }} />
+          <button className="btn-ghost" style={{ fontSize: 14, whiteSpace: 'nowrap' as const }} onClick={() => toast('No archived students in demo')}>Show archived</button>
         </div>
 
         {/* Student list */}
@@ -110,7 +113,10 @@ export default function DemoDashboard() {
                     const stats = studentStats[student.id];
                     return (
                       <Link key={student.id} href={`/demo/${student.id}`} className="card-sm block">
-                        <h3 style={{ fontWeight: 500, marginBottom: 8, color: 'var(--color-text)' }}>{student.first_name} {student.last_name}</h3>
+                        <h3 style={{ fontWeight: 500, marginBottom: 8, color: 'var(--color-text)' }}>
+                          {student.first_name} {student.last_name}
+                          {ts && stats?.gradeCount === 13 && <span className="ts-bracelet-tag" style={{ fontSize: 9, marginLeft: 6 }}>13 ✨</span>}
+                        </h3>
                         <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8, fontSize: 15, color: 'var(--color-text-muted)' }}>
                           <div className="flex justify-between"><span>Grades</span><span style={{ fontWeight: 500, color: 'var(--color-text)' }}>{stats?.gradeCount || 0}</span></div>
                           <div className="flex justify-between"><span>Last graded</span><span style={{ fontWeight: 500, color: 'var(--color-text)' }}>{stats?.lastGradedDate ? formatDate(stats.lastGradedDate) : 'Never'}</span></div>

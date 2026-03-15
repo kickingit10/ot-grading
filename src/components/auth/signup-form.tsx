@@ -33,19 +33,9 @@ export function SignupForm() {
       if (authError) {
         setError(authError.message);
       } else if (data.user) {
-        // Create profile (via database trigger or manual insert)
-        const { error: profileError } = await supabase.from('profiles').insert({
-          id: data.user.id,
-          full_name: fullName,
-          email,
-          theme: 'light',
-        });
-
-        if (profileError && !profileError.message.includes('duplicate')) {
-          setError(profileError.message);
-        } else {
-          router.push('/');
-        }
+        // Profile is auto-created by the handle_new_user DB trigger
+        // full_name is passed via raw_user_meta_data above
+        router.push('/');
       }
     } catch (err) {
       setError('An unexpected error occurred');

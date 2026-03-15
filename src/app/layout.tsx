@@ -24,7 +24,26 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `
+          (function() {
+            try {
+              var theme = localStorage.getItem('ot-theme') || 'default';
+              var mode = localStorage.getItem('ot-color-mode') || 'light';
+              var era = localStorage.getItem('ot-era') || 'lover';
+              if (mode === 'system') {
+                mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+              }
+              document.documentElement.setAttribute('data-theme', theme);
+              document.documentElement.setAttribute('data-mode', mode);
+              if (theme === 'taylor-swift') {
+                document.documentElement.setAttribute('data-era', era);
+              }
+            } catch(e) {}
+          })();
+        `}} />
+      </head>
       <body className={`${inter.variable} antialiased`}>
         <ThemeProvider>
           <ToastProvider>

@@ -49,6 +49,7 @@ export function getRandomTSMessage(): string {
 
 const COLOR_MODE_KEY = 'ot-color-mode';
 const ERA_KEY = 'ot-era';
+const THEME_KEY = 'ot-theme';
 const VALID_ERAS: EraName[] = ['lover', 'fearless', 'speakNow', 'red', 'folklore', 'evermore', 'midnights', 'reputation', '1989', 'torturedPoets'];
 
 function resolveMode(mode: ColorMode): 'light' | 'dark' {
@@ -69,19 +70,30 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   // Load profile theme + era
   useEffect(() => {
+    // Instant hydration from localStorage
+    const savedTheme = localStorage.getItem(THEME_KEY) as ThemeName | null;
+    if (savedTheme && ['default', 'taylor-swift'].includes(savedTheme)) setThemeState(savedTheme);
+
+    const savedEra = localStorage.getItem(ERA_KEY) as EraName | null;
+    if (savedEra && VALID_ERAS.includes(savedEra)) setEraState(savedEra);
+
+    // Then confirm from Supabase (handles if user changed on another device)
     const loadTheme = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
           const { data: profile } = await supabase.from('profiles').select('theme, era').eq('id', user.id).single();
-          if (profile?.theme === 'taylor-swift') setThemeState('taylor-swift');
-          if (profile?.era && VALID_ERAS.includes(profile.era as EraName)) setEraState(profile.era as EraName);
+          if (profile?.theme) {
+            setThemeState(profile.theme as ThemeName);
+            localStorage.setItem(THEME_KEY, profile.theme);
+          }
+          if (profile?.era && VALID_ERAS.includes(profile.era as EraName)) {
+            setEraState(profile.era as EraName);
+            localStorage.setItem(ERA_KEY, profile.era);
+          }
         }
       } catch { /* no session */ }
     };
-    // Load era from localStorage first for instant hydration
-    const savedEra = localStorage.getItem(ERA_KEY) as EraName | null;
-    if (savedEra && VALID_ERAS.includes(savedEra)) setEraState(savedEra);
     loadTheme();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -114,7 +126,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [theme, resolvedMode, era]);
 
-  const setTheme = useCallback((t: ThemeName) => setThemeState(t), []);
+  const setTheme = useCallback((t: ThemeName) => { setThemeState(t); localStorage.setItem(THEME_KEY, t); }, []);
   const setColorMode = useCallback((m: ColorMode) => {
     setColorModeState(m);
     localStorage.setItem(COLOR_MODE_KEY, m);

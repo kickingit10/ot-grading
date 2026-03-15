@@ -86,7 +86,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
             <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
             {ts && <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
           </div>
-          <Link href="/students/new" className="btn-primary text-sm">{ts ? 'New Era ✦' : 'Add student'}</Link>
+          <Link href="/students/new" className="btn-primary text-sm">{ts ? 'New Swiftie ✦' : 'Add student'}</Link>
         </div>
 
         {ts && (

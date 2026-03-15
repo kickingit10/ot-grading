@@ -397,17 +397,18 @@ select.input {
   background: transparent; color: var(--color-text-muted); cursor: pointer; transition: all var(--duration-fast);
 }
 .chip:hover { background: var(--color-bg-accent); color: var(--color-text); }
-.chip-active { background: var(--color-primary); color: var(--color-primary-btn-text); border-color: var(--color-primary); }
-.chip-active:hover { opacity: 0.9; }
+.chip-active, .chip-active:hover { background: var(--color-primary); color: var(--color-primary-btn-text); border-color: var(--color-primary); }
+.chip-active:hover { filter: brightness(1.1); }
 
 [data-theme="taylor-swift"][data-mode="light"] .chip { background: rgba(255,255,255,0.5); }
 [data-theme="taylor-swift"][data-mode="light"] .chip:hover { background: rgba(255,255,255,0.7); }
-[data-theme="taylor-swift"][data-mode="light"] .chip-active {
+[data-theme="taylor-swift"][data-mode="light"] .chip-active,
+[data-theme="taylor-swift"][data-mode="light"] .chip-active:hover {
   background: linear-gradient(135deg, var(--color-primary-surface, var(--color-primary)), var(--color-primary-light));
   border-color: transparent; color: var(--color-primary-btn-text); font-weight: 600;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm); opacity: 1;
 }
-[data-theme="taylor-swift"][data-mode="light"] .chip-active:hover { opacity: 1; filter: brightness(1.05); }
+[data-theme="taylor-swift"][data-mode="light"] .chip-active:hover { filter: brightness(1.05); }
 
 .hover-row { border-radius: 8px; padding: 12px; margin: 0 -12px; transition: background-color var(--duration-fast); }
 .hover-row:hover { background: var(--color-bg-accent); }

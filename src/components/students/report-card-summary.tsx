@@ -29,8 +29,8 @@ export function ReportCardSummary({ grades, categories }: ReportCardSummaryProps
       {withData.map(stat => (
         <div key={stat.category.id} className="p-4 rounded-lg" style={{ background: 'var(--color-bg-accent)', border: '1px solid var(--color-border)' }}>
           <div className="flex justify-between items-start mb-1.5">
-            <span className="text-xs font-medium" style={{ color: 'var(--color-text)' }}>
-              {ts ? <span className="ts-bracelet-tag">{stat.category.name}</span> : stat.category.name}
+            <span className="text-xs font-medium" style={{ color: 'var(--color-text)', minWidth: 0, wordBreak: 'break-word' as const }}>
+              {ts ? <span className="ts-bracelet-tag" style={{ fontSize: '0.6rem', padding: '1px 6px', whiteSpace: 'nowrap' }}>{stat.category.name}</span> : stat.category.name}
             </span>
             <div className="text-right">
               <div className="text-lg font-semibold tabular-nums" style={{ color: 'var(--color-primary)' }}>

@@ -98,7 +98,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-2.5 mb-5">
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {statCards.map(s => (
             <div key={s.label} className="stat-card">
               <div className="text-xl font-semibold tabular-nums" style={{ color: 'var(--color-text)' }}>{s.value}</div>
@@ -111,7 +111,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         </div>
 
         {/* School filter chips */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-3 mb-6">
           <button onClick={() => setSchoolFilter(null)}
             className={`chip ${!schoolFilter ? 'chip-active' : ''}`}>
             All ({initialStudents.length})
@@ -129,7 +129,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         </div>
 
         {/* Search */}
-        <div className="mb-5 flex gap-3">
+        <div className="mb-8 flex gap-4">
           <div className="relative flex-1">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" aria-hidden="true" style={{ color: 'var(--color-text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -165,7 +165,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
                   {schoolName} ({students.length})
                 </button>
                 {!collapsed[schoolName] && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {students.map(student => {
                       const stats = studentStats[student.id];
                       return (

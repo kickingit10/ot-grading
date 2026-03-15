@@ -245,7 +245,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
           </div>
 
           <div className={`md:col-span-1 ${view === 'entry' ? 'hidden md:block' : ''}`}>
-            <div className="card sticky top-20 print-area">
+            <div className="card sticky top-20 print-area" style={{ minWidth: 0, overflow: 'hidden' }}>
               <div className="section-header">{ts ? 'Album Notes' : 'Report Card'}</div>
               <ReportCardSummary grades={gradesInPeriod} categories={categories} periodName={`${formatDate(startDate)} – ${formatDate(endDate)}`} />
             </div>

@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   const publicRoutes = ['/login', '/signup', '/forgot-password', '/reset-password']
 
   // Check if the current route is public
-  const isPublicRoute = pathname === '/' || publicRoutes.some((route) => pathname.startsWith(route))
+  const isPublicRoute = pathname === '/' || pathname.startsWith('/demo') || publicRoutes.some((route) => pathname.startsWith(route))
 
   // If it's a public route, allow the request
   if (isPublicRoute) {

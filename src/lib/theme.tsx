@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
 type ThemeName = 'default' | 'taylor-swift';
@@ -64,7 +64,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [colorMode, setColorModeState] = useState<ColorMode>('light');
   const [resolvedMode, setResolvedMode] = useState<'light' | 'dark'>('light');
   const [era, setEraState] = useState<EraName>('lover');
-  const supabase = createClient();
+  const supabaseRef = useRef(createClient());
+  const supabase = supabaseRef.current;
 
   // Load profile theme + era
   useEffect(() => {
@@ -82,7 +83,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const savedEra = localStorage.getItem(ERA_KEY) as EraName | null;
     if (savedEra && VALID_ERAS.includes(savedEra)) setEraState(savedEra);
     loadTheme();
-  }, [supabase]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Load color mode
   useEffect(() => {

@@ -305,7 +305,7 @@ main { animation: page-enter 0.2s ease-out; }
 /* TS Light: frosted glass cards (all eras) */
 [data-theme="taylor-swift"][data-mode="light"] .card {
   background: rgba(255,255,255,0.75); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-sm); will-change: transform;
 }
 
 .input {
@@ -371,7 +371,7 @@ select.input {
 [data-mode="dark"] .card-sm:hover { box-shadow: var(--shadow-md); }
 
 [data-theme="taylor-swift"][data-mode="light"] .card-sm {
-  background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.85);
   box-shadow: var(--shadow-sm);
 }
 [data-theme="taylor-swift"][data-mode="light"] .card-sm:hover {

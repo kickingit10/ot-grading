@@ -77,9 +77,9 @@ export function Navbar() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <Link href="/reports" className="text-sm font-medium transition-colors hidden sm:inline-block" style={{ color: 'var(--color-text-muted)' }}>Reports</Link>
-            <Link href="/guide" aria-label="Help" className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium border transition-all duration-200"
-              style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>?</Link>
+            <Link href="/reports" className="hidden sm:inline-block transition-colors" style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-text-muted)' }}>Reports</Link>
+            <Link href="/guide" aria-label="Help" className="rounded-full flex items-center justify-center text-xs font-medium border transition-all duration-200"
+              style={{ width: 44, height: 44, minWidth: 44, borderColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}>?</Link>
 
             <div className="relative">
               <button onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}

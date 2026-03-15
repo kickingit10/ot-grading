@@ -84,8 +84,8 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         <div className="flex justify-between items-start mb-6">
           <div className="flex items-center gap-3">
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
-              {ts && <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
+              <h1 style={{ fontSize: 28, fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
+              {ts && <p style={{ fontSize: 13, marginTop: 2, color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
             </div>
             {ts && (
               <select value={era} onChange={e => setEra(e.target.value as EraName)}
@@ -98,12 +98,12 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4" style={{ gap: 16, marginBottom: 32 }}>
+        <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4" style={{ gap: 24, marginBottom: 32 }}>
           {statCards.map(s => (
             <div key={s.label} className="stat-card">
-              <div className="text-xl font-semibold tabular-nums" style={{ color: 'var(--color-text)' }}>{s.value}</div>
-              <div className="text-xs flex items-center gap-1.5" style={{ color: 'var(--color-text-muted)' }}>
-                <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} /></svg>
+              <div style={{ fontSize: 20, fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: 'var(--color-text)' }}>{s.value}</div>
+              <div style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--color-text-muted)' }}>
+                <svg style={{ width: 14, height: 14, flexShrink: 0 }} aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} /></svg>
                 {s.label}
               </div>
             </div>
@@ -171,11 +171,11 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
                       return (
                         <Link key={student.id} href={`/students/${student.id}`}
                           className="card-sm block">
-                          <h3 className="font-medium mb-2" style={{ color: 'var(--color-text)' }}>
+                          <h3 style={{ fontWeight: 500, marginBottom: 8, color: 'var(--color-text)' }}>
                             {student.first_name} {student.last_name}
                             {ts && stats?.gradeCount === 13 && <span className="ts-bracelet-tag" style={{ fontSize: 9, marginLeft: 6 }}>13 ✨</span>}
                           </h3>
-                          <div className="space-y-1.5 text-sm" style={{ color: 'var(--color-text-muted)' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column' as const, gap: 8, fontSize: 15, color: 'var(--color-text-muted)' }}>
                             <div className="flex justify-between"><span>Grades</span><span className="font-medium" style={{ color: 'var(--color-text)' }}>{stats?.gradeCount || 0}</span></div>
                             <div className="flex justify-between"><span>Last graded</span><span className="font-medium" style={{ color: 'var(--color-text)' }}>{stats?.lastGradedDate ? formatDate(stats.lastGradedDate) : 'Never'}</span></div>
                           </div>
@@ -191,13 +191,13 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
 
         {/* Footer */}
         {ts ? (
-          <div className="text-center pt-12 pb-6" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          <div className="text-center pt-12 pb-6" style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
             <span>Made with 🌙 for Kyleigh</span>
             <br />
             <span className="ts-bracelet-tag" style={{ display: 'inline-block', marginTop: 6 }}>LONG LIVE THE GRADES</span>
           </div>
         ) : (
-          <div className="text-center pt-12 pb-6" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          <div className="text-center pt-12 pb-6" style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>
             Made with 💜 for Kyleigh
           </div>
         )}

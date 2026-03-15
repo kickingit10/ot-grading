@@ -50,7 +50,7 @@ export function Navbar() {
         <div className="flex justify-between items-center h-14">
           <Link href="/" className="flex items-center gap-1.5">
             {isTaylorSwift ? (
-              <span className="text-lg font-semibold ts-gradient-text tracking-tight">OT Tracker</span>
+              <span className="text-lg font-semibold ts-gradient-text tracking-tight">OT Tracker <span className="text-xs font-normal" style={{ opacity: 0.7 }}>(Taylor&#39;s Version)</span></span>
             ) : (
               <span className="text-lg font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>OT Tracker</span>
             )}

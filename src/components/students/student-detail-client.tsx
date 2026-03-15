@@ -136,7 +136,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         <div className="card mb-6" style={{ borderLeft: '3px solid var(--color-primary)' }}>
           <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1">
-              <label className="label">Date Range</label>
+              <label className="label">{ts ? 'Tour Dates' : 'Date Range'}</label>
               <div className="flex items-center gap-2">
                 <input type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="input" style={{ width: 150 }} />
                 <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>to</span>
@@ -189,13 +189,13 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
           <div className={`md:col-span-2 ${view === 'summary' ? 'hidden md:block' : ''}`}>
             <div className="space-y-6">
               <div className="card">
-                <div className="section-header">New Grade</div>
+                <div className="section-header">{ts ? 'New Track ♪' : 'New Grade'}</div>
                 <GradeEntryForm student={student} categories={categories} onGradeAdded={handleGradeAdded} />
               </div>
 
               <div className="card">
                 <div className="flex items-center justify-between mb-4">
-                  <div className="flex gap-1">{tabBtn('grades', `Grades (${gradesInPeriod.length})`)}{tabBtn('progress', 'Progress')}</div>
+                  <div className="flex gap-1">{tabBtn('grades', ts ? `Tracklist (${gradesInPeriod.length})` : `Grades (${gradesInPeriod.length})`)}{tabBtn('progress', ts ? 'The Eras' : 'Progress')}</div>
                 </div>
                 {tab === 'grades' ? (
                   <GradesList grades={gradesInPeriod} categories={categories} editingGradeId={editingGradeId}
@@ -209,7 +209,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
 
           <div className={`md:col-span-1 ${view === 'entry' ? 'hidden md:block' : ''}`}>
             <div className="card sticky top-20 print-area">
-              <div className="section-header">Report Card</div>
+              <div className="section-header">{ts ? 'Album Notes' : 'Report Card'}</div>
               <ReportCardSummary grades={gradesInPeriod} categories={categories} periodName={`${formatDate(startDate)} – ${formatDate(endDate)}`} />
             </div>
           </div>

@@ -55,6 +55,9 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
               <option value="default">Default</option>
               <option value="taylor-swift">Eras Tour</option>
             </select>
+            {isTaylorSwift && (
+              <p className="text-xs mt-2" style={{ color: 'var(--color-primary)' }}>🌙 Midnights mode active — Long live the grading era</p>
+            )}
           </div>
           <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Saving...' : 'Save profile'}</button>
         </form>

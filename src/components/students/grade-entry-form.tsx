@@ -77,7 +77,7 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
       </div>
       <div className="flex gap-3 items-end">
         <div className="flex-1"><label className="label">Other skills</label><input tabIndex={5} type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" /></div>
-        <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? 'Saving...' : 'Save grade'}</button>
+        <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
       </div>
     </form>
   );

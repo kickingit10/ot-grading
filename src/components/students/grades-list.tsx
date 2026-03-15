@@ -31,7 +31,16 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
     finally { setDeleting(null); }
   };
 
+  const TS_EMPTY_MESSAGES = [
+    "No grades yet for this era... time to shake it off and start grading! ✨",
+    "This is a blank space, baby... write a grade! 📝",
+    "The grades are all too well... absent. Let's fix that! 🎵",
+    "It's a Cruel Summer without any grades... 🌙",
+    "We're in our no-grades era. Begin again? 🦋",
+  ];
+
   if (grades.length === 0) {
+    const emptyMsg = ts ? TS_EMPTY_MESSAGES[new Date().getMinutes() % TS_EMPTY_MESSAGES.length] : "No grades recorded for this date range. Enter one above to get started.";
     return (
       <div className="text-center py-10">
         {ts ? (
@@ -43,9 +52,7 @@ export function GradesList({ grades, categories, editingGradeId, onEditStart, on
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         )}
-        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-          {ts ? "No grades yet for this era... time to shake it off and start grading! ✨" : "No grades recorded for this date range. Enter one above to get started."}
-        </p>
+        <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>{emptyMsg}</p>
       </div>
     );
   }

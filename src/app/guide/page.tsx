@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useTheme } from '@/lib/theme';
 
 const steps = [
   { title: 'Find your student', desc: 'Use the search bar or school filters on the dashboard to quickly find who you need.', icon: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' },
@@ -12,8 +11,6 @@ const steps = [
 ];
 
 export default function GuidePage() {
-  const { isTaylorSwift: ts } = useTheme();
-
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -28,7 +25,7 @@ export default function GuidePage() {
 
         <div className="space-y-3">
           {steps.map((step, i) => (
-            <div key={i} className="flex gap-4 p-4 rounded-xl border transition-all duration-200 ts-glass" style={{ borderColor: 'var(--color-border)' }}>
+            <div key={i} className="card-sm flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'var(--color-bg-accent)' }}>
                 <svg className="w-5 h-5" style={{ color: 'var(--color-primary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={step.icon} />

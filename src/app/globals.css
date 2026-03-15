@@ -163,6 +163,53 @@ select.input {
   margin-bottom: 16px;
 }
 
+/* Small card variant (for stats, student cards) */
+.card-sm {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+[data-mode="light"] .card-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.card-sm:hover {
+  border-color: var(--color-primary-light);
+}
+[data-mode="light"] .card-sm:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+[data-mode="dark"] .card-sm:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+
+/* Stat card with top accent */
+.stat-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+[data-mode="light"] .stat-card { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+
+/* Filter chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chip:hover { background: var(--color-bg-accent); color: var(--color-text); }
+.chip-active {
+  background: var(--color-primary);
+  color: var(--color-primary-btn-text);
+  border-color: var(--color-primary);
+}
+.chip-active:hover { opacity: 0.9; }
+
 /* Hover row for lists */
 .hover-row {
   border-radius: 8px;

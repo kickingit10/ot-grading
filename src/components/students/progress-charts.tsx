@@ -60,7 +60,7 @@ export function ProgressCharts({ grades, categories }: ProgressChartsProps) {
             <span className="text-xs font-medium" style={{ color: 'var(--color-text)' }}>{cat.name}</span>
             <div className="flex items-center gap-2">
               <span className="text-[11px]" style={{ color: 'var(--color-text-muted)' }}>{formatScore(cg[cg.length - 1].score, cat.score_type)}</span>
-              <span className={`text-xs font-medium ${trend === '↑' ? 'text-emerald-500' : trend === '↓' ? 'text-red-400' : ''}`} style={trend === '→' ? { color: 'var(--color-text-muted)' } : {}}>{trend}</span>
+              <span className="text-xs font-medium" style={{ color: trend === '↑' ? 'var(--color-success)' : trend === '↓' ? 'var(--color-error)' : 'var(--color-text-muted)' }}>{trend}</span>
             </div>
           </div>
           <SparklineSVG points={points} />

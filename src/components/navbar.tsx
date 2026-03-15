@@ -64,8 +64,8 @@ export function Navbar() {
               <button onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
                 className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg text-sm transition-all duration-200"
                 style={{ color: 'var(--color-text)' }}>
-                <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium text-white"
-                  style={{ background: 'var(--color-primary)' }}>
+                <span className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium"
+                  style={{ background: 'var(--color-primary)', color: 'var(--color-primary-btn-text)' }}>
                   {user.email?.[0]?.toUpperCase() || 'U'}
                 </span>
                 <span className="hidden sm:inline text-sm truncate max-w-[140px]">{user.email}</span>

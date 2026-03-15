@@ -59,7 +59,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '32px 24px' }}>
         {showWelcome && (
           <div className="flex items-center justify-between animate-slide-in"
-            style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderStyle: 'solid', borderLeft: '3px solid var(--color-primary)', borderRadius: 10, padding: '12px 16px', marginBottom: 20 }}>
+            style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderStyle: 'solid', borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))', borderRadius: 10, padding: '12px 16px', marginBottom: 20 }}>
             <p className="text-sm" style={{ color: 'var(--color-primary)' }}>
               {ts ? "It's me, hi, I'm the grader, it's me! ✨ " : 'Welcome! '}New to OT Tracker?{' '}
               <Link href="/guide" className="font-medium underline underline-offset-2">See the quick start guide →</Link>
@@ -124,7 +124,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         </div>
 
         {/* Student list */}
-        <div className="space-y-8">
+        <div className="space-y-6">
           {Object.entries(filteredGroups).length === 0 ? (
             <div className="text-center py-16">
               <svg className="w-10 h-10 mx-auto mb-3" aria-hidden="true" style={{ color: 'var(--color-border)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
                       return (
                         <Link key={student.id} href={`/students/${student.id}`}
                           className="card-sm block">
-                          <h3 className="font-medium mb-3" style={{ color: 'var(--color-text)' }}>
+                          <h3 className="font-medium mb-2" style={{ color: 'var(--color-text)' }}>
                             {student.first_name} {student.last_name}
                             {ts && stats?.gradeCount === 13 && <span className="ts-bracelet-tag" style={{ fontSize: 9, marginLeft: 6 }}>13 ✨</span>}
                           </h3>
@@ -170,13 +170,13 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
 
         {/* Footer */}
         {ts ? (
-          <div className="text-center pt-8 pb-4" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          <div className="text-center pt-12 pb-6" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
             <span>Made with 🌙 for Kyleigh</span>
             <br />
             <span className="ts-bracelet-tag" style={{ display: 'inline-block', marginTop: 6 }}>LONG LIVE THE GRADES</span>
           </div>
         ) : (
-          <div className="text-center pt-8 pb-4" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          <div className="text-center pt-12 pb-6" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
             Made with 💜 for Kyleigh
           </div>
         )}

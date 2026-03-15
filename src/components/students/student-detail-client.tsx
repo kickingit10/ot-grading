@@ -133,7 +133,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         </div>
 
         {/* Date range bar */}
-        <div className="card mb-6" style={{ borderLeft: '3px solid var(--color-primary)' }}>
+        <div className="card mb-6" style={{ borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))' }}>
           <div className="flex flex-col sm:flex-row sm:items-end gap-3">
             <div className="flex-1">
               <label className="label" htmlFor="date-range-start">{ts ? 'Tour Dates' : 'Date Range'}</label>

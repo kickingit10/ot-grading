@@ -61,7 +61,7 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 backdrop-blur-xl"
       style={{ background: 'var(--color-nav-bg)', borderBottom: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 24px' }}>
         <div className="flex justify-between items-center h-14">
           <Link href="/dashboard" className="flex items-center gap-2">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--color-primary-surface, var(--color-primary))' }}>

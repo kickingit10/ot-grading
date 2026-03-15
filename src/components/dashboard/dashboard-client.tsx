@@ -82,24 +82,20 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
         )}
 
         <div className="flex justify-between items-start mb-6">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
-            {ts && <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight" style={{ color: 'var(--color-text)' }}>{ts ? 'The Roster' : 'Students'}</h1>
+              {ts && <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-muted)' }}>Welcome to the grading era ✨</p>}
+            </div>
+            {ts && (
+              <select value={era} onChange={e => setEra(e.target.value as EraName)}
+                className="input" style={{ width: 'auto', minWidth: 150, fontSize: 14 }}>
+                {ERAS.map(e => (<option key={e.id} value={e.id}>{e.label}</option>))}
+              </select>
+            )}
           </div>
           <Link href="/students/new" className="btn-primary text-sm">{ts ? 'New Swiftie ✦' : 'Add student'}</Link>
         </div>
-
-        {ts && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {ERAS.map(e => (
-              <button key={e.id} onClick={() => setEra(e.id)}
-                className={`chip ${era === e.id ? 'chip-active' : ''}`}
-                style={era === e.id ? {} : { borderColor: e.accentColor + '30', color: e.accentColor }}>
-                {e.label}
-              </button>
-            ))}
-          </div>
-        )}
 
         {/* Stats */}
         <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-2.5 mb-5">

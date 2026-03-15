@@ -12,7 +12,7 @@ export default async function AddStudentPage() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--color-bg)' }}>
-      <div style={{ maxWidth: 480 }} className="mx-auto px-4 sm:px-6 py-8">
+      <div style={{ maxWidth: 520, margin: '0 auto', padding: '32px 24px' }}>
         <div className="mb-6">
           <Link href="/dashboard" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back

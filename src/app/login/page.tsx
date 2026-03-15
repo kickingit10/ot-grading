@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--color-bg)' }}>
-      <div className="w-full max-w-sm">
+      <div style={{ width: '100%', maxWidth: 420 }}>
         <div className="text-center mb-8">
           <h1 className="text-2xl font-semibold tracking-tight mb-1" style={{ color: 'var(--color-text)' }}>OT Tracker</h1>
           <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>Student grading for occupational therapists</p>

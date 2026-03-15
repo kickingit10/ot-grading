@@ -29,7 +29,7 @@ export default async function LandingPage() {
 
       {/* Hero */}
       <section className="px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-16" style={{ maxWidth: 1100, margin: '0 auto' }}>
-        <div className="max-w-2xl">
+        <div style={{ maxWidth: 640 }}>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-tight" style={{ color: 'var(--color-text)', letterSpacing: '-0.02em' }}>
             Track student progress,<br />
             <span style={{ color: 'var(--color-primary)' }}>not spreadsheets.</span>

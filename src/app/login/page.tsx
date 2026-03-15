@@ -1,9 +1,15 @@
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 import { LoginForm } from '@/components/auth/login-form';
 import Link from 'next/link';
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) redirect('/dashboard');
+
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'var(--color-bg)' }}>
+    <div className="min-h-screen flex px-4" style={{ background: 'var(--color-bg)', padding: '80px 24px 32px 24px', justifyContent: 'center' }}>
       <div style={{ width: '100%', maxWidth: 420 }}>
         <div className="text-center mb-8">
           <h1 className="text-2xl font-semibold tracking-tight mb-1" style={{ color: 'var(--color-text)' }}>OT Tracker</h1>
@@ -15,7 +21,7 @@ export default function LoginPage() {
         </div>
         <div className="mt-5 text-center">
           <p className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/signup" className="font-medium transition-colors" style={{ color: 'var(--color-primary)' }}>Sign up</Link>
           </p>
         </div>

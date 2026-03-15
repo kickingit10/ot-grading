@@ -82,7 +82,7 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
         {/* Header */}
         <div className="mb-6">
-          <Link href="/dashboard" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+          <Link href="/dashboard" className="back-link">
             <svg className="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
             Back
           </Link>
@@ -96,16 +96,12 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
 
         {/* Date range + Print */}
         <div className="card mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-end gap-3">
-            <div className="flex-1">
-              <label className="label" htmlFor="report-start">Date Range</label>
-              <div className="flex items-center gap-2 flex-wrap">
-                <input id="report-start" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="input w-full sm:w-[150px]" />
-                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>to</span>
-                <input id="report-end" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="input w-full sm:w-[150px]" />
-              </div>
-            </div>
-            <button onClick={handlePrint} className="btn-primary text-sm py-1.5 px-3 flex items-center gap-1.5 no-print">
+          <label className="label" htmlFor="report-start">Date Range</label>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+            <input id="report-start" type="date" value={startDate} onChange={e => setStartDate(e.target.value)} className="input" style={{ maxWidth: 200, flex: 'none' }} />
+            <span style={{ fontSize: 14, color: 'var(--color-text-muted)' }}>to</span>
+            <input id="report-end" type="date" value={endDate} onChange={e => setEndDate(e.target.value)} className="input" style={{ maxWidth: 200, flex: 'none' }} />
+            <button onClick={handlePrint} className="btn-primary text-sm flex items-center gap-1.5 no-print" style={{ marginLeft: 'auto', padding: '6px 14px', minHeight: 36 }}>
               <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
               Print All
             </button>
@@ -128,18 +124,18 @@ export function ReportsClient({ students, categories, allGrades }: ReportsClient
                 </tr>
               </thead>
               <tbody>
-                {studentData.map(({ student, categoryAvgs, totalGrades }) => (
-                  <tr key={student.id} className="hover-row" style={{ borderBottom: '1px solid var(--color-border)' }}>
-                    <td className="py-2.5 pr-3">
-                      <Link href={`/students/${student.id}`} className="text-sm font-medium transition-colors" style={{ color: 'var(--color-primary)' }}>
+                {studentData.map(({ student, categoryAvgs, totalGrades }, idx) => (
+                  <tr key={student.id} style={{ borderBottom: '1px solid var(--color-border)', background: idx % 2 === 1 ? 'var(--color-bg-accent)' : 'transparent' }}>
+                    <td style={{ padding: '10px 12px' }}>
+                      <Link href={`/students/${student.id}`} className="text-sm font-medium transition-colors" style={{ color: 'var(--color-text)' }}>
                         {student.first_name} {student.last_name}
                       </Link>
                     </td>
-                    <td className="py-2.5 pr-3 text-xs" style={{ color: 'var(--color-text-muted)' }}>{student.school?.name}</td>
+                    <td style={{ padding: '10px 12px', fontSize: 13, color: 'var(--color-text-muted)' }}>{student.school?.name}</td>
                     {categories.map(c => {
                       const data = categoryAvgs[c.id];
                       return (
-                        <td key={c.id} className="py-2.5 px-2 text-right text-sm tabular-nums" style={{ color: data ? 'var(--color-text)' : 'var(--color-border)' }}>
+                        <td key={c.id} className="text-right text-sm tabular-nums" style={{ padding: '10px 12px', color: data ? 'var(--color-text)' : 'var(--color-border)' }}>
                           {data ? formatScore(data.avg, c.score_type) : '—'}
                         </td>
                       );

@@ -100,7 +100,7 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
         {/* Header with quick nav */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-3">
-            <Link href="/dashboard" className="text-sm inline-flex items-center gap-1 transition-colors" style={{ color: 'var(--color-text-muted)' }}>
+            <Link href="/dashboard" className="back-link">
               <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg> Back
             </Link>
             <span style={{ color: 'var(--color-border)' }}>|</span>
@@ -155,19 +155,15 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
 
         {/* Date range bar */}
         <div className="rounded-lg p-4 mb-6" style={{ background: 'var(--color-bg-accent)', borderLeft: '3px solid var(--color-primary-surface, var(--color-primary))' }}>
-          <div className="flex flex-col sm:flex-row sm:items-end gap-3">
-            <div className="flex-1">
-              <label className="label" htmlFor="date-range-start">{ts ? 'Tour Dates' : 'Date Range'}</label>
-              <div className="flex items-center gap-2 flex-wrap">
-                <input type="date" id="date-range-start" value={startDate} onChange={e => setStartDate(e.target.value)} className="input w-full sm:w-[150px]" />
-                <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>to</span>
-                <input type="date" id="date-range-end" value={endDate} onChange={e => setEndDate(e.target.value)} className="input w-full sm:w-[150px]" />
-              </div>
-            </div>
-            <div className="flex gap-2 flex-wrap">
+          <label className="label" htmlFor="date-range-start">{ts ? 'Tour Dates' : 'Date Range'}</label>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+            <input type="date" id="date-range-start" value={startDate} onChange={e => setStartDate(e.target.value)} className="input" style={{ maxWidth: 200, flex: 'none' }} />
+            <span style={{ fontSize: 14, color: 'var(--color-text-muted)' }}>to</span>
+            <input type="date" id="date-range-end" value={endDate} onChange={e => setEndDate(e.target.value)} className="input" style={{ maxWidth: 200, flex: 'none' }} />
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {gradingPeriods.length > 0 && (
                 <div className="relative">
-                  <button onClick={() => setShowSavedRanges(!showSavedRanges)} className="btn-ghost text-sm">Saved</button>
+                  <button onClick={() => setShowSavedRanges(!showSavedRanges)} className="btn-ghost text-sm" style={{ padding: '6px 14px', minHeight: 36 }}>Saved</button>
                   {showSavedRanges && (
                     <div className="absolute right-0 top-full mt-1 w-56 rounded-xl py-1 z-50 animate-fade-in"
                       style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)' }}>
@@ -182,8 +178,8 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                   )}
                 </div>
               )}
-              <button onClick={handleSaveRange} disabled={savingRange} className="btn-ghost text-sm">{savingRange ? '...' : 'Save range'}</button>
-              <button onClick={handlePrint} className="no-print btn-primary text-sm py-1.5 px-3 flex items-center gap-1.5">
+              <button onClick={handleSaveRange} disabled={savingRange} className="btn-ghost text-sm" style={{ padding: '6px 14px', minHeight: 36 }}>{savingRange ? '...' : 'Save range'}</button>
+              <button onClick={handlePrint} className="no-print btn-primary text-sm flex items-center gap-1.5" style={{ padding: '6px 14px', minHeight: 36 }}>
                 <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg> Print
               </button>
             </div>

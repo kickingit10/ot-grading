@@ -33,6 +33,18 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
     if (lastCat && categories.some((c) => c.id === lastCat)) setCategoryId(lastCat);
   }, [categories]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        const form = document.querySelector('form');
+        if (form) form.requestSubmit();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null); setLoading(true);
@@ -68,7 +80,7 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
         <div><label className="label" htmlFor="grade-category">Category</label>
           <select id="grade-category" ref={categoryRef} tabIndex={2} value={categoryId} onChange={e => setCategoryId(e.target.value)} className="input">
             <option value="">Select...</option>
-            {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
+            {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name} ({cat.score_type === 'percentage' ? '0\u2013100' : 'WPM'})</option>)}
           </select>
         </div>
         <div><label className="label" htmlFor="grade-score">Score {selectedCategory && `(${selectedCategory.score_type === 'percentage' ? '0–100' : 'WPM'})`}</label>
@@ -79,6 +91,7 @@ export function GradeEntryForm({ student, categories, onGradeAdded }: GradeEntry
         <div className="flex-1"><label className="label" htmlFor="grade-other-skills">Other skills</label><input id="grade-other-skills" tabIndex={5} type="text" value={otherSkills} onChange={e => setOtherSkills(e.target.value)} placeholder="Optional" className="input" /></div>
         <button tabIndex={6} type="submit" disabled={loading} className="btn-primary whitespace-nowrap">{loading ? (ts ? 'Recording...' : 'Saving...') : (ts ? 'Drop it 🎤' : 'Save grade')}</button>
       </div>
+      <span className="text-[10px] mt-1 block text-center" style={{ color: 'var(--color-text-muted)', opacity: 0.6 }}>⌘+Enter to save</span>
     </form>
   );
 }

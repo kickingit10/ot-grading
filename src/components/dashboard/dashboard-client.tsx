@@ -4,12 +4,25 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { StudentWithSchool } from '@/lib/types';
 import { formatDate } from '@/lib/utils';
-import { useTheme } from '@/lib/theme';
+import { useTheme, type EraName } from '@/lib/theme';
 
 interface StudentStats { gradeCount: number; lastGradedDate: string | null; }
 interface DashboardClientProps { initialStudents: StudentWithSchool[]; studentStats: Record<string, StudentStats>; }
 
 const DISMISS_KEY = 'ot-tracker-welcome-dismissed';
+
+const ERAS: { id: EraName; label: string; accentColor: string }[] = [
+  { id: 'fearless', label: 'Fearless', accentColor: '#CBA863' },
+  { id: 'speakNow', label: 'Speak Now', accentColor: '#833C63' },
+  { id: 'red', label: 'Red', accentColor: '#A91E47' },
+  { id: '1989', label: '1989', accentColor: '#659BBB' },
+  { id: 'reputation', label: 'reputation', accentColor: '#515151' },
+  { id: 'lover', label: 'Lover', accentColor: '#C9A84C' },
+  { id: 'folklore', label: 'folklore', accentColor: '#949494' },
+  { id: 'evermore', label: 'evermore', accentColor: '#D37F55' },
+  { id: 'midnights', label: 'Midnights', accentColor: '#5A658B' },
+  { id: 'torturedPoets', label: 'TTPD', accentColor: '#635B3A' },
+];
 
 export function DashboardClient({ initialStudents, studentStats }: DashboardClientProps) {
   const [showArchived, setShowArchived] = useState(false);
@@ -17,7 +30,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
   const [schoolFilter, setSchoolFilter] = useState<string | null>(null);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [showWelcome, setShowWelcome] = useState(false);
-  const { isTaylorSwift: ts } = useTheme();
+  const { isTaylorSwift: ts, era, setEra } = useTheme();
 
   useEffect(() => { if (!localStorage.getItem(DISMISS_KEY)) setShowWelcome(true); }, []);
 
@@ -50,7 +63,7 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
   const statCards = [
     { label: ts ? 'Swifties' : 'Students', value: initialStudents.length, icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z' },
     { label: ts ? 'Eras Graded' : 'Total grades', value: totalGrades, icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
-    { label: ts ? "This Week's Era" : 'Graded this week', value: gradesThisWeek, icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { label: ts ? "Active Swifties" : 'Active this week', value: gradesThisWeek, icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
     { label: ts ? 'Last Encore' : 'Last active', value: lastActive ? formatDate(lastActive) : '—', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
   ];
 
@@ -75,6 +88,18 @@ export function DashboardClient({ initialStudents, studentStats }: DashboardClie
           </div>
           <Link href="/students/new" className="btn-primary text-sm">{ts ? 'New Era ✦' : 'Add student'}</Link>
         </div>
+
+        {ts && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {ERAS.map(e => (
+              <button key={e.id} onClick={() => setEra(e.id)}
+                className={`chip ${era === e.id ? 'chip-active' : ''}`}
+                style={era === e.id ? {} : { borderColor: e.accentColor + '30', color: e.accentColor }}>
+                {e.label}
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Stats */}
         <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-2.5 mb-5">

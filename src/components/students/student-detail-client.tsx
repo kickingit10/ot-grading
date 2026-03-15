@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { StudentWithSchool, Category, Grade, GradingPeriod } from '@/lib/types';
@@ -28,8 +28,10 @@ function getSchoolYearStart(): string {
 export function StudentDetailClient({ student, categories, initialGrades, gradingPeriods, allStudents }: StudentDetailClientProps) {
   const [grades, setGrades] = useState<Grade[]>(initialGrades);
   const currentPeriodObj = gradingPeriods.find(p => p.is_current) || gradingPeriods[0] || null;
-  const [startDate, setStartDate] = useState(currentPeriodObj?.start_date || getSchoolYearStart());
-  const [endDate, setEndDate] = useState(currentPeriodObj?.end_date || formatDateInputValue(new Date().toISOString()));
+  const savedStart = typeof window !== 'undefined' ? sessionStorage.getItem('ot-date-start') : null;
+  const savedEnd = typeof window !== 'undefined' ? sessionStorage.getItem('ot-date-end') : null;
+  const [startDate, setStartDate] = useState(savedStart || currentPeriodObj?.start_date || getSchoolYearStart());
+  const [endDate, setEndDate] = useState(savedEnd || currentPeriodObj?.end_date || formatDateInputValue(new Date().toISOString()));
   const [showSavedRanges, setShowSavedRanges] = useState(false);
   const [savingRange, setSavingRange] = useState(false);
   const [editingGradeId, setEditingGradeId] = useState<string | null>(null);
@@ -37,6 +39,11 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
   const [tab, setTab] = useState<'grades' | 'progress'>('grades');
   const [showStudentPicker, setShowStudentPicker] = useState(false);
   const { isTaylorSwift: ts } = useTheme();
+
+  useEffect(() => {
+    sessionStorage.setItem('ot-date-start', startDate);
+    sessionStorage.setItem('ot-date-end', endDate);
+  }, [startDate, endDate]);
   const { toast } = useToast();
   const router = useRouter();
   const supabase = createClient();
@@ -108,11 +115,20 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
                 {showStudentPicker && (
                   <div className="absolute left-0 top-full mt-1 w-56 max-h-64 overflow-y-auto rounded-xl py-1 z-50 animate-fade-in"
                     style={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-lg)', maxWidth: 'calc(100vw - 32px)' }}>
-                    {allStudents.map(s => (
-                      <button key={s.id} onClick={() => { setShowStudentPicker(false); router.push(`/students/${s.id}`); }}
-                        className="w-full text-left px-3 py-1.5 text-sm transition-colors"
-                        style={{ color: s.id === student.id ? 'var(--color-primary)' : 'var(--color-text)', background: s.id === student.id ? 'var(--color-primary-lighter)' : 'transparent' }}>{s.name}</button>
-                    ))}
+                    {(() => {
+                      const grouped: Record<string, typeof allStudents> = {};
+                      allStudents.forEach(s => { if (!grouped[s.school]) grouped[s.school] = []; grouped[s.school].push(s); });
+                      return Object.entries(grouped).map(([school, students]) => (
+                        <div key={school}>
+                          <div className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>{school}</div>
+                          {students.map(s => (
+                            <button key={s.id} onClick={() => { setShowStudentPicker(false); router.push(`/students/${s.id}`); }}
+                              className="w-full text-left px-3 py-1.5 text-sm transition-colors"
+                              style={{ color: s.id === student.id ? 'var(--color-primary)' : 'var(--color-text)', background: s.id === student.id ? 'var(--color-primary-lighter)' : 'transparent' }}>{s.name}</button>
+                          ))}
+                        </div>
+                      ));
+                    })()}
                   </div>
                 )}
               </div>
@@ -183,6 +199,13 @@ export function StudentDetailClient({ student, categories, initialGrades, gradin
               }}>{v === 'entry' ? 'Entry' : 'Summary'}</button>
           ))}
         </div>
+
+        {grades.length === 0 && (
+          <div className="card text-center py-8 mb-4">
+            <p className="text-sm font-medium" style={{ color: 'var(--color-text)' }}>{ts ? "Time to start this era! 🎵" : "No grades yet"}</p>
+            <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>Enter the first grade above to begin tracking progress.</p>
+          </div>
+        )}
 
         {/* Main content */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

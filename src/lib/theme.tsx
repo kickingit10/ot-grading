@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client';
 
 type ThemeName = 'default' | 'taylor-swift';
 type ColorMode = 'light' | 'dark' | 'system';
+export type EraName = 'lover' | 'fearless' | 'speakNow' | 'red' | 'folklore' | 'evermore' | 'midnights' | 'reputation' | '1989' | 'torturedPoets';
 
 interface ThemeContextType {
   theme: ThemeName;
@@ -13,11 +14,14 @@ interface ThemeContextType {
   colorMode: ColorMode;
   setColorMode: (mode: ColorMode) => void;
   isDark: boolean;
+  era: EraName;
+  setEra: (era: EraName) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'default', setTheme: () => {}, isTaylorSwift: false,
   colorMode: 'light', setColorMode: () => {}, isDark: false,
+  era: 'lover', setEra: () => {},
 });
 
 export function useTheme() { return useContext(ThemeContext); }
@@ -44,12 +48,12 @@ export function getRandomTSMessage(): string {
 }
 
 const COLOR_MODE_KEY = 'ot-color-mode';
+const ERA_KEY = 'ot-era';
+const VALID_ERAS: EraName[] = ['lover', 'fearless', 'speakNow', 'red', 'folklore', 'evermore', 'midnights', 'reputation', '1989', 'torturedPoets'];
 
 function resolveMode(mode: ColorMode): 'light' | 'dark' {
   if (mode === 'system') {
-    if (typeof window !== 'undefined') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
+    if (typeof window !== 'undefined') return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     return 'light';
   }
   return mode;
@@ -59,31 +63,34 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<ThemeName>('default');
   const [colorMode, setColorModeState] = useState<ColorMode>('light');
   const [resolvedMode, setResolvedMode] = useState<'light' | 'dark'>('light');
+  const [era, setEraState] = useState<EraName>('lover');
   const supabase = createClient();
 
-  // Load profile theme
+  // Load profile theme + era
   useEffect(() => {
     const loadTheme = async () => {
       try {
         const { data: { user } } = await supabase.auth.getUser();
         if (user) {
-          const { data: profile } = await supabase.from('profiles').select('theme').eq('id', user.id).single();
+          const { data: profile } = await supabase.from('profiles').select('theme, era').eq('id', user.id).single();
           if (profile?.theme === 'taylor-swift') setThemeState('taylor-swift');
+          if (profile?.era && VALID_ERAS.includes(profile.era as EraName)) setEraState(profile.era as EraName);
         }
       } catch { /* no session */ }
     };
+    // Load era from localStorage first for instant hydration
+    const savedEra = localStorage.getItem(ERA_KEY) as EraName | null;
+    if (savedEra && VALID_ERAS.includes(savedEra)) setEraState(savedEra);
     loadTheme();
   }, [supabase]);
 
-  // Load color mode from localStorage
+  // Load color mode
   useEffect(() => {
     const saved = localStorage.getItem(COLOR_MODE_KEY) as ColorMode | null;
-    if (saved && ['light', 'dark', 'system'].includes(saved)) {
-      setColorModeState(saved);
-    }
+    if (saved && ['light', 'dark', 'system'].includes(saved)) setColorModeState(saved);
   }, []);
 
-  // Listen for system theme changes
+  // System theme listener
   useEffect(() => {
     setResolvedMode(resolveMode(colorMode));
     if (colorMode !== 'system') return;
@@ -95,21 +102,32 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   // Apply to DOM
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.setAttribute('data-mode', resolvedMode);
-  }, [theme, resolvedMode]);
+    const el = document.documentElement;
+    el.setAttribute('data-theme', theme);
+    el.setAttribute('data-mode', resolvedMode);
+    if (theme === 'taylor-swift') {
+      el.setAttribute('data-era', era);
+    } else {
+      el.removeAttribute('data-era');
+    }
+  }, [theme, resolvedMode, era]);
 
-  const setTheme = useCallback((newTheme: ThemeName) => { setThemeState(newTheme); }, []);
-  const setColorMode = useCallback((mode: ColorMode) => {
-    setColorModeState(mode);
-    localStorage.setItem(COLOR_MODE_KEY, mode);
-    setResolvedMode(resolveMode(mode));
+  const setTheme = useCallback((t: ThemeName) => setThemeState(t), []);
+  const setColorMode = useCallback((m: ColorMode) => {
+    setColorModeState(m);
+    localStorage.setItem(COLOR_MODE_KEY, m);
+    setResolvedMode(resolveMode(m));
+  }, []);
+  const setEra = useCallback((e: EraName) => {
+    setEraState(e);
+    localStorage.setItem(ERA_KEY, e);
   }, []);
 
   return (
     <ThemeContext.Provider value={{
       theme, setTheme, isTaylorSwift: theme === 'taylor-swift',
       colorMode, setColorMode, isDark: resolvedMode === 'dark',
+      era, setEra,
     }}>
       {children}
     </ThemeContext.Provider>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Profile } from '@/lib/types';
-import { useTheme } from '@/lib/theme';
+import { useTheme, type EraName } from '@/lib/theme';
 
 interface ProfileClientProps { userEmail: string; profile: Profile | null; }
 
@@ -19,18 +19,19 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [passwordError, setPasswordError] = useState<string | null>(null);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const [eraValue, setEraValue] = useState(profile?.era || 'lover');
   const router = useRouter();
   const supabase = createClient();
-  const { setTheme: setAppTheme, isTaylorSwift } = useTheme();
+  const { setTheme: setAppTheme, isTaylorSwift, era, setEra } = useTheme();
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault(); setError(null); setLoading(true);
     try {
       if (!fullName.trim()) { setError('Enter your name'); setLoading(false); return; }
       if (!profile?.id) { setError('Profile not found'); setLoading(false); return; }
-      const { error: err } = await supabase.from('profiles').update({ full_name: fullName.trim(), theme }).eq('id', profile.id);
+      const { error: err } = await supabase.from('profiles').update({ full_name: fullName.trim(), theme, era: eraValue }).eq('id', profile.id);
       if (err) setError(err.message);
-      else { setAppTheme(theme as 'default' | 'taylor-swift'); setSuccess(true); setTimeout(() => setSuccess(false), 2000); }
+      else { setAppTheme(theme as 'default' | 'taylor-swift'); setEra(eraValue as EraName); setSuccess(true); setTimeout(() => setSuccess(false), 2000); }
     } catch { setError('An unexpected error occurred'); }
     finally { setLoading(false); }
   };
@@ -53,6 +54,23 @@ export function ProfileClient({ userEmail, profile }: ProfileClientProps) {
               <p className="text-xs mt-2" style={{ color: 'var(--color-primary)' }}>🌙 Midnights mode active — Long live the grading era</p>
             )}
           </div>
+          {(theme === 'taylor-swift' || isTaylorSwift) && (
+            <div>
+              <label className="label" htmlFor="profile-era">Era</label>
+              <select id="profile-era" value={eraValue} onChange={e => setEraValue(e.target.value)} className="input">
+                <option value="fearless">Fearless</option>
+                <option value="speakNow">Speak Now</option>
+                <option value="red">Red</option>
+                <option value="1989">1989</option>
+                <option value="reputation">reputation</option>
+                <option value="lover">Lover</option>
+                <option value="folklore">folklore</option>
+                <option value="evermore">evermore</option>
+                <option value="midnights">Midnights</option>
+                <option value="torturedPoets">TTPD</option>
+              </select>
+            </div>
+          )}
           <button type="submit" disabled={loading} className="btn-primary w-full">{loading ? 'Saving...' : 'Save profile'}</button>
         </form>
       </div>

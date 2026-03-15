@@ -16,6 +16,7 @@ export type Profile = {
   full_name: string;
   email: string;
   theme: string;
+  era?: string;
 };
 
 export type Student = {

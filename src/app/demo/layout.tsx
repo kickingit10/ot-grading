@@ -62,12 +62,6 @@ function DemoNavbar() {
                 {ERAS.map(e => (<option key={e.id} value={e.id}>{e.label}</option>))}
               </select>
             )}
-            <button onClick={() => setTheme(isTaylorSwift ? 'default' : 'taylor-swift')}
-              style={{ padding: '4px 10px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 500,
-                background: isTaylorSwift ? 'var(--color-primary-lighter)' : 'transparent',
-                color: isTaylorSwift ? 'var(--color-primary)' : 'var(--color-text-muted)' }}>
-              ✨ Taylor Mode
-            </button>
             <div style={{ display: 'flex', gap: 2 }}>
               {modeBtn('light', '☀')}
               {modeBtn('dark', '🌙')}

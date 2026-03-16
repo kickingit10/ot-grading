@@ -12,7 +12,7 @@ const ERAS: { id: EraName; label: string }[] = [
 ];
 
 function DemoNavbar() {
-  const { isTaylorSwift, colorMode, setColorMode, era, setEra } = useTheme();
+  const { isTaylorSwift, colorMode, setColorMode, era, setEra, setTheme } = useTheme();
 
   const modeBtn = (mode: 'light' | 'dark' | 'system', label: string) => (
     <button onClick={() => setColorMode(mode)} aria-label={`${mode} mode`}
@@ -46,12 +46,28 @@ function DemoNavbar() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Link href="/demo/reports" style={{ fontSize: 15, fontWeight: 500, color: 'var(--color-text-muted)', textDecoration: 'none' }}>Reports</Link>
+            <button
+              onClick={() => setTheme(isTaylorSwift ? 'default' : 'taylor-swift')}
+              style={{ padding: '4px 10px', borderRadius: 8, border: '1px solid var(--color-border)', cursor: 'pointer', fontSize: 13, fontWeight: 500,
+                background: isTaylorSwift ? 'var(--color-primary-lighter)' : 'transparent',
+                color: isTaylorSwift ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                transition: 'all 0.2s ease' }}
+              aria-label="Toggle Taylor Swift theme"
+            >
+              {isTaylorSwift ? '✨ Taylor\'s Version' : '✨ Taylor Mode'}
+            </button>
             {isTaylorSwift && (
               <select value={era} onChange={e => setEra(e.target.value as EraName)}
                 className="input" style={{ width: 'auto', minWidth: 120, fontSize: 13, padding: '4px 32px 4px 10px', minHeight: 32 }}>
                 {ERAS.map(e => (<option key={e.id} value={e.id}>{e.label}</option>))}
               </select>
             )}
+            <button onClick={() => setTheme(isTaylorSwift ? 'default' : 'taylor-swift')}
+              style={{ padding: '4px 10px', borderRadius: 6, border: 'none', cursor: 'pointer', fontSize: 12, fontWeight: 500,
+                background: isTaylorSwift ? 'var(--color-primary-lighter)' : 'transparent',
+                color: isTaylorSwift ? 'var(--color-primary)' : 'var(--color-text-muted)' }}>
+              ✨ Taylor Mode
+            </button>
             <div style={{ display: 'flex', gap: 2 }}>
               {modeBtn('light', '☀')}
               {modeBtn('dark', '🌙')}
